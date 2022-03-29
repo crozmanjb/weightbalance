@@ -1,0 +1,63 @@
+body {
+
+    padding-top: 5rem;
+
+}
+
+#wWeatherContainer {
+	background-color: mediumblue;
+	color: white;
+}
+
+#NOTAMRemind {
+	background-color: red;
+	color: white;
+	text-align: center;
+}
+
+canvas {
+
+    width: 100%;
+
+    height: auto;
+
+}
+
+#runwaySelect {
+	margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 7px;
+	width: auto;
+}
+
+.bg-dark{
+
+background-color: #0f2439 !important;
+
+}
+
+
+
+.btn-secondary{
+
+    background-color: #0f2439;
+
+
+
+}
+
+
+
+root{
+
+    --gray: #f8f8f8;
+
+    --blue: #4d5f80;
+
+    --blue-dark: #384660;
+
+    --blue-bright: #2472b5;
+
+    --blue-light: #d9dfe8;
+
+}
