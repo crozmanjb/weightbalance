@@ -372,6 +372,34 @@ const aircraft = [
 		aircraftArm: 98.34, 
 		
 		autopilot: "GFC"
+	}, 
+	
+	{
+		tail: "N894SA",
+		
+		model: "DA40XLS", 
+		
+		emptyWeight: 1780.94,
+		
+		maxWeight: 2646,
+		
+		aircraftArm: 98.61, 
+		
+		autopilot: "GFC"
+	},
+	
+	{
+		tail: "N239DC",
+		
+		model: "DA40XLS", 
+		
+		emptyWeight: 1826.94,
+		
+		maxWeight: 2646,
+		
+		aircraftArm: 98.29, 
+		
+		autopilot: "GFC"
 	}
 
    /* {
@@ -658,7 +686,7 @@ const aircraftModels = [
 
         model: "DA40XLS",
 
-        maxFuel: 50.2,
+        maxFuel: 50,
 
         maxBaggage1 : 100,
 

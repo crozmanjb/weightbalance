@@ -84,7 +84,6 @@ function aircraftSelection(){
             //if (document.getElementById("fuelStation").value > 40){
             document.getElementById("baggageStation1").value = 0;
             document.getElementById("fuelStation").value = 40.2;
-            document.getElementById("fuelBurn").value = 40.2;
             //}
             break;
         case "DA40CS":
@@ -100,7 +99,6 @@ function aircraftSelection(){
             //if (document.getElementById("fuelStation").value > 40){
             document.getElementById("baggageStation1").value = 0;
             document.getElementById("fuelStation").value = 40.2;
-            document.getElementById("fuelBurn").value = 40.2;
             //}
             break;
         case "DA40XL":
@@ -117,7 +115,6 @@ function aircraftSelection(){
             //if (document.getElementById("fuelStation").value > 40){
             document.getElementById("baggageStation1").value = 0;
             document.getElementById("fuelStation").value = 40.2;
-            document.getElementById("fuelBurn").value = 40.2;
             //}
             break;
         case "DA40XLS":
@@ -128,13 +125,11 @@ function aircraftSelection(){
             document.getElementById("baggage1MaxNote").innerHTML = "Max 100 lbs";
             document.getElementById("baggageStation2Div").style.display = "flex";
             document.getElementById("baggage2MaxNote").innerHTML = "Max 40 lbs. Max 100 lbs Combined.";
-            document.getElementById("fuelStation").max = "50.2";
-            document.getElementById("fuelMaxNote").innerHTML = "Max 50.2 Gallons";
-            document.getElementById("fuelBurn").max = "50.2";
+            document.getElementById("fuelStation").max = "50";
+            document.getElementById("fuelMaxNote").innerHTML = "Max 50 Gallons";
+            document.getElementById("fuelBurn").max = "50";
             document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 50.2;
-            document.getElementById("fuelBurn").value = 50.2;
-
+            document.getElementById("fuelStation").value = 50;
             break;
         case "DA42":
             document.getElementById("noseStationDiv").style.display = "flex";
