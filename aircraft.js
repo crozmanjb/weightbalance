@@ -359,6 +359,22 @@ const aircraft = [
         autopilot: "GFC"
 
     },
+
+    {
+
+        tail: "N384CA",
+
+        model: "DA40XLS",
+
+        emptyWeight: 18.27.05,
+
+        maxWeight: 2646,
+
+        aircraftArm: 98.31,
+        
+        autopilot: "GFC"
+
+    },
 	
 	{
 		tail: "N616ML",
