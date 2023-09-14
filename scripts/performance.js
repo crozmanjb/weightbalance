@@ -6,16 +6,6 @@ window.addEventListener("load", function() {
 	getWeather();
 });
 
-var colorToggle = setInterval(function() {
-	var currColor = document.getElementById("NOTAMRemind").style.backgroundColor;
-	document.getElementById("NOTAMRemind").style.backgroundColor = currColor == "red" ? "maroon" : "red";
-}, 500);
-
-document.getElementById("NOTAMRemind").addEventListener("click", function() {
-	clearInterval(colorToggle);
-	document.getElementById("NOTAMRemind").style.backgroundColor = "red";
-});
-
 function iOS() {
 	console.info("Device type: ", navigator.platform);
 	  return [
@@ -40,12 +30,9 @@ function getWeather(){
     }
 	
 	if (iOS()) {
-		//window.alert("true");
-		document.getElementById("foreflightRedirect").innerHTML = "<a href='foreflightmobile://maps/search?q=" + stationID.toUpperCase() + "'>Open in Foreflight</a>";
-		//document.getElementById("foreflightRedirect").hidden = "false";
-		//window.location.href="foreflightmobile://maps/search?q=" + stationID.toUpperCase();
+//		document.getElementById("foreflightRedirect").innerHTML = "<a href='foreflightmobile://maps/search?q=" + stationID.toUpperCase() + "'>Open in Foreflight</a>";
 	} else {
-		document.getElementById("foreflightRedirect").innerHTML = "";
+//		document.getElementById("foreflightRedirect").innerHTML = "";
 	}
     document.getElementById("weatherInput").style.display = "none";
     /*Section retrieves weather from aviationweather.gov using simple PHP backend.
