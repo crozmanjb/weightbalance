@@ -244,6 +244,17 @@ function setWeather(weatherData) {
 	getRunways(weatherData);
 }
 
+function getFormattedUTCTime() {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const now = new Date();
+  const month = months[now.getUTCMonth()];
+  const day = String(now.getUTCDate()).padStart(2, '0');
+  const hours = String(now.getUTCHours()).padStart(2, '0');
+  const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+  const formattedUTCDate = `${month} ${day} ${hours}:${minutes}Z`;
+  return formattedUTCDate;
+}
+
 function setTAF(weatherTAF){
     /*TAF*/
     var rawTAF = weatherTAF.raw_text;
@@ -274,8 +285,7 @@ function setTAF(weatherTAF){
         }
     }
 
-    var now = new Date()
-    document.getElementById("TAF").innerHTML = "Current Time: " + now.toUTCString() + "<br>";
+    document.getElementById("TAF").innerHTML = "Current Time: " + getFormattedUTCTime() + "<br>";
     for (i=0; i < newLines.length; i++){
         document.getElementById("TAF").innerHTML += newLines[i] + "<br>"
     }
@@ -397,7 +407,7 @@ function getRunways(weatherDataI) {
 							}
 						}
 						var autoChange = false;
-						var output = '<select class="form-control" id="runwaySelect" onChange="autoRunwayChange()"><option value="0">Select a runway</option>';
+						var output = '<select class="form-control" id="runwaySelect" onChange="autoRunwayChange()"><option value="0">Enter Runway Heading</option>';
 						for (var key in runways) {
 							if (key == best) {output += '<option value="' + key + '0" selected>' + key + ' (Length: ' + runways[key] + ' ft)</option>'; autoChange = true;}
 							else {output += '<option value="' + key + '0">' + key + ' (Length: ' + runways[key] + ' ft)</option>';}

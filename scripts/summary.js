@@ -231,9 +231,9 @@ function fillPerformance(performanceData, isPrint, tailNumber) {
 function fillWB(computedData, userInput, fwdCG, validCG, isPrint){
     /**Fill HTML elements with weight and balance data**/
 
-    var tailNumber = userInput.tail;
     var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
+	var tailNumber = aircraftObj.tail;
 
     if (!validCG){
         document.getElementById("auditTitle").innerHTML = tailNumber + " NOT WITHIN LIMITS!!";

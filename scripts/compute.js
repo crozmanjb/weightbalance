@@ -837,15 +837,15 @@ if (localStorage.getItem("userInput") !== null){
         document.getElementById("navbarSummary").classList.remove("disabled");
     }
     if (sessionStorage.getItem("userAgree") === null){
-        //$('#Modal').modal({
-        //    backdrop: 'static'
-        //})
+        $('#Modal').modal({
+            backdrop: 'static'
+        })
     }
 }
 else {
     if (sessionStorage.getItem("userAgree") === null) {
-        //$('#Modal').modal({
-        //    backdrop: 'static'
-        //})
+        $('#Modal').modal({
+            backdrop: 'static'
+        })
     }
 }
