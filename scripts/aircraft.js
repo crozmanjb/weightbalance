@@ -6,22 +6,6 @@ const aircraft = [
 	
 	{
 
-        tail: "N344AF",
-
-        model: "DA40CS",
-
-        emptyWeight: 1800,
-
-        maxWeight: 2646,
-
-        aircraftArm: 97.37,
-        
-        autopilot: "none"
-
-    },
-	
-    {
-
         tail: "N118GM",
 
         model: "DA40CS",
@@ -35,6 +19,54 @@ const aircraft = [
         autopilot: "KAP"
 
     },
+	
+	{
+		
+        tail: "N1707S",
+
+        model: "DA40CS",
+
+        emptyWeight: 1727.19,
+
+        maxWeight: 2646,
+
+        aircraftArm: 96.68,
+        
+        autopilot: "KAP"
+
+    },
+	
+	{
+
+        tail: "N321FS",
+
+        model: "DA40CS",
+
+        emptyWeight: 1761,
+
+        maxWeight: 2535,
+
+        aircraftArm: 97.11,
+        
+        autopilot: "KAP"
+
+    },
+	
+	{ // Need update
+
+        tail: "N344AF",
+
+        model: "DA40CS",
+
+        emptyWeight: 1800,
+
+        maxWeight: 2646,
+
+        aircraftArm: 97.37,
+        
+        autopilot: "none"
+
+    },    
 
     {
 
@@ -47,22 +79,6 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.53,
-        
-        autopilot: "KAP"
-
-    },
-
-    {
-
-        tail: "N321FS",
-
-        model: "DA40CS",
-
-        emptyWeight: 1761,
-
-        maxWeight: 2535,
-
-        aircraftArm: 97.11,
         
         autopilot: "KAP"
 
@@ -106,11 +122,11 @@ const aircraft = [
 
         model: "DA40XLS",
 
-        emptyWeight: 1842.0,
+        emptyWeight: 1843.0,
 
         maxWeight: 2646,
 
-        aircraftArm: 97.94,
+        aircraftArm: 98.00,
         
         autopilot: "GFC"
 
@@ -138,11 +154,11 @@ const aircraft = [
 
         model: "DA40XLS",
 
-        emptyWeight: 1803.86,
+        emptyWeight: 1797.8,
 
         maxWeight: 2646,
 
-        aircraftArm: 97.77,
+        aircraftArm: 97.74,
         
         autopilot: "GFC"
 
@@ -164,7 +180,7 @@ const aircraft = [
 
     },
 
-    {
+    { // Need update
 
         tail: "N78US",
 
@@ -182,7 +198,7 @@ const aircraft = [
 
     },
 
-    {
+    { // Need update
 
         tail: "N79US",
 
@@ -200,23 +216,23 @@ const aircraft = [
 
     },
 
-    {
+    { 
 
         tail: "N831JL",
 
         model: "DA40XLS",
 
-        emptyWeight: 1818.58,
+        emptyWeight: 1819.81,
 
         maxWeight: 2646,
 
-        aircraftArm: 97.91,
+        aircraftArm: 97.98,
         
         autopilot: "GFC"
 
     },
 
-    {
+    { // Need update
 
         tail: "N384CA",
 
@@ -232,7 +248,7 @@ const aircraft = [
 
     },
 	
-	{
+	{ // Need update
 		tail: "N616ML",
 		
 		model: "DA40XLS", 
@@ -246,7 +262,7 @@ const aircraft = [
 		autopilot: "GFC"
 	}, 
 	
-	{
+	{ // Need update
 		tail: "N894SA",
 		
 		model: "DA40XLS", 
@@ -260,7 +276,7 @@ const aircraft = [
 		autopilot: "GFC"
 	},
 	
-	{
+	{ // Need update
 		tail: "N239DC",
 		
 		model: "DA40XLS", 
