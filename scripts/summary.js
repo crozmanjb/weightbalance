@@ -9,9 +9,9 @@ function fillData(){
     var performanceData = JSON.parse(sessionStorage.getItem("performanceData"));
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var colors = JSON.parse(localStorage.getItem("colors"));
-    var tailNumber = userData.tail;
+    var tailNumber = userData.obj.tail;
     var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
-	console.info(aircraftObj);
+	//console.info(aircraftObj);
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
     document.getElementById("title").innerHTML = tailNumber + " Summary";
     fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, false);
@@ -29,7 +29,7 @@ function fillPrintData() {
     var performanceData = JSON.parse(sessionStorage.getItem("performanceData"));
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var colors = JSON.parse(localStorage.getItem("colors"));
-    var tailNumber = userData.tail;
+    var tailNumber = userData.obj.tail;
     var aircraftObj = aircraft.find(x => x.tail === tailNumber);
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
     document.getElementById("title").innerHTML = tailNumber + " Print Summary";
@@ -376,8 +376,9 @@ function emailResults(){
     var computedData = JSON.parse(localStorage.getItem("computedData"));
     var performanceData = JSON.parse(sessionStorage.getItem("performanceData"));
     var resultCG = JSON.parse(localStorage.getItem("CG"));
-    var tailNumber = userData.tail;
-    var aircraftObj = aircraft.find(x => x.tail === tailNumber);
+    var tailNumber = userData.obj.tail;
+	var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
+    //var aircraftObj = aircraft.find(x => x.tail === tailNumber);
 
     var bodyString = "";
     if (!resultCG.validCG){
@@ -422,7 +423,7 @@ function emailResults(){
         }
 
         if (sessionStorage.getItem("performanceData") !== null){
-            if(userData.tail !== performanceData.tail){
+            if(userData.obj.tail !== performanceData.tail){
                 bodyString += "Performance data needs to be recomputed. See Weather & Performance Tab."
             }
             else{
@@ -438,6 +439,6 @@ function emailResults(){
             bodyString += "Performance data not available"
         }
     }
-    window.open('mailto:dispatchusu@gmail.com?subject=' + userData.tail + ' Weight and Balance&body=' +
+    window.open('mailto:dispatchusu@gmail.com?subject=' + tailNumber + ' Weight and Balance&body=' +
         bodyString);
 }
