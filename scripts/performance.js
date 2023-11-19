@@ -125,12 +125,13 @@ function weatherInputClick(){
 
 function setWeather(weatherData) {
     /**Fills the weather table with retrieved weather data**/
+	const zeroPad = (num, places) => String(num).padStart(places, '0')
     document.getElementById("weatherData").style.display = "block";
     document.getElementById("wRaw").innerHTML = weatherData.raw_text;
     var obsTime = new Date(weatherData.observation_time);
 	var now = new Date();
 	var diff = Math.round((now - obsTime) / 60000);
-    document.getElementById("wTime").innerHTML = obsTime.getHours() + ":" + obsTime.getMinutes()
+    document.getElementById("wTime").innerHTML = obsTime.getHours() + ":" + zeroPad(obsTime.getMinutes(), 2)
         + " (UTC " + -(obsTime.getTimezoneOffset()/60) + ") <div id='timeDiff'>(" + diff + " mins ago)</div>";
 	if (diff <= 55) {
 		document.getElementById("timeDiff").style.color = "green";
