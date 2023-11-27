@@ -46,7 +46,10 @@ background-color: #0f2439 !important;
 
 }
 
-
+#alt-wWind > input {
+    width: 100px;
+    display: inline;
+}
 
 root{
 

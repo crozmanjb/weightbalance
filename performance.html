@@ -58,7 +58,50 @@
                 </div>
                 <div id="weatherInput" style="display: none">
                     <p id="weatherAltTitle"></p>
-                    <form id="altWeatherForm">
+					<table class="table table-sm table-striped table-bordered">
+                    	<form id="altWeatherForm">
+							<tbody>
+							<tr>
+								<th scope="col" >Wind Dir and Vel</th>
+								<th id="alt-wWind"><input type="text" class="form-control" id="windHeading" form="altWeatherForm" placeholder="direction" required>&deg; @ <input type="text" class="form-control" id="windSpeed" form="altWeatherForm" placeholder="speed" required>kts</th>
+							</tr>
+							<tr>
+								<th scope="col">Visibility</th>
+								<th id="alt-wVisibility"><input type="text" class="form-control" id="visibility" form="altWeatherForm" placeholder="sm"></th>
+							</tr>
+							<tr>
+								<th scope="col">Temperature</th>
+								<th id="alt-wTemp"><input type="text" class="form-control" id="temperature" form="altWeatherForm" placeholder="&deg C" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Dew Point</th>
+								<th id="alt-wDewpoint"><input type="text" class="form-control" id="dewpoint" form="altWeatherForm" placeholder="&deg C" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Altimeter</th>
+								<th id="alt-wAltimeter"><input type="text" class="form-control" id="altimeter" form="altWeatherForm" placeholder="inHg" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Elevation</th>
+								<th id="alt-wElevation"><input type="text" class="form-control" id="fieldAlt" form="altWeatherForm" placeholder="feet" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Density Alt.</th>
+								<th id="alt-wDensityAlt"></th>
+							</tr>
+							<tr>
+								<th scope="col">Pressure Alt.</th>
+								<th id="alt-wPressureAlt"></th>
+							</tr>
+							</tbody><br>
+						</form>
+                    </table>
+					<div class="form-group row">
+						<button type="button" class="btn btn-secondary" onclick="weatherInputClick()">Submit</button>
+						<small class="col-sm-6 col-form-label text-success" id="weatherInfo">
+						</small>
+					</div>
+<!--
                         <div class="form-group row">
                             <label for="temperature" class="col-sm-4 col-form-label">Temperature:</label>
                             <div class="col-sm-3">
@@ -95,6 +138,7 @@
                             </small>
                         </div>
                     </form>
+-->
                 </div>
                 <div id="weatherData" style="display: none">
                     <p id="wRaw"></p>

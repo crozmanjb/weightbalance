@@ -47,7 +47,6 @@ function getWeather(){
 		if (this.readyState===4 && this.status===200){
 
             if(this.responseText){
-                //console.log(this.responseText);
                 try {
                     var weatherResults = JSON.parse(this.responseText);
                     if (weatherResults["metar"] !== null){
@@ -58,7 +57,7 @@ function getWeather(){
                         for (i = 0; i < requiredFields.length; i++){
                             if (!(requiredFields[i] in weatherData)){
                                 /*We are missed one of the required fields for perf calculations*/
-                                inputWeather();
+                                inputWeather(weatherData);
                                 document.getElementById("weatherAltTitle").innerHTML =
                                     "The requested METAR is missing a required field. Please use manual entry."
                             }
@@ -96,24 +95,54 @@ function getWeather(){
     request.send();
 }
 
-function inputWeather(){
+function inputWeather(weatherData = null){
     /**We call this when fetching weather data fails so user can manually input**/
     document.getElementById("weatherAltTitle").innerHTML = "Weather retrieval failed. " +
         "Check Station ID, if correct, server not working. Try again or manually input required data below.";
     document.getElementById("weatherInput").style.display = "block";
     document.getElementById("weatherData").style.display = "none";
+	if (weatherData.wind_dir_degrees) {
+		document.getElementById("windHeading").value = weatherData.wind_dir_degrees;
+	}
+	if (weatherData.wind_speed_kt) {
+		document.getElementById("windSpeed").value = weatherData.wind_speed_kt;
+	}
+	if (weatherData.visibility) {
+		document.getElementById("visibility").value = weatherData.visibility;
+	}
+	if (weatherData.temp_c) {
+		document.getElementById("temperature").value = weatherData.temp_c;
+	}
+	if (weatherData.dewpoint_c) {
+		document.getElementById("dewpoint").value = weatherData.dewpoint_c;
+	}
+	if (weatherData.altim_in_hg) {
+		document.getElementById("altimeter").value = weatherData.altim_in_hg;
+	}
+	if (weatherData.elevation_m) {
+		document.getElementById("fieldAlt").value = Math.round(parseFloat(weatherData.elevation_m) * 3.28084);
+	}
 }
 
 function weatherInputClick(){
     /**When the manual weather input submit button is clicked
      * We fetch all the user input and put into weatherData**/
     var weatherData = {};
+	weatherData["station_id"] = document.getElementById("weatherID").value;
     weatherData["temp_c"] = parseFloat(document.getElementById("temperature").value);
-    weatherData["elevation_m"] = parseFloat(document.getElementById("fieldAlt").value)/3.2808;
+	weatherData["dewpoint_c"] = parseFloat(document.getElementById("dewpoint").value);
+	weatherData["visibility_statute_mi"] = parseFloat(document.getElementById("visibility").value);
+    weatherData["elevation_m"] = parseFloat(document.getElementById("fieldAlt").value)/3.28084;
     weatherData["altim_in_hg"] = parseFloat(document.getElementById("altimeter").value);
     weatherData["wind_dir_degrees"] = parseFloat(document.getElementById("windHeading").value);
     weatherData["wind_speed_kt"] = parseFloat(document.getElementById("windSpeed").value);
     sessionStorage.setItem("weatherData", JSON.stringify(weatherData));
+	var pressureAlt = weatherData["elevation_m"]*3.28084 + ((29.92 - parseFloat(weatherData.altim_in_hg))*1000);
+	var stationPressure = Math.pow((Math.pow(weatherData["altim_in_hg"],0.1903)-(.00001313*weatherData["elevation_m"]*3.28084)),5.255);
+    var tempRankine = ((9/5)*(weatherData["temp_c"]+273.15));
+    var densityAlt = (145442.16*(1-((17.326*stationPressure)/(tempRankine))**0.235));
+    document.getElementById("alt-wPressureAlt").innerHTML = pressureAlt.toFixed(0) + " ft";
+    document.getElementById("alt-wDensityAlt").innerHTML = densityAlt.toFixed(0) + " ft";
     if (document.getElementById("runwayHdg").value === ""){
         document.getElementById("weatherInfo").innerHTML = "Input runway heading next";
     }
@@ -135,12 +164,13 @@ function setWeather(weatherData) {
         + " (UTC " + -(obsTime.getTimezoneOffset()/60) + ") <div id='timeDiff'>(" + diff + " mins ago)</div>";
 	if (diff <= 55) {
 		document.getElementById("timeDiff").style.color = "green";
-	} else if (55 < diff <= 60) {
+	} else if (55 < diff && diff <= 60) {
 		document.getElementById("timeDiff").style.color = "#ffc107";
-	} else if (60 < diff) {
+	} else {
 		document.getElementById("timeDiff").style.color = "red";
 	}
 	document.getElementById("wCat").innerHTML = weatherData.flight_category;
+	console.info(weatherData);
 	switch(weatherData.flight_category){
 		case "VFR":
 			document.getElementById("wCat").style.color = "white";
@@ -194,7 +224,13 @@ function setWeather(weatherData) {
             document.getElementById("wWind").innerHTML = windDir + " @ " + weatherData.wind_speed_kt + " kts";
         }
     }
-    document.getElementById("wVisibility").innerHTML = parseFloat(weatherData.visibility_statute_mi) + " sm";
+	if (weatherData.visibility_statute_mi) {
+    	document.getElementById("wVisibility").innerHTML = parseFloat(weatherData.visibility_statute_mi) + " sm";
+		document.getElementById("wVisibility").style.backgroundColor = "white";
+	} else {
+		document.getElementById("wVisibility").innerHTML = "MISSING";
+		document.getElementById("wVisibility").style.backgroundColor = "#ffc107";
+	}
     var rawCeilings = weatherData.sky_condition;
     var ceilingString = "";
     if (Array.isArray(rawCeilings)){
@@ -221,13 +257,6 @@ function setWeather(weatherData) {
     document.getElementById("wDewpoint").innerHTML = dewpoint + " &degC (" + Math.round(dewpoint * 9/5 + 32) + " &degF)";
     document.getElementById("wAltimeter").innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
     var fldAlt = parseFloat(weatherData.elevation_m)*3.28084;
-	var fldAlt2 = publicAlt;
-	//console.log(fldAlt, "fldAlt");
-	//console.log(fldAlt2, "fldAlt2");
-	if ((fldAlt - 15) < fldAlt2 && fldAlt2 < (fldAlt + 15) && fldAlt2) {
-		//window.alert(fldAlt + " " + fldAlt2);
-		fldAlt = fldAlt2;
-	}
 	var pressureAlt = fldAlt + ((29.92 - parseFloat(weatherData.altim_in_hg))*1000);
     var altimeterHg = parseFloat(weatherData.altim_in_hg);
     /*variables below used to compute Density altitude without humidity compensation, so slightly off*/

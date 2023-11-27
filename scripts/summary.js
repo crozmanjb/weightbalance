@@ -54,9 +54,12 @@ function fillPrintData() {
 function fillWeather(weatherData, weatherTAF, isPrint){
     /**Fills HTML elements with weather data**/
     if (!("raw_text" in weatherData)){
+		document.getElementById("wIdent").innerHTML = weatherData.station_id;
         var temp = parseFloat(weatherData.temp_c);
         document.getElementById("wWind").innerHTML = weatherData.wind_dir_degrees + " @ " + weatherData.wind_speed_kt + " kts";
         document.getElementById("wTemp").innerHTML = temp + " &degC";
+		document.getElementById("wDewpoint").innerHTML = weatherData.dewpoint_c + " &degC";
+		document.getElementById("wVisibility").innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
         document.getElementById("wAltimeter").innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
         var fldAlt = parseFloat(weatherData.elevation_m)*3.281;
         var pressureAlt = fldAlt + ((29.92 - parseFloat(weatherData.altim_in_hg))*1000);
@@ -76,6 +79,7 @@ function fillWeather(weatherData, weatherTAF, isPrint){
             document.getElementById("wTemp").innerHTML = temp + "/" + dewpoint + " &degC";
         }
         else{
+			document.getElementById("wIdent").innerHTML = weatherData.station_id;
             document.getElementById("wRaw").innerHTML = weatherData.raw_text;
             temp = parseFloat(weatherData.temp_c);
             dewpoint = parseFloat(weatherData.dewpoint_c);
@@ -108,7 +112,7 @@ function fillWeather(weatherData, weatherTAF, isPrint){
                 document.getElementById("wWind").innerHTML = windDir + " @ " + weatherData.wind_speed_kt + " kts";
             }
         }
-        document.getElementById("wVisibility").innerHTML = parseFloat(weatherData.visibility_statute_mi) + " sm";
+        document.getElementById("wVisibility").innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
         var rawCeilings = weatherData.sky_condition;
         var ceilingString = "";
         if (Array.isArray(rawCeilings)) {
