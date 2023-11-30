@@ -101,6 +101,7 @@ function inputWeather(weatherData = null){
         "Check Station ID, if correct, server not working. Try again or manually input required data below.";
     document.getElementById("weatherInput").style.display = "block";
     document.getElementById("weatherData").style.display = "none";
+	if (!weatherData) return;
 	if (weatherData.wind_dir_degrees) {
 		document.getElementById("windHeading").value = weatherData.wind_dir_degrees;
 	}
