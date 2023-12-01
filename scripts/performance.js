@@ -325,6 +325,7 @@ function setTAF(weatherTAF){
 function runwayChange(str){
     /**Called when the runway heading input changes,
      * it then calls the compute functions to recalculate distances**/
+	displayError("");
     if (str === ""){
 		document.getElementById("xWind").innerHTML = "";
         document.getElementById("headWind").innerHTML = "";
@@ -350,6 +351,7 @@ function runwayChange(str){
         document.getElementById("climbFPM").innerHTML = "";
 		document.getElementById("perfTable").style.display = "none";
         heading = "";
+		displayError("Invalid runway heading");
         return;
     }
     if (sessionStorage.getItem("weatherData") !== null){
@@ -525,12 +527,15 @@ function performanceCompute(winds, heading){
     /**Takes wind data, then imports weight data, weather data, aircraft data from local storage
      * Uses stored data to compute takeoff/landing/climb performance values depending on aircraft model**/
     if (localStorage.getItem("userInput") == null){
+		displayError("Weight and Balance incomplete");
         return;
     }
     else if (localStorage.getItem("computedData") == null){
+		displayError("Weight and Balance incomplete");
         return;
     }
     else if (sessionStorage.getItem("weatherData") == null){
+		displayError("Weather error");
         return;
     }
     var userData = JSON.parse(localStorage.getItem("userInput"));
@@ -598,9 +603,11 @@ function performanceCompute(winds, heading){
         "crossWind" : winds.xWind,
         "runwayHdg" : heading
     }
+	displayError("");
     document.getElementById("perfTable").style.display = "flex";
     sessionStorage.setItem("performanceData", JSON.stringify(performanceData));
     document.getElementById("navbarSummary").classList.remove("disabled");
+	document.getElementById("next-button").disabled = false;
 }
 
 function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weight, hWind, maxWeight){
@@ -933,6 +940,23 @@ function windObstacleChart(lines, previous_result, input_x, reverse= false){
     }
 }
 
+function displayError(message) {
+	document.getElementById("errorDiv").innerHTML = message;
+	if (message) {
+		document.getElementById("errorDiv").classList.remove("hidden");
+	} else {
+		document.getElementById("errorDiv").classList.add("hidden");
+	}
+}
+
+document.getElementById("previous-button").addEventListener("click", function(){
+	window.location.href = "weightbalance.html";
+});
+document.getElementById("next-button").addEventListener("click", function(){
+	window.location.href = "risk.html";
+});
+
 if (sessionStorage.getItem("performanceData") !== null){
     document.getElementById("navbarSummary").classList.remove("disabled");
+	document.getElementById("next-button").disabled = false;
 }

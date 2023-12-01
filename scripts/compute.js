@@ -821,6 +821,7 @@ function resultSuccess(){
         document.getElementById("overall_result").classList.add("list-group-item-success");
     }
     document.getElementById("overall_result").innerHTML = "Aircraft within limits.";
+	document.getElementById("next-button").disabled = false;
 }
 
 function userAgreement(){
@@ -849,3 +850,10 @@ else {
         })
     }
 }
+
+document.getElementById("previous-button").addEventListener("click", function(){
+	window.location.href = "index.html";
+});
+document.getElementById("next-button").addEventListener("click", function(){
+	window.location.href = "performance.html";
+});

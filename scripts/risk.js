@@ -59,4 +59,8 @@ function clear() {
 	sessionStorage.removeItem("riskData");
 }
 
+if (sessionStorage.getItem("performanceData") !== null){
+        document.getElementById("navbarSummary").classList.remove("disabled");
+    }
+
 document.getElementById("clearButton").addEventListener("click", clear);

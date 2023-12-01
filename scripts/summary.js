@@ -463,3 +463,9 @@ function emailResults(){
     window.open('mailto:dispatchusu@gmail.com?subject=' + tailNumber + ' Weight and Balance&body=' +
         bodyString);
 }
+
+function reset() {
+	sessionStorage.clear();
+	localStorage.clear();
+	window.location.href="index.html";
+}

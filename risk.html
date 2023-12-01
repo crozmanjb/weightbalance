@@ -84,7 +84,7 @@
 
             <li class="nav-item">
 
-                <a class="nav-link" href="summary.html" id="navbarSummary">Summary <span class="sr-only">(current)</span></a>
+                <a class="nav-link disabled" href="summary.html" id="navbarSummary">Summary <span class="sr-only">(current)</span></a>
 
             </li>
 
@@ -117,8 +117,8 @@
 </nav>
 
 <main role="main" class="container">
-	<button id="clearButton" type="button" class="btn btn-secondary m-2" onclick="clear()">Clear</button>
     <div class="container-md">
+		<h4>Risk Assessment</h4>
 		<table class="table table-bordered">
 			<thead>
 			  <tr>
@@ -237,6 +237,11 @@
 				</tr>
 			</tbody>
   		</table>
+		<div class="nav-button-row row">
+			<button id="previous-button" type="button" class="btn btn-secondary m-1">Previous</button>
+			<button id="clearButton" type="button" class="btn btn-secondary m-2" onclick="clear()">Clear</button>
+			<button id="next-button" class="btn btn-secondary m-1" disabled>Next</button>
+		</div>
 	</div>
 	
 	

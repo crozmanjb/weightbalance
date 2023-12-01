@@ -23,6 +23,16 @@ canvas {
 
 }
 
+.nav-button-row {
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.errorMessage {
+	color: #cc0000;
+	font-size: 1.2em;
+}
+
 #runwaySelect {
 	margin-left: 15px;
     margin-right: 15px;
