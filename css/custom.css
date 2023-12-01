@@ -23,6 +23,18 @@ canvas {
 
 }
 
+.nav-button-row::before{
+	width: 100%;
+	content: "";
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	box-sizing: content-box;
+	height: 0;
+	overflow: visible;
+}
+
 .nav-button-row {
 	justify-content: space-between;
 	margin-bottom: 10px;
