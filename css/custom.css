@@ -30,6 +30,10 @@ canvas {
 	width: auto;
 }
 
+.hidden {
+	display: none;
+}
+
 .bg-dark{
 
 background-color: #0f2439 !important;
