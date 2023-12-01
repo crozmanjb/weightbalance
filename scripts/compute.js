@@ -241,6 +241,7 @@ function reCompute(){
     /*We now validate the results based on CG limits and output the results*/
 
     localStorage.setItem("computedData", JSON.stringify(newData));
+	updateDataTimestamp();
 
     var zeroFwdCG;
     var toFwdCG;
@@ -479,7 +480,7 @@ function reCompute(){
     };
     localStorage.setItem("colors", JSON.stringify(colors));
     localStorage.setItem("CG", JSON.stringify(resultCG));
-
+	updateDataTimestamp();
 
     drawCG(newData, userInput, modelData, colors);
     auditMode(newData, userInput, toFwdCG);
@@ -823,6 +824,7 @@ function resultSuccess(){
 
 function userAgreement(){
     sessionStorage.setItem("userAgree", "true");
+	updateDataTimestamp();
 }
 
 /*call to fill in the dropdown selector with tail numbers*/
@@ -846,6 +848,11 @@ else {
             backdrop: 'static'
         })
     }
+}
+
+function updateDataTimestamp() {
+	sessionStorage.setItem("modified", new Date().getTime());
+	localStorage.setItem("modified", new Date().getTime());
 }
 
 document.getElementById("previous-button").addEventListener("click", function(){

@@ -63,6 +63,7 @@ function getWeather(){
                             }
                         }
                         sessionStorage.setItem("weatherData", JSON.stringify(weatherData));
+						updateDataTimestamp();
                         setWeather(weatherData);
                         runwayChange(document.getElementById("runwayHdg").value);
                     }
@@ -75,6 +76,7 @@ function getWeather(){
                     if (weatherResults["taf"] !== null){
                         var weatherTAF = weatherResults["taf"];
                         sessionStorage.setItem("weatherTAF", JSON.stringify(weatherTAF))
+						updateDataTimestamp();
                         setTAF(weatherTAF);
                     }
                     else{
@@ -138,6 +140,7 @@ function weatherInputClick(){
     weatherData["wind_dir_degrees"] = parseFloat(document.getElementById("windHeading").value);
     weatherData["wind_speed_kt"] = parseFloat(document.getElementById("windSpeed").value);
     sessionStorage.setItem("weatherData", JSON.stringify(weatherData));
+	updateDataTimestamp();
 	var pressureAlt = weatherData["elevation_m"]*3.28084 + ((29.92 - parseFloat(weatherData.altim_in_hg))*1000);
 	var stationPressure = Math.pow((Math.pow(weatherData["altim_in_hg"],0.1903)-(.00001313*weatherData["elevation_m"]*3.28084)),5.255);
     var tempRankine = ((9/5)*(weatherData["temp_c"]+273.15));
@@ -606,6 +609,7 @@ function performanceCompute(winds, heading){
 	displayError("");
     document.getElementById("perfTable").style.display = "flex";
     sessionStorage.setItem("performanceData", JSON.stringify(performanceData));
+	updateDataTimestamp();
     document.getElementById("navbarSummary").classList.remove("disabled");
 	document.getElementById("next-button").disabled = false;
 }
@@ -959,4 +963,9 @@ document.getElementById("next-button").addEventListener("click", function(){
 if (sessionStorage.getItem("performanceData") !== null){
     document.getElementById("navbarSummary").classList.remove("disabled");
 	document.getElementById("next-button").disabled = false;
+}
+
+function updateDataTimestamp() {
+	sessionStorage.setItem("modified", new Date().getTime());
+	localStorage.setItem("modified", new Date().getTime());
 }

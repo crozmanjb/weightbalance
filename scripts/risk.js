@@ -42,6 +42,7 @@ function updateTotal() {
 	
 	let riskData = {"riskScore": total, "riskCat": riskCat};
 	sessionStorage.setItem("riskData", JSON.stringify(riskData));
+	updateDataTimestamp();
 }
 
 function clear() {
@@ -57,6 +58,11 @@ function clear() {
 	document.getElementById("risk2").classList.add("hidden");
 	document.getElementById("totalRisk").innerHTML = "";
 	sessionStorage.removeItem("riskData");
+}
+
+function updateDataTimestamp() {
+	sessionStorage.setItem("modified", new Date().getTime());
+	localStorage.setItem("modified", new Date().getTime());
 }
 
 if (sessionStorage.getItem("performanceData") !== null){
