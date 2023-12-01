@@ -28,7 +28,7 @@ function updateTotal() {
 		document.getElementById("risk0").classList.remove("hidden");
 		document.getElementById("risk1").classList.add("hidden");
 		document.getElementById("risk2").classList.add("hidden");
-	} else if (fiveCount == 2 || fiveCount < 2 && total > 20 && total <= 32){
+	} else if (fiveCount == 2 && total <= 32 || fiveCount < 2 && total > 20 && total <= 32){
 		riskCat = 1;
 		document.getElementById("risk0").classList.add("hidden");
 		document.getElementById("risk1").classList.remove("hidden");
