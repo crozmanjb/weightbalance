@@ -63,4 +63,11 @@ if (sessionStorage.getItem("performanceData") !== null){
         document.getElementById("navbarSummary").classList.remove("disabled");
     }
 
+document.getElementById("previous-button").addEventListener("click", function(){
+	window.location.href = "performance.html";
+});
+document.getElementById("next-button").addEventListener("click", function(){
+	window.location.href = "summary.html";
+});
+
 document.getElementById("clearButton").addEventListener("click", clear);

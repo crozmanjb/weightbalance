@@ -28,6 +28,10 @@ canvas {
 	margin-bottom: 10px;
 }
 
+.next-only {
+	justify-content: flex-end;
+}
+
 .errorMessage {
 	color: #cc0000;
 	font-size: 1.2em;

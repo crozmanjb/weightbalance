@@ -22,9 +22,6 @@ function aircraftSelection(){
      **/
     var tailNumber = document.getElementById('aircraftSelect').value;
     
-    document.getElementById("auditDiv").style.display = "block";
-    document.getElementById("audit_btn").innerHTML = "Hide Details";
-    
     if (tailNumber === "Tail #"){
         document.getElementById("emptyAircraftInfo").innerHTML = "";
         clearResults();
