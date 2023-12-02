@@ -466,8 +466,9 @@ function emailResults(){
         if (sessionStorage.getItem("weather") !== null){
 			for (airport in allWeatherData) {
 				let weatherData = allWeatherData[airport];
+				bodyString += airport + " Weather %0d%0A"
 				if ("raw_text" in weatherData.metar){
-                	bodyString += airport + " Weather %0d%0A" + weatherData.metar.raw_text + "%0d%0A";
+                	bodyString += weatherData.metar.raw_text + "%0d%0A";
             	} else {
                 	bodyString += "METAR not available (user inputted).%0d%0A";
             	}
