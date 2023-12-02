@@ -23,6 +23,7 @@ function fillData(){
 		fillWeather(weatherData[i].metar, weatherData[i].taf, false, i);
 		fillPerformance(performanceData[i], false, tailNumber, i);
 	}
+	fillVSpeeds(computedData, modelData);
 }
 
 function fillPrintData() {
@@ -382,14 +383,14 @@ function fillVSpeeds(computedData, modelData) {
     document.getElementById("Vy").innerHTML = modelData.vSpeeds.vy;
     document.getElementById("Vg").innerHTML = modelData.vSpeeds.vg;
     vaSpeeds = Object.keys(modelData.vSpeeds.va);
-    if (modelData.model === "DA42"){
-        document.getElementById("Vyse").innerHTML = modelData.vSpeeds.vyse;
-        document.getElementById("Vmc").innerHTML = modelData.vSpeeds.vmc;
-    }
-    else{
-        document.getElementById("Vyse").innerHTML = "-";
-        document.getElementById("Vmc").innerHTML = "-";
-    }
+//    if (modelData.model === "DA42"){
+//        document.getElementById("Vyse").innerHTML = modelData.vSpeeds.vyse;
+//        document.getElementById("Vmc").innerHTML = modelData.vSpeeds.vmc;
+//    }
+//    else{
+//        document.getElementById("Vyse").innerHTML = "-";
+//        document.getElementById("Vmc").innerHTML = "-";
+//    }
     for (i=0; i < vaSpeeds.length; i++){
         if (computedData.takeOffWeight <= parseFloat(vaSpeeds[i])){
             document.getElementById("Va").innerHTML = modelData.vSpeeds.va[vaSpeeds[i]];
@@ -409,10 +410,12 @@ function emailResults(){
      * We will open a mailto link with the subject and body filled in with info
      * Still need to come up with body text to send. Can't send the canvas image or tables, only text**/
 
-    var userData = JSON.parse(localStorage.getItem("userInput"));
-    var weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
+    var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
+    var modelData = aircraftModels.find(x => x.model === aircraftObj.model);    
+	var userData = JSON.parse(localStorage.getItem("userInput"));
+    var allWeatherData = JSON.parse(sessionStorage.getItem("weather"));
     var computedData = JSON.parse(localStorage.getItem("computedData"));
-    var performanceData = JSON.parse(sessionStorage.getItem("performanceData"));
+    var allPerformanceData = JSON.parse(sessionStorage.getItem("performance"));
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var tailNumber = userData.obj.tail;
 	var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
@@ -448,30 +451,53 @@ function emailResults(){
         bodyString += "Fuel Burn: " + userData.fuelBurnWeight + " lbs %0d%0A";
         bodyString += "Landing Weight: " + computedData.landingWeight + " lbs | Landing CG: " + computedData.landingCG +  "%0d%0A %0d%0A";
 
-        if (sessionStorage.getItem("weatherData") !== null){
-            if ("raw_text" in weatherData){
-                bodyString += "Weather %0d%0A" + weatherData.raw_text + "%0d%0A %0d%0A";
-            }
-            else{
-                bodyString += "Weather not available (user inputted).%0d%0A %0d%0A";
-            }
+		let Va = 0;
+		let vaSpeeds = Object.keys(modelData.vSpeeds.va);
+
+		for (i=0; i < vaSpeeds.length; i++){
+			if (computedData.takeOffWeight <= parseFloat(vaSpeeds[i])){
+				Va = modelData.vSpeeds.va[vaSpeeds[i]];
+				break;
+			}
+		}
+		bodyString += "V-Speeds: %0d%0A"
+		bodyString += `Vr: ${modelData.vSpeeds.vr} Vx: ${modelData.vSpeeds.vx} Vy: ${modelData.vSpeeds.vy} Vg: ${modelData.vSpeeds.vg} Va: ${Va}%0d%0A %0d%0A`;
+		
+        if (sessionStorage.getItem("weather") !== null){
+			for (airport in allWeatherData) {
+				let weatherData = allWeatherData[airport];
+				if ("raw_text" in weatherData.metar){
+                	bodyString += airport + " Weather %0d%0A" + weatherData.metar.raw_text + "%0d%0A";
+            	} else {
+                	bodyString += "METAR not available (user inputted).%0d%0A";
+            	}
+				if (weatherData.taf){
+                	bodyString += weatherData.taf.raw_text + "%0d%0A %0d%0A";
+            	} else {
+                	bodyString += "TAF not available.%0d%0A %0d%0A";
+            	}
+			}
+            
         }
         else{
             bodyString += "Weather not available%0d%0A %0d%0A";
         }
 
-        if (sessionStorage.getItem("performanceData") !== null){
-            if(userData.obj.tail !== performanceData.tail){
-                bodyString += "Performance data needs to be recomputed. See Weather & Performance Tab."
-            }
-            else{
-                bodyString += "Performance Data%0d%0ARunway Heading: " + performanceData.runwayHdg + "%0d%0A";
-                bodyString += "Head Wind: " + performanceData.headWind.toFixed(0) + "%0d%0A";
-                bodyString += "Cross Wind: " + performanceData.crossWind.toFixed(0) + "%0d%0A";
-                bodyString += "Takeoff: Ground Roll: " + performanceData.takeoffDistance.toFixed(0) + " ft. Over 50': " + performanceData.takeoff50Distance.toFixed(0) + " ft.%0d%0A";
-                bodyString += "Landing: Ground Roll: " + performanceData.landingDistance.toFixed(0) + " ft. Over 50': " + performanceData.landing50Distance.toFixed(0) + " ft.%0d%0A";
-                bodyString += "Rate of Climb: " + performanceData.climbPerf.toFixed(0) + " FPM %0d%0A";
-            }
+        if (sessionStorage.getItem("performance") !== null){
+			for (airport in allPerformanceData) {
+				let performanceData = allPerformanceData[airport];
+				if(userData.obj.tail !== performanceData.tail){
+					bodyString += "Performance data needs to be recomputed. See Weather & Performance Tab."
+				}
+				else{
+					bodyString += `Performance Data (${airport})%0d%0ARunway Heading: ` + performanceData.runwayHdg + "%0d%0A";
+					bodyString += "Head Wind: " + performanceData.headWind.toFixed(0) + "%0d%0A";
+					bodyString += "Cross Wind: " + performanceData.crossWind.toFixed(0) + "%0d%0A";
+					bodyString += "Takeoff: Ground Roll: " + performanceData.takeoffDistance.toFixed(0) + " ft. Over 50': " + performanceData.takeoff50Distance.toFixed(0) + " ft.%0d%0A";
+					bodyString += "Landing: Ground Roll: " + performanceData.landingDistance.toFixed(0) + " ft. Over 50': " + performanceData.landing50Distance.toFixed(0) + " ft.%0d%0A";
+					bodyString += "Rate of Climb: " + performanceData.climbPerf.toFixed(0) + " FPM %0d%0A%0d%0A";
+				}
+			}
         }
         else{
             bodyString += "Performance data not available"
