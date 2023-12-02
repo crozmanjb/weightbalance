@@ -56,7 +56,6 @@ function getWeather(){
                         for (i = 0; i < requiredFields.length; i++){
                             if (!(requiredFields[i] in weatherData[stationID].metar)){
                                 /*We are missed one of the required fields for perf calculations*/
-								console.log("1");
                                 inputWeather(weatherData[stationID].metar);
                                 document.getElementById("weatherAltTitle").innerHTML =
                                     "The requested METAR is missing a required field. Please use manual entry."
@@ -71,7 +70,6 @@ function getWeather(){
 						document.getElementById("runwaySelectDiv").innerHTML = "";
 						document.getElementById("runwayHdg").value = "";
 						runwayChange("", stationID);
-						console.log("2")
                         inputWeather();
                     }
                     if (weatherResults["taf"] !== null){
@@ -90,7 +88,6 @@ function getWeather(){
 					document.getElementById("runwaySelectDiv").innerHTML = "";
 					document.getElementById("runwayHdg").value = "";
 					runwayChange("", stationID);
-					console.log("3");
                     inputWeather();
                 }
             }
@@ -419,10 +416,8 @@ function getRunways(weatherData) {
         if (this.readyState===4 && this.status===200){
 
             if(this.responseText){
-                //console.log(this.responseText);
                 try {
                     var airportResults = JSON.parse(this.responseText);
-					//console.log(airportResults["runways"]);
                     if (airportResults["id"] !== null){
 						var runways = [];
                         var runwayData = airportResults["runways"];
@@ -542,7 +537,7 @@ function performanceCompute(station_id, winds, heading){
     /**Takes wind data, then imports weight data, weather data, aircraft data from local storage
      * Uses stored data to compute takeoff/landing/climb performance values depending on aircraft model**/
 	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
-	console.log("weather data: ", station_id);
+	// console.log("weather data: ", station_id);
     if (localStorage.getItem("userInput") == null){
 		displayError("Weight and Balance incomplete");
         return;

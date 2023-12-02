@@ -19,7 +19,6 @@ function fillData(){
     drawCG(computedData, userData, modelData, colors);
 	
 	for (let i in performanceData) {
-		console.log(weatherData[i].metar);
 		addWeatherTable(i);
 		fillWeather(weatherData[i].metar, weatherData[i].taf, false, i);
 		fillPerformance(performanceData[i], false, tailNumber, i);
@@ -45,7 +44,6 @@ function fillPrintData() {
     drawCG(computedData, userData, modelData, colors);
 	
 	for (let i in performanceData) {
-		console.log(weatherData[i].metar);
 		addWeatherTable(i);
 		fillWeather(weatherData[i].metar, weatherData[i].taf, true, i);
 		fillPerformance(performanceData[i], true, tailNumber, i);
@@ -68,7 +66,7 @@ function fillPrintData() {
 
 function fillWeather(weatherData, weatherTAF, isPrint, suffix){
     /**Fills HTML elements with weather data**/
-	console.log(weatherData);
+	// console.log(weatherData);
     if (!("raw_text" in weatherData)){
 		document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
         var temp = parseFloat(weatherData.temp_c);
