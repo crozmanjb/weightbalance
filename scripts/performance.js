@@ -24,6 +24,7 @@ function getWeather(){
 		document.getElementById("runwaySelect").style.display = "none";
 	document.getElementById("weatherData").style.display = "none";
 	document.getElementById("perfTable").style.display = "none";
+	document.getElementById("weatherInput").style.display = "none";
     var stationID = document.getElementById("weatherID").value.toUpperCase();
 	if (!ALLOWED_AIRPORTS.includes(stationID)) {
 		displayError("Unapproved airport");
