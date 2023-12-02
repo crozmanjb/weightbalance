@@ -59,8 +59,6 @@ function getWeather(){
                     if (weatherResults["metar"] !== null){
 						weatherData[stationID] = {};
                         weatherData[stationID].metar = weatherResults["metar"];
-						getFldAlt(weatherData[stationID].metar);
-						//publicWeatherData = weatherData;
                         var requiredFields = ["temp_c", "altim_in_hg", "wind_dir_degrees", "wind_speed_kt"];
                         for (i = 0; i < requiredFields.length; i++){
                             if (!(requiredFields[i] in weatherData[stationID].metar)){
@@ -498,35 +496,6 @@ function getRunways(weatherData) {
     request.open("GET", "server2.php?q="+weatherData['station_id'],true);
     request.send();
 }
-
-function getFldAlt(weatherData) {
-	var airportResults;
-	if (window.XMLHttpRequest){
-        var request = new XMLHttpRequest();
-    }
-    else{
-        request = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    request.onreadystatechange=function(){
-        if (this.readyState===4 && this.status===200){
-
-            if(this.responseText){
-                try {
-                    airportResults = JSON.parse(this.responseText);
-					//publicAlt = parseFloat(airportResults["elevation_ft"]);
-					setWeather(weatherData);
-                } catch(e){
-                    /*Most likely due to the PHP server not being setup/running*/
-					console.log(e);
-                }
-            }
-		}
-    }
-    request.open("GET", "server2.php?q="+weatherData['station_id'],true);
-    request.send();
-
-}
-
 
 function autoRunwayChange() {
 	var value = document.getElementById("runwaySelect").value;
