@@ -9,6 +9,11 @@ body {
 	color: white;
 }
 
+#weatherWarning {
+	color: #cc0000;
+	font-size: 1.2em;
+}
+
 #NOTAMRemind {
 	background-color: red;
 	color: white;
