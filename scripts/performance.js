@@ -20,7 +20,15 @@ function getWeather(){
      * tries to retieve AWS METAR for the provided Station ID
      * Uses PHP backend to get the XML weather and return it as JSON format**/
 	document.getElementById("runwayHdg").value = "";
+	if (document.getElementById("runwaySelect"))
+		document.getElementById("runwaySelect").style.display = "none";
+	document.getElementById("weatherData").style.display = "none";
+	document.getElementById("perfTable").style.display = "none";
     var stationID = document.getElementById("weatherID").value.toUpperCase();
+	if (!ALLOWED_AIRPORTS.includes(stationID)) {
+		displayError("Unapproved airport");
+		return;
+	}
 	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
 	if (!weatherData) weatherData = {};
     if (stationID===""){
