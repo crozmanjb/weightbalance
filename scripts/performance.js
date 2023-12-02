@@ -139,6 +139,15 @@ function inputWeather(weatherData = null){
 function weatherInputClick(){
     /**When the manual weather input submit button is clicked
      * We fetch all the user input and put into weatherData**/
+	let reqFieldIDs = ["temperature", "fieldAlt", "altimeter", "windHeading", "windSpeed"];
+	for (let ID of reqFieldIDs) {
+		if (!document.getElementById(ID).value) {
+			displayError("Please fill in all weather fields");
+			return;
+		}
+	}
+	displayError("");
+
     var weatherData = JSON.parse(sessionStorage.getItem("weather"));
 	var station_id = document.getElementById("weatherID").value.toUpperCase();
 	weatherData[station_id] = {};
