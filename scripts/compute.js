@@ -833,7 +833,7 @@ fillData()
 if (localStorage.getItem("userInput") !== null){
     loadUserData();
     aircraftSelection();
-    if (sessionStorage.getItem("performanceData") !== null){
+    if (sessionStorage.getItem("performance") !== null){
         document.getElementById("navbarSummary").classList.remove("disabled");
     }
     if (sessionStorage.getItem("userAgree") === null){

@@ -1,12 +1,11 @@
-
 function fillData(){
     /**Main call to fetch all data from local or session storage and call all the fill functions**/
 
     var userData = JSON.parse(localStorage.getItem("userInput"));
-    var weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
-    var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
+	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
+    //var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
     var computedData = JSON.parse(localStorage.getItem("computedData"));
-    var performanceData = JSON.parse(sessionStorage.getItem("performanceData"));
+    var performanceData = JSON.parse(sessionStorage.getItem("performance"));
 	var riskData = sessionStorage.getItem("riskData");
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var colors = JSON.parse(localStorage.getItem("colors"));
@@ -18,17 +17,23 @@ function fillData(){
     fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, false);
 	fillRisk(riskData);
     drawCG(computedData, userData, modelData, colors);
-    fillWeather(weatherData, weatherTAF, false);
-    fillPerformance(performanceData, false, tailNumber);
+	
+	for (let i in performanceData) {
+		console.log(weatherData[i].metar);
+		addWeatherTable(i);
+		fillWeather(weatherData[i].metar, weatherData[i].taf, false, i);
+		fillPerformance(performanceData[i], false, tailNumber, i);
+	}
 }
 
 function fillPrintData() {
     /**Call to fetch all data from local or session storage and call all the print fills**/
     var userData = JSON.parse(localStorage.getItem("userInput"));
-    var weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
-    var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
+    var weatherData = JSON.parse(sessionStorage.getItem("weather"));
+    //var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
     var computedData = JSON.parse(localStorage.getItem("computedData"));
-    var performanceData = JSON.parse(sessionStorage.getItem("performanceData"));
+    var performanceData = JSON.parse(sessionStorage.getItem("performance"));
+	var riskData = sessionStorage.getItem("riskData");
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var colors = JSON.parse(localStorage.getItem("colors"));
     var tailNumber = userData.obj.tail;
@@ -36,9 +41,17 @@ function fillPrintData() {
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
     document.getElementById("title").innerHTML = tailNumber + " Print Summary";
     fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, true);
+	fillRisk(riskData);
     drawCG(computedData, userData, modelData, colors);
-    fillWeather(weatherData, weatherTAF,true);
-    fillPerformance(performanceData, true, tailNumber);
+	
+	for (let i in performanceData) {
+		console.log(weatherData[i].metar);
+		addWeatherTable(i);
+		fillWeather(weatherData[i].metar, weatherData[i].taf, true, i);
+		fillPerformance(performanceData[i], true, tailNumber, i);
+	}
+//    fillWeather(weatherData, weatherTAF,true);
+//    fillPerformance(performanceData, true, tailNumber);
     fillVSpeeds(computedData, modelData);
     document.getElementById("acType").innerHTML += " " + aircraftObj.model;
     document.getElementById("acTail").innerHTML += " " + tailNumber;
@@ -53,16 +66,17 @@ function fillPrintData() {
     }
 }
 
-function fillWeather(weatherData, weatherTAF, isPrint){
+function fillWeather(weatherData, weatherTAF, isPrint, suffix){
     /**Fills HTML elements with weather data**/
+	console.log(weatherData);
     if (!("raw_text" in weatherData)){
-		document.getElementById("wIdent").innerHTML = weatherData.station_id;
+		document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
         var temp = parseFloat(weatherData.temp_c);
-        document.getElementById("wWind").innerHTML = weatherData.wind_dir_degrees + " @ " + weatherData.wind_speed_kt + " kts";
-        document.getElementById("wTemp").innerHTML = temp + " &degC";
-		document.getElementById("wDewpoint").innerHTML = weatherData.dewpoint_c + " &degC";
-		document.getElementById("wVisibility").innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
-        document.getElementById("wAltimeter").innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
+        document.getElementById("wWind-" + suffix).innerHTML = weatherData.wind_dir_degrees + " @ " + weatherData.wind_speed_kt + " kts";
+        document.getElementById("wTemp-" + suffix).innerHTML = temp + " &degC";
+		document.getElementById("wDewpoint-" + suffix).innerHTML = weatherData.dewpoint_c + " &degC";
+		document.getElementById("wVisibility-" + suffix).innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
+        document.getElementById("wAltimeter-" + suffix).innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
         var fldAlt = parseFloat(weatherData.elevation_m)*3.281;
         var pressureAlt = fldAlt + ((29.92 - parseFloat(weatherData.altim_in_hg))*1000);
         var altimeterHg = parseFloat(weatherData.altim_in_hg);
@@ -70,32 +84,33 @@ function fillWeather(weatherData, weatherTAF, isPrint){
         var stationPressure = ((altimeterHg**0.1903)-(.00001313*fldAlt))**5.255;
         var tempRankine = ((9/5)*(temp+273.15));
         var densityAlt = (145442.16*(1-((17.326*stationPressure)/(tempRankine))**0.235));
-        document.getElementById("wPressureAlt").innerHTML = pressureAlt.toFixed(0) + " ft";
-        document.getElementById("wDensityAlt").innerHTML = densityAlt.toFixed(0) + " ft";
+        document.getElementById("wPressureAlt-" + suffix).innerHTML = pressureAlt.toFixed(0) + " ft";
+        document.getElementById("wDensityAlt-" + suffix).innerHTML = densityAlt.toFixed(0) + " ft";
     }
     else {
         if (isPrint){
-            document.getElementById("wLocation").innerHTML = weatherData.station_id + " Weather";
+            document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
             temp = parseFloat(weatherData.temp_c);
             var dewpoint = parseFloat(weatherData.dewpoint_c);
-            document.getElementById("wTemp").innerHTML = temp + "/" + dewpoint + " &degC";
+            document.getElementById("wTemp-" + suffix).innerHTML = temp + " &degC";
+			document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
         }
         else{
-			document.getElementById("wIdent").innerHTML = weatherData.station_id;
-            document.getElementById("wRaw").innerHTML = weatherData.raw_text;
+			document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
+            document.getElementById("wRaw-" + suffix).innerHTML = weatherData.raw_text;
             temp = parseFloat(weatherData.temp_c);
             dewpoint = parseFloat(weatherData.dewpoint_c);
-            document.getElementById("wTemp").innerHTML = temp + " &degC";
-            document.getElementById("wDewpoint").innerHTML = dewpoint + " &degC";
+            document.getElementById("wTemp-" + suffix).innerHTML = temp + " &degC";
+            document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
         }
 
         var obsTime = new Date(weatherData.observation_time);
-        document.getElementById("wTime").innerHTML = obsTime.getHours() + ":" + obsTime.getMinutes()
+        document.getElementById("wTime-" + suffix).innerHTML = obsTime.getHours() + ":" + obsTime.getMinutes()
             + " (UTC " + -(obsTime.getTimezoneOffset() / 60) + ")";
         var windDir = "";
         if ((weatherData.wind_dir_degrees === "0") && (weatherData.wind_speed_kt === "0")) {
             windDir = "Calm";
-            document.getElementById("wWind").innerHTML = windDir;
+            document.getElementById("wWind-" + suffix).innerHTML = windDir;
         } else {
             if (weatherData.wind_dir_degrees === "0") {
                 windDir = "Variable";
@@ -108,13 +123,13 @@ function fillWeather(weatherData, weatherTAF, isPrint){
                 }
             }
             if ("wind_gust_kt" in weatherData) {
-                document.getElementById("wWind").innerHTML = windDir + " @ " + weatherData.wind_speed_kt
+                document.getElementById("wWind-" + suffix).innerHTML = windDir + " @ " + weatherData.wind_speed_kt
                     + " kts G " + weatherData.wind_gust_kt + " kts";
             } else {
-                document.getElementById("wWind").innerHTML = windDir + " @ " + weatherData.wind_speed_kt + " kts";
+                document.getElementById("wWind-" + suffix).innerHTML = windDir + " @ " + weatherData.wind_speed_kt + " kts";
             }
         }
-        document.getElementById("wVisibility").innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
+        document.getElementById("wVisibility-" + suffix).innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
         var rawCeilings = weatherData.sky_condition;
         var ceilingString = "";
         if (Array.isArray(rawCeilings)) {
@@ -132,8 +147,8 @@ function fillWeather(weatherData, weatherTAF, isPrint){
             }
         }
 
-        document.getElementById("wCeilings").innerHTML = ceilingString;
-        document.getElementById("wAltimeter").innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
+        document.getElementById("wCeilings-" + suffix).innerHTML = ceilingString;
+        document.getElementById("wAltimeter-" + suffix).innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
         fldAlt = parseFloat(weatherData.elevation_m) * 3.281;
         pressureAlt = fldAlt + ((29.92 - parseFloat(weatherData.altim_in_hg)) * 1000);
         altimeterHg = parseFloat(weatherData.altim_in_hg);
@@ -141,20 +156,20 @@ function fillWeather(weatherData, weatherTAF, isPrint){
         stationPressure = ((altimeterHg ** 0.1903) - (.00001313 * fldAlt)) ** 5.255;
         tempRankine = ((9 / 5) * (temp + 273.15));
         densityAlt = (145442.16 * (1 - ((17.326 * stationPressure) / (tempRankine)) ** 0.235));
-        document.getElementById("wPressureAlt").innerHTML = pressureAlt.toFixed(0) + " ft";
-        document.getElementById("wDensityAlt").innerHTML = densityAlt.toFixed(0) + " ft";
+        document.getElementById("wPressureAlt-" + suffix).innerHTML = pressureAlt.toFixed(0) + " ft";
+        document.getElementById("wDensityAlt-" + suffix).innerHTML = densityAlt.toFixed(0) + " ft";
 
         /*TAF*/
         if (weatherTAF !== null){
-            setTAF(weatherTAF);
+            setTAF(weatherTAF, suffix);
         }
         else{
-            document.getElementById("TAF").innerHTML = "No TAF Available";
+            document.getElementById("TAF-" + suffix).innerHTML = "No TAF Available";
         }
     }
 }
 
-function setTAF(weatherTAF){
+function setTAF(weatherTAF, suffix){
     /*TAF*/
     var rawTAF = weatherTAF.raw_text;
     var nLines = weatherTAF.forecast.length;
@@ -185,13 +200,13 @@ function setTAF(weatherTAF){
     }
 
     var now = new Date()
-    document.getElementById("TAF").innerHTML = "Current Time: " + now.toUTCString() + "<br>";
+    document.getElementById("TAF-" + suffix).innerHTML = "Current Time: " + now.toUTCString() + "<br>";
     for (i=0; i < newLines.length; i++){
-        document.getElementById("TAF").innerHTML += newLines[i] + "<br>"
+        document.getElementById("TAF-" + suffix).innerHTML += newLines[i] + "<br>"
     }
 }
 
-function fillPerformance(performanceData, isPrint, tailNumber) {
+function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
     /**Fills HTML elements with performance data**/
 //    if (tailNumber !== performanceData.tail){
 //        if (!isPrint){
@@ -207,30 +222,30 @@ function fillPerformance(performanceData, isPrint, tailNumber) {
         runway = 36;
     }
     if (!isPrint){
-        document.getElementById("runwayHdg").innerHTML = "Runway " + runway;
+        document.getElementById("runwayHdg-" + suffix).innerHTML = "Runway " + runway;
     }
 
-    document.getElementById("headWind").innerHTML = performanceData.headWind.toFixed(0);
+    document.getElementById("headWind-" + suffix).innerHTML = performanceData.headWind.toFixed(0);
     if (performanceData.crossWind < 0){
-        document.getElementById("xWind").innerHTML = -performanceData.crossWind.toFixed(0) + " (Right)";
+        document.getElementById("xWind-" + suffix).innerHTML = -performanceData.crossWind.toFixed(0) + " (Right)";
     }
     else if (performanceData.crossWind === 0){
-        document.getElementById("xWind").innerHTML = performanceData.crossWind.toFixed(0);
+        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0);
     }
     else{
-        document.getElementById("xWind").innerHTML = performanceData.crossWind.toFixed(0) + " (Left)";
+        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0) + " (Left)";
     }
 
-    document.getElementById("TODistance").innerHTML = "Ground Roll: "
+    document.getElementById("TODistance-" + suffix).innerHTML = "Ground Roll: "
         + (performanceData.takeoffDistance/10).toFixed(0)*10 + " ft";
-    document.getElementById("TO50Distance").innerHTML = "Over 50': "
+    document.getElementById("TO50Distance-" + suffix).innerHTML = "Over 50': "
         + (performanceData.takeoff50Distance/10).toFixed(0)*10 + " ft";
-    document.getElementById("LDGDistance").innerHTML = "Ground Roll: "
+    document.getElementById("LDGDistance-" + suffix).innerHTML = "Ground Roll: "
         + (performanceData.landingDistance/10).toFixed(0)*10 + " ft";
-    document.getElementById("LDG50Distance").innerHTML = "Over 50': "
+    document.getElementById("LDG50Distance-" + suffix).innerHTML = "Over 50': "
         + (performanceData.landing50Distance/10).toFixed(0)*10 + " ft";
-    document.getElementById("climbFPM").innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
-    document.getElementById("tgDistance").innerHTML = ((performanceData.takeoffDistance + performanceData.landingDistance)/10).toFixed(0)*10 + " ft";
+    document.getElementById("climbFPM-" + suffix).innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
+    document.getElementById("tgDistance-" + suffix).innerHTML = ((performanceData.takeoffDistance + performanceData.landingDistance)/10).toFixed(0)*10 + " ft";
 
 }
 
@@ -462,6 +477,14 @@ function emailResults(){
     }
     window.open('mailto:dispatchusu@gmail.com?subject=' + tailNumber + ' Weight and Balance&body=' +
         bodyString);
+}
+
+function addWeatherTable(i) {
+	var row = document.createElement("div");
+	row.classList.add("row");
+	row.classList.add("weather-row");
+	row.innerHTML = `<div class=col-lg><h4>Weather</h4><div id=weatherData-${i}><p id=wRaw-${i}><table class="table table-bordered table-sm table-striped"><tr><th scope=col>Station Identifier<th id=wIdent-${i}><tr><th scope=col>Time<th id=wTime-${i}><tr><th scope=col>Wind Dir and Vel<th id=wWind-${i}><tr><th scope=col>Visibility<th id=wVisibility-${i}><tr><th scope=col>Clouds<th id=wCeilings-${i}><tr><th scope=col>Temperature<th id=wTemp-${i}><tr><th scope=col>Dew Point<th id=wDewpoint-${i}><tr><th scope=col>Altimeter<th id=wAltimeter-${i}><tr><th scope=col>Density Alt.<th id=wDensityAlt-${i}><tr><th scope=col>Pressure Alt.<th id=wPressureAlt-${i}></table><div id=weatherTAF-${i}><h5>TAF</h5><p id=TAF-${i}></div></div></div><div class=col-lg><h4>Takeoff and Landing Performance</h4><p>Performance data is an estimate only and does not take into consideration runway condition, aircraft condition, or pilot technique.<h5 id=runwayHdg-${i}>Runway</h5><table class="table table-bordered table-sm"><tr><th scope=row>Head Wind<td id=headWind-${i}><tr><th scope=row>Cross Wind<td id=xWind-${i}><tr><th scope=row>Takeoff<td id=TODistance-${i}>Ground Roll:<td id=TO50Distance-${i}>Over 50':<tr><th scope=row>Landing<td id=LDGDistance-${i}>Ground Roll:<td id=LDG50Distance-${i}>Over 50':<tr><th scope=row colspan=2>Touch and Go Distance<td id=tgDistance-${i}><tr><th scope=row>Rate of Climb<td id=climbFPM-${i}><td id=climbNM-${i}></table></div></div>`;
+	document.getElementById("main").appendChild(row);
 }
 
 function reset() {

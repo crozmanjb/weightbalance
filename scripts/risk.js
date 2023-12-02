@@ -65,7 +65,7 @@ function updateDataTimestamp() {
 	localStorage.setItem("modified", new Date().getTime());
 }
 
-if (sessionStorage.getItem("performanceData") !== null){
+if (sessionStorage.getItem("performance") !== null){
         document.getElementById("navbarSummary").classList.remove("disabled");
     }
 

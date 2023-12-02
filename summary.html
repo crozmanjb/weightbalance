@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="css/bootstrap.css">
 
     <link rel="stylesheet" href="css/custom.css">
+	
+	<link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
     <title id="title">Summary</title>
 
@@ -48,13 +50,13 @@
 
             <li class="nav-item ">
 
-                <a class="nav-link" href="weightbalance.html">Weight & Balance <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="weightbalance.html">Weight &amp; Balance <span class="sr-only">(current)</span></a>
 
             </li>
 
             <li class="nav-item ">
 
-                <a class="nav-link" href="performance.html">Weather & Performance <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="performance.html">Weather &amp; Performance <span class="sr-only">(current)</span></a>
 
             </li>
 			
@@ -102,7 +104,7 @@
 
 <main role="main" class="container">
 
-    <div class="container">
+    <div id="main" class="container">
 
         <div class="row" id="buttonRow">
 
@@ -184,7 +186,7 @@
 
                         <tr>
 
-                            <th scope="row">Pilot & Front PAX</th>
+                            <th scope="row">Pilot &amp; Front PAX</th>
 
                             <td id="front_wt_td"></td>
 
@@ -364,211 +366,6 @@
 
             </div>
 			
-
-        </div>
-
-
-
-        <div class="row" id="row2">
-
-            <div class="col-lg">
-
-                <h4>Weather</h4>
-
-                <div id="weatherData">
-
-                    <p id="wRaw"></p>
-
-                    <table class="table table-sm table-striped table-bordered">
-
-                        <tbody>
-
-                        <tr>
-
-                            <th scope="col">Station Identifier</th>
-
-                            <th id="wIdent"></th>
-
-                        </tr>
-							
-						<tr>
-
-                            <th scope="col">Time</th>
-
-                            <th id="wTime"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col" >Wind Dir and Vel</th>
-
-                            <th id="wWind"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Visibility</th>
-
-                            <th id="wVisibility"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Clouds</th>
-
-                            <th id="wCeilings"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Temperature</th>
-
-                            <th id="wTemp"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Dew Point</th>
-
-                            <th id="wDewpoint"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Altimeter</th>
-
-                            <th id="wAltimeter"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Density Alt.</th>
-
-                            <th id="wDensityAlt"></th>
-
-                        </tr>
-
-                        <tr>
-
-                            <th scope="col">Pressure Alt.</th>
-
-                            <th id="wPressureAlt"></th>
-
-                        </tr>
-
-
-
-                        </tbody>
-
-                    </table>
-
-                    <div id="weatherTAF">
-
-                        <h5>TAF</h5>
-
-                        <p id="TAF"></p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg">
-
-                <h4>Takeoff and Landing Performance</h4>
-
-                <p>Performance data is an estimate only and does not take into
-
-                    consideration runway condition, aircraft condition, or pilot technique.</p>
-
-                <h5 id="runwayHdg">Runway </h5>
-
-                <table class="table table-sm table-bordered">
-
-                    <tbody>
-
-                    <tr>
-
-                        <th scope="row">Head Wind</th>
-
-                        <td id="headWind"></td>
-
-
-
-                    </tr>
-
-                    <tr>
-
-                        <th scope="row">Cross Wind</th>
-
-                        <td id="xWind"></td>
-
-
-
-                    </tr>
-
-                    <tr>
-
-                        <th scope="row">Takeoff</th>
-
-                        <td id ="TODistance">Ground Roll:</td>
-
-                        <td id ="TO50Distance">Over 50':</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th scope="row">Landing</th>
-
-                        <td id="LDGDistance">Ground Roll:</td>
-
-                        <td id="LDG50Distance">Over 50':</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th scope="row" colspan="2">Touch and Go Distance</th>
-
-                        <td id="tgDistance"></td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th scope="row">Rate of Climb</th>
-
-                        <td id="climbFPM"></td>
-
-                        <td id="climbNM"></td>
-
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-        <div class="row" id="row3" style="display: none">
-
-            <div class="col-lg">
-
-
-
-            </div>
-
         </div>
 
     </div>
