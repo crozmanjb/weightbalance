@@ -438,11 +438,13 @@ function getRunways(weatherData) {
                     var airportResults = JSON.parse(this.responseText);
                     if (airportResults["id"] !== null){
 						var runways = [];
-                        var runwayData = airportResults["runways"];
+                        var runwayData = airportResults[0]["runways"];
+						console.log(runwayData);
                         for (var key in runwayData){
-							if (runwayData[key]['closed'] == '0' && (runwayData[key]['surface'] == "ASP" || runwayData[key]['surface'] == "CON")) {
-								runways[runwayData[key]['le_ident']] = runwayData[key]['length_ft'];
-								runways[runwayData[key]['he_ident']] = runwayData[key]['length_ft'];
+							if ((runwayData[key]['surface'] == "A" || runwayData[key]['surface'] == "C")) {
+								console.log(parseInt(runwayData[key]["dimension"].split("x")[0]));
+								runways[runwayData[key]["id"].split("/")[0]] = runwayData[key]["dimension"].split("x")[0];
+								runways[runwayData[key]["id"].split("/")[1]] = runwayData[key]["dimension"].split("x")[0];
 							}
 						}
 						
