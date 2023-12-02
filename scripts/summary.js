@@ -171,6 +171,10 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
 
 function setTAF(weatherTAF, suffix){
     /*TAF*/
+	if (!weatherTAF) {
+		document.getElementById("TAF-" + suffix).innerHTML = "No TAF available";
+		return;
+	}
     var rawTAF = weatherTAF.raw_text;
     var nLines = weatherTAF.forecast.length;
     var index = 0;
