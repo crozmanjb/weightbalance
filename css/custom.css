@@ -49,9 +49,42 @@ canvas {
 	overflow: visible;
 }
 
+@media (min-width: 576px) {
+	
+	.airport-select {
+		width: auto;
+	}
+	
+	.airport-container {
+		flex-direction: row;
+	}
+	
+	.airport-col {
+		flex: auto;
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
+
+}
+
+@media (min-width: 992px) {
+	
+	.airport-select {
+		width: 100%;
+	}
+	
+	.airport-container {
+		flex-direction: column;
+	}
+	
+	.airport-col {
+		flex: 0 0 8.333333%;
+	}
+
+}
+
 .airport-container {
 	display: flex;
-	flex-direction: column;
 	align-content: center;
 	justify-content: flex-start;
 	gap: 10px;
@@ -68,7 +101,6 @@ canvas {
 	justify-content: center;
 	align-items: center;
 	box-sizing: border-box;
-	width: 100%;
 	min-width: 60px;
 	min-height: 50px;
 	height: auto;
