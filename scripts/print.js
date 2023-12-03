@@ -4,7 +4,6 @@ function fillData(){
 
     var userData = JSON.parse(localStorage.getItem("userInput"));
 	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
-    //var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
     var computedData = JSON.parse(localStorage.getItem("computedData"));
     var performanceData = JSON.parse(sessionStorage.getItem("performance"));
 	var riskData = sessionStorage.getItem("riskData");
@@ -12,7 +11,6 @@ function fillData(){
     var colors = JSON.parse(localStorage.getItem("colors"));
     var tailNumber = userData.obj.tail;
     var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
-	//console.info(aircraftObj);
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
     document.getElementById("title").innerHTML = tailNumber + " Summary";
     fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, false);
@@ -31,33 +29,6 @@ function fillData(){
 	fillVSpeeds(computedData, modelData);
 	document.getElementById("header").innerHTML = tailNumber + " Weight and Balance " + ` (${new Date().toDateString()})`;
 }
-
-//function fillPrintData() {
-//    /**Call to fetch all data from local or session storage and call all the print fills**/
-//    var userData = JSON.parse(localStorage.getItem("userInput"));
-//    var weatherData = JSON.parse(sessionStorage.getItem("weather"));
-//    //var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
-//    var computedData = JSON.parse(localStorage.getItem("computedData"));
-//    var performanceData = JSON.parse(sessionStorage.getItem("performance"));
-//	var riskData = sessionStorage.getItem("riskData");
-//    var resultCG = JSON.parse(localStorage.getItem("CG"));
-//    var colors = JSON.parse(localStorage.getItem("colors"));
-//    var tailNumber = userData.obj.tail;
-//    var aircraftObj = aircraft.find(x => x.tail === tailNumber);
-//    var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
-//    document.getElementById("title").innerHTML = tailNumber + " Print Summary";
-//    fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, true);
-//	fillRisk(riskData);
-//    drawCG(computedData, userData, modelData, colors);
-//	
-//	for (let i in performanceData) {
-//		addWeatherTable(i);
-//		fillWeather(weatherData[i].metar, weatherData[i].taf, true, i);
-//		fillPerformance(performanceData[i], true, tailNumber, i);
-//	}
-//    fillVSpeeds(computedData, modelData);
-//    document.getElementById("header").innerHTML = tailNumber + " " + document.getElementById("acTail").innerHTML + ` (${new Date().toDateString()})`;
-//}
 
 function fillWeather(weatherData, weatherTAF, isPrint, suffix){
     /**Fills HTML elements with weather data**/
@@ -92,7 +63,6 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
             temp = parseFloat(weatherData.temp_c);
             dewpoint = parseFloat(weatherData.dewpoint_c);
             document.getElementById("wTempDew-" + suffix).innerHTML = temp + " &degC/" + dewpoint + " &degC";
-            //document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
         }
 		
         var obsTime = new Date(weatherData.observation_time);
@@ -202,15 +172,6 @@ function setTAF(weatherTAF, suffix){
 
 function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
     /**Fills HTML elements with performance data**/
-//    if (tailNumber !== performanceData.tail){
-//        if (!isPrint){
-//            document.getElementById("runwayHdg").innerHTML = "Please recompute performance data using new Tail #";
-//        }
-//        else{
-//            document.getElementById("perfInfo").innerHTML = "Performance Data not valid. Recompute using new Tail #";
-//        }
-//        return;
-//    }
     runway = (performanceData.runwayHdg/10).toFixed(0);
     if (runway == 0){
         runway = 36;
@@ -365,14 +326,7 @@ function fillVSpeeds(computedData, modelData) {
     document.getElementById("Vy").innerHTML = modelData.vSpeeds.vy;
     document.getElementById("Vg").innerHTML = modelData.vSpeeds.vg;
     vaSpeeds = Object.keys(modelData.vSpeeds.va);
-//    if (modelData.model === "DA42"){
-//        document.getElementById("Vyse").innerHTML = modelData.vSpeeds.vyse;
-//        document.getElementById("Vmc").innerHTML = modelData.vSpeeds.vmc;
-//    }
-//    else{
-//        document.getElementById("Vyse").innerHTML = "-";
-//        document.getElementById("Vmc").innerHTML = "-";
-//    }
+	
     for (i=0; i < vaSpeeds.length; i++){
         if (computedData.takeOffWeight <= parseFloat(vaSpeeds[i])){
             document.getElementById("Va").innerHTML = modelData.vSpeeds.va[vaSpeeds[i]];
@@ -401,7 +355,6 @@ function emailResults(){
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var tailNumber = userData.obj.tail;
 	var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
-    //var aircraftObj = aircraft.find(x => x.tail === tailNumber);
 
     var bodyString = "";
     if (!resultCG.validCG){

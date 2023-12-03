@@ -4,7 +4,7 @@
 
 const aircraft = [
 	
-	{ // meed update
+	{
 
         tail: "N118GM",
 
@@ -274,7 +274,7 @@ const aircraft = [
 
     },
 
-    { // Need update
+    {
 
         tail: "N79US",
 

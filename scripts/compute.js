@@ -118,7 +118,6 @@ function reCompute(){
     var tailNumber = document.getElementById('aircraftSelect').value;
 	var aircraftObj = aircraft.find(x => x.tail === tailNumber)
     var userInput = {obj : aircraftObj}
-	console.info(aircraftObj);
 
     /*Collect all user input and put into dict/object */
     userInput["frontStationWeight"] = parseFloat(document.getElementById("frontStation").value);
@@ -170,13 +169,10 @@ function reCompute(){
 
     /*Store user input data */
     localStorage.setItem("userInput", JSON.stringify(userInput));
-	console.info("userInput", userInput);
 
     /*computes all weights/CGs/Moments and returns dict with values*/
     var newData = computeWB(aircraftObj, userInput);
     var colors = {takeoff : "green", landing : "green", zero : "grey"};
-
-	console.info("newData", newData);
 	
     /*We now validate the results based on CG limits and output the results*/
 

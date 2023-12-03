@@ -1,20 +1,3 @@
-//var publicWeatherData;
-//var publicAlt;
-
-function iOS() {
-	console.info("Device type: ", navigator.platform);
-	  return [
-		'iPad Simulator',
-		'iPhone Simulator',
-		'iPod Simulator',
-		'iPad',
-		'iPhone',
-		'iPod'
-	  ].includes(navigator.platform)
-	  // iPad on iOS 13 detection
-	  || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-}
-
 function getWeather(){
     /**Called when submit button is clicked
      * tries to retieve AWS METAR for the provided Station ID
@@ -35,12 +18,6 @@ function getWeather(){
     if (stationID===""){
         return;
     }
-	
-	if (iOS()) {
-//		document.getElementById("foreflightRedirect").innerHTML = "<a href='foreflightmobile://maps/search?q=" + stationID.toUpperCase() + "'>Open in Foreflight</a>";
-	} else {
-//		document.getElementById("foreflightRedirect").innerHTML = "";
-	}
     document.getElementById("weatherInput").style.display = "none";
     /*Section retrieves weather from aviationweather.gov using simple PHP backend.
     * Won't work if no PHP server setup*/
@@ -91,7 +68,7 @@ function getWeather(){
                     }
                 } catch(e){
                     /*Most likely due to the PHP server not being setup/running*/
-					console.log(e);
+					console.error(e);
 					document.getElementById("runwaySelectDiv").innerHTML = "";
 					document.getElementById("runwayHdg").value = "";
 					runwayChange("", stationID);
@@ -193,7 +170,6 @@ function setWeather(weatherData) {
 		document.getElementById("timeDiff").style.color = "red";
 	}
 	document.getElementById("wCat").innerHTML = weatherData.flight_category;
-	console.info(weatherData);
 	switch(weatherData.flight_category){
 		case "VFR":
 			document.getElementById("wCat").style.color = "white";
@@ -380,7 +356,6 @@ function runwayChange(str, station_id = null){
 		station_id = document.getElementById("weatherID").value.toUpperCase();
 	}
 	var allWeatherData = JSON.parse(sessionStorage.getItem("weather"));
-	console.log(station_id, allWeatherData);
 	if (allWeatherData && allWeatherData[station_id] && allWeatherData[station_id]["metar"]){
         var weatherData = allWeatherData[station_id]["metar"];
         var weatherTAF = allWeatherData[station_id]["taf"];
@@ -420,8 +395,6 @@ function runwayChange(str, station_id = null){
 }
 
 function getRunways(weatherData) {
-	//var weatherData;
-	//if (weatherDataI == null) {weatherData = publicWeatherData;} else {weatherData = weatherDataI;}
 	if (window.XMLHttpRequest){
         var request = new XMLHttpRequest();
     }
@@ -437,10 +410,8 @@ function getRunways(weatherData) {
                     if (airportResults["id"] !== null){
 						var runways = [];
                         var runwayData = airportResults[0]["runways"];
-						console.log(runwayData);
                         for (var key in runwayData){
 							if ((runwayData[key]['surface'] == "A" || runwayData[key]['surface'] == "C")) {
-								console.log(parseInt(runwayData[key]["dimension"].split("x")[0]));
 								runways[runwayData[key]["id"].split("/")[0]] = runwayData[key]["dimension"].split("x")[0];
 								runways[runwayData[key]["id"].split("/")[1]] = runwayData[key]["dimension"].split("x")[0];
 							}
@@ -485,7 +456,7 @@ function getRunways(weatherData) {
                     }
                 } catch(e){
                     /*Most likely due to the PHP server not being setup/running*/
-					console.log(e);
+					console.error(e);
 					document.getElementById("runwaySelectDiv").innerHTML = "";
 					document.getElementById("runwayHdg").value = "";
 					runwayChange("", weatherData['station_id']);
@@ -526,7 +497,6 @@ function performanceCompute(station_id, winds, heading){
     /**Takes wind data, then imports weight data, weather data, aircraft data from local storage
      * Uses stored data to compute takeoff/landing/climb performance values depending on aircraft model**/
 	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
-	// console.log("weather data: ", station_id);
     if (localStorage.getItem("userInput") == null){
 		displayError("Weight and Balance incomplete");
         return;
@@ -543,9 +513,7 @@ function performanceCompute(station_id, winds, heading){
     var computedData = JSON.parse(localStorage.getItem("computedData"));
     weatherData = weatherData[station_id]["metar"];
 
-	var aircraftObj = userData.obj;
-	console.info("aircraftObj perf.js", aircraftObj);
-   
+	var aircraftObj = userData.obj;   
     var takeoffWeight = computedData.takeOffWeight;
     var landingWeight = computedData.landingWeight;
     var temp = parseFloat(weatherData.temp_c);
@@ -1014,8 +982,6 @@ if (sessionStorage.getItem("performance") !== null){
 	document.getElementById("next-button").disabled = false;
 	updateAirports();
 }
-
-
 
 function updateDataTimestamp() {
 	sessionStorage.setItem("modified", new Date().getTime());
