@@ -32,6 +32,11 @@ canvas {
 
 }
 
+#picture-iframe {
+	position: absolute;
+	left: -1500px;
+}
+
 .weather-row::before {
 	width: 100%;
 	content: "";
@@ -70,18 +75,12 @@ canvas {
 	text-align: center;
 	vertical-align: middle;
 	line-height: 100%;
-/*	padding: 1em 0;*/
 	background-color: #009FFF;
 	border-radius: 10%;
 	cursor: pointer;
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
 
-/*
-.airport-select:hover {
-	background-color: #9DADBD;
-}
-*/
 
 .nav-button-row::before{
 	width: 100%;

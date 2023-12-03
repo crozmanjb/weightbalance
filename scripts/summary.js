@@ -506,21 +506,62 @@ function emailResults(){
         bodyString);
 }
 
+function waitForButtonRow() {
+    return new Promise(resolve => {
+        if (document.getElementById("picture-iframe").contentWindow.document.getElementById("buttonRow")) {
+            return resolve(document.getElementById("picture-iframe").contentWindow.document.getElementById("buttonRow"));
+        }
+
+        const observer = new MutationObserver(mutations => {
+            if (document.getElementById("picture-iframe").contentWindow.document.getElementById("buttonRow")) {
+                observer.disconnect();
+                resolve(document.getElementById("picture-iframe").contentWindow.document.getElementById("buttonRow"));
+            }
+        });
+        observer.observe(document.getElementById("picture-iframe").contentWindow.document.documentElement, {
+            childList: true,
+            subtree: true,
+			attributes: true
+        });
+    });
+}
+
 function savePicture() {
+	let html = document.documentElement.outerHTML;
+	html = html.split(`<div id="previewImg" style="display: none;"></div>`)[0];
+	let iframe = document.createElement("iframe");
+	iframe.id = "picture-iframe";
+	iframe.style.width = "1024px";
+	iframe.style.height = "100%";
+	document.body.appendChild(iframe);
+	iframe.contentDocument.open();
+    iframe.contentDocument.write(html);
+    iframe.contentDocument.close();
+	
+	
 	let tailNum = JSON.parse(localStorage.getItem("userInput")).obj.tail;
 	let date = new Date();
-	let formatedDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`;
-	document.getElementById("buttonRow").style.display = "none";
-	html2canvas(document.getElementById("main")).then(function (canvas) {
-		var anchorTag = document.createElement("a");
-		document.body.appendChild(anchorTag);
-		document.getElementById("previewImg").appendChild(canvas);
-		anchorTag.download = `${tailNum} ${formatedDate}.png`;
-		anchorTag.href = canvas.toDataURL();
-		anchorTag.target = '_blank';
-		anchorTag.click();
+	let formatedDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${zeroPad(date.getHours(), 2)}${zeroPad(date.getMinutes(), 2)}`;
+	let buttonPromise = waitForButtonRow();
+	buttonPromise.catch(error => {
+		console.error("Error in promise:", error);
 	});
-	document.getElementById("buttonRow").style.display = "flex";
+	buttonPromise.then((buttonRow) => {
+		var destCtx = document.getElementById("picture-iframe").contentWindow.document.getElementById("cgCanvas").getContext('2d');
+		destCtx.drawImage(document.getElementById("cgCanvas"), 0, 0);
+		buttonRow.style.display = "none";
+		html2canvas(document.getElementById("picture-iframe").contentWindow.document.getElementById("main"), { logging: false }).then(function (canvas) {
+			var anchorTag = document.createElement("a");
+			document.body.appendChild(anchorTag);
+			document.getElementById("previewImg").appendChild(canvas);
+			anchorTag.download = `${tailNum} ${formatedDate}.png`;
+			anchorTag.href = canvas.toDataURL();
+			anchorTag.target = '_blank';
+			anchorTag.click();
+			buttonRow.style.display = "flex";
+			document.body.removeChild(iframe);
+		});
+	});
 }
 
 function addWeatherTable(i) {
