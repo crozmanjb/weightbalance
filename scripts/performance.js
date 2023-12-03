@@ -177,7 +177,7 @@ function weatherInputClick(){
 
 function setWeather(weatherData) {
     /**Fills the weather table with retrieved weather data**/
-	const zeroPad = (num, places) => String(num).padStart(places, '0')
+	const zeroPad = (num, places) => String(num).padStart(places, '0');
     document.getElementById("weatherData").style.display = "block";
     document.getElementById("wRaw").innerHTML = weatherData.raw_text;
     var obsTime = new Date(weatherData.observation_time);

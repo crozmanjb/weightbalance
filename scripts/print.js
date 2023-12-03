@@ -18,56 +18,48 @@ function fillData(){
 	fillRisk(riskData);
     drawCG(computedData, userData, modelData, colors);
 	
+	let airports = [];
 	for (let i in performanceData) {
-		addWeatherTable(i);
-		fillWeather(weatherData[i].metar, weatherData[i].taf, false, i);
-		fillPerformance(performanceData[i], false, tailNumber, i);
+		airports.push(i);
+	}
+	for (let i in airports) {
+		if (i > 0) addWeatherTable(i);
+		fillWeather(weatherData[airports[i]].metar, weatherData[airports[i]].taf, false, i);
+		fillPerformance(performanceData[airports[i]], false, tailNumber, i);
 	}
 	fillVSpeeds(computedData, modelData);
+	document.getElementById("header").innerHTML = tailNumber + " Weight and Balance " + ` (${new Date().toDateString()})`;
 }
 
-function fillPrintData() {
-    /**Call to fetch all data from local or session storage and call all the print fills**/
-    var userData = JSON.parse(localStorage.getItem("userInput"));
-    var weatherData = JSON.parse(sessionStorage.getItem("weather"));
-    //var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
-    var computedData = JSON.parse(localStorage.getItem("computedData"));
-    var performanceData = JSON.parse(sessionStorage.getItem("performance"));
-	var riskData = sessionStorage.getItem("riskData");
-    var resultCG = JSON.parse(localStorage.getItem("CG"));
-    var colors = JSON.parse(localStorage.getItem("colors"));
-    var tailNumber = userData.obj.tail;
-    var aircraftObj = aircraft.find(x => x.tail === tailNumber);
-    var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
-    document.getElementById("title").innerHTML = tailNumber + " Print Summary";
-    fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, true);
-	fillRisk(riskData);
-    drawCG(computedData, userData, modelData, colors);
-	
-	for (let i in performanceData) {
-		addWeatherTable(i);
-		fillWeather(weatherData[i].metar, weatherData[i].taf, true, i);
-		fillPerformance(performanceData[i], true, tailNumber, i);
-	}
-//    fillWeather(weatherData, weatherTAF,true);
-//    fillPerformance(performanceData, true, tailNumber);
-    fillVSpeeds(computedData, modelData);
-    document.getElementById("acType").innerHTML += " " + aircraftObj.model;
-    document.getElementById("acTail").innerHTML += " " + tailNumber;
-    var obsTime = new Date();
-    document.getElementById("date").innerHTML += obsTime.toDateString();
-    if (aircraftObj.model !== "DA42"){
-        document.getElementById("fuelOnboard").innerHTML += " " + userData.fuelWeight/6.0 + " gal";
-    }
-    else
-    {
-        document.getElementById("fuelOnboard").innerHTML += " " + userData.fuelWeight/6.75;
-    }
-}
+//function fillPrintData() {
+//    /**Call to fetch all data from local or session storage and call all the print fills**/
+//    var userData = JSON.parse(localStorage.getItem("userInput"));
+//    var weatherData = JSON.parse(sessionStorage.getItem("weather"));
+//    //var weatherTAF = JSON.parse(sessionStorage.getItem("weatherTAF"));
+//    var computedData = JSON.parse(localStorage.getItem("computedData"));
+//    var performanceData = JSON.parse(sessionStorage.getItem("performance"));
+//	var riskData = sessionStorage.getItem("riskData");
+//    var resultCG = JSON.parse(localStorage.getItem("CG"));
+//    var colors = JSON.parse(localStorage.getItem("colors"));
+//    var tailNumber = userData.obj.tail;
+//    var aircraftObj = aircraft.find(x => x.tail === tailNumber);
+//    var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
+//    document.getElementById("title").innerHTML = tailNumber + " Print Summary";
+//    fillWB(computedData, userData, resultCG.fwdCG, resultCG.validCG, true);
+//	fillRisk(riskData);
+//    drawCG(computedData, userData, modelData, colors);
+//	
+//	for (let i in performanceData) {
+//		addWeatherTable(i);
+//		fillWeather(weatherData[i].metar, weatherData[i].taf, true, i);
+//		fillPerformance(performanceData[i], true, tailNumber, i);
+//	}
+//    fillVSpeeds(computedData, modelData);
+//    document.getElementById("header").innerHTML = tailNumber + " " + document.getElementById("acTail").innerHTML + ` (${new Date().toDateString()})`;
+//}
 
 function fillWeather(weatherData, weatherTAF, isPrint, suffix){
     /**Fills HTML elements with weather data**/
-	// console.log(weatherData);
     if (!("raw_text" in weatherData)){
 		document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
         var temp = parseFloat(weatherData.temp_c);
@@ -96,12 +88,12 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
         }
         else{
 			document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
-            document.getElementById("wRaw-" + suffix).innerHTML = weatherData.raw_text;
             temp = parseFloat(weatherData.temp_c);
             dewpoint = parseFloat(weatherData.dewpoint_c);
-            document.getElementById("wTemp-" + suffix).innerHTML = temp + " &degC";
-            document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
+            document.getElementById("wTempDew-" + suffix).innerHTML = temp + " &degC/" + dewpoint + " &degC";
+            //document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
         }
+		
 		const zeroPad = (num, places) => String(num).padStart(places, '0');
         var obsTime = new Date(weatherData.observation_time);
         document.getElementById("wTime-" + suffix).innerHTML = obsTime.getHours() + ":" + zeroPad(obsTime.getMinutes(), 2)
@@ -203,7 +195,6 @@ function setTAF(weatherTAF, suffix){
     }
 
     var now = new Date()
-    document.getElementById("TAF-" + suffix).innerHTML = "Current Time: " + now.toUTCString() + "<br>";
     for (i=0; i < newLines.length; i++){
         document.getElementById("TAF-" + suffix).innerHTML += newLines[i] + "<br>"
     }
@@ -230,13 +221,13 @@ function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
 
     document.getElementById("headWind-" + suffix).innerHTML = performanceData.headWind.toFixed(0);
     if (performanceData.crossWind < 0){
-        document.getElementById("xWind-" + suffix).innerHTML = -performanceData.crossWind.toFixed(0) + " (Right)";
+        document.getElementById("crossWind-" + suffix).innerHTML = -performanceData.crossWind.toFixed(0) + " (Right)";
     }
     else if (performanceData.crossWind === 0){
-        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0);
+        document.getElementById("crossWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0);
     }
     else{
-        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0) + " (Left)";
+        document.getElementById("crossWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0) + " (Left)";
     }
 
     document.getElementById("TODistance-" + suffix).innerHTML = "Ground Roll: "
@@ -247,7 +238,7 @@ function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
         + (performanceData.landingDistance/10).toFixed(0)*10 + " ft";
     document.getElementById("LDG50Distance-" + suffix).innerHTML = "Over 50': "
         + (performanceData.landing50Distance/10).toFixed(0)*10 + " ft";
-    document.getElementById("climbFPM-" + suffix).innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
+    document.getElementById("rateClimb-" + suffix).innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
     document.getElementById("tgDistance-" + suffix).innerHTML = ((performanceData.takeoffDistance + performanceData.landingDistance)/10).toFixed(0)*10 + " ft";
 
 }
@@ -273,15 +264,6 @@ function fillWB(computedData, userInput, fwdCG, validCG, isPrint){
     var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
 	var tailNumber = aircraftObj.tail;
-
-    if (!validCG){
-        document.getElementById("auditTitle").innerHTML = tailNumber + " NOT WITHIN LIMITS!!";
-        document.getElementById("auditTitle").classList.add("text-danger");
-    }
-    else {
-        document.getElementById("auditTitle").innerHTML = tailNumber + " is within limits!";
-        document.getElementById("auditTitle").classList.add("text-success");
-    }
 
     document.getElementById("empty_wt_td").innerHTML = aircraftObj.emptyWeight;
     document.getElementById("empty_cg_td").innerHTML = aircraftObj.aircraftArm;
@@ -509,11 +491,10 @@ function emailResults(){
 }
 
 function addWeatherTable(i) {
-	var row = document.createElement("div");
-	row.classList.add("row");
-	row.classList.add("weather-row");
-	row.innerHTML = `<div class=col-lg><h4>Weather</h4><div id=weatherData-${i}><p id=wRaw-${i}><table class="table table-bordered table-sm table-striped"><tr><th scope=col>Station Identifier<th id=wIdent-${i}><tr><th scope=col>Time<th id=wTime-${i}><tr><th scope=col>Wind Dir and Vel<th id=wWind-${i}><tr><th scope=col>Visibility<th id=wVisibility-${i}><tr><th scope=col>Clouds<th id=wCeilings-${i}><tr><th scope=col>Temperature<th id=wTemp-${i}><tr><th scope=col>Dew Point<th id=wDewpoint-${i}><tr><th scope=col>Altimeter<th id=wAltimeter-${i}><tr><th scope=col>Density Alt.<th id=wDensityAlt-${i}><tr><th scope=col>Pressure Alt.<th id=wPressureAlt-${i}></table><div id=weatherTAF-${i}><h5>TAF</h5><p id=TAF-${i}></div></div></div><div class=col-lg><h4>Takeoff and Landing Performance</h4><p>Performance data is an estimate only and does not take into consideration runway condition, aircraft condition, or pilot technique.<h5 id=runwayHdg-${i}>Runway</h5><table class="table table-bordered table-sm"><tr><th scope=row>Head Wind<td id=headWind-${i}><tr><th scope=row>Cross Wind<td id=xWind-${i}><tr><th scope=row>Takeoff<td id=TODistance-${i}>Ground Roll:<td id=TO50Distance-${i}>Over 50':<tr><th scope=row>Landing<td id=LDGDistance-${i}>Ground Roll:<td id=LDG50Distance-${i}>Over 50':<tr><th scope=row colspan=2>Touch and Go Distance<td id=tgDistance-${i}><tr><th scope=row>Rate of Climb<td id=climbFPM-${i}><td id=climbNM-${i}></table></div></div>`;
-	document.getElementById("main").appendChild(row);
+	var div = document.createElement("div");
+	div.classList.add("weatherDiv");
+	div.innerHTML = `<table class="table table-bordered table-sm table-striped"><tbody><tr><th colspan="4" id="wIdent-${i}">Weather</th></tr><tr><th class="no-bottom-border">Time</th><th class="no-bottom-border">Wind Der/Vel</th><th class="no-bottom-border">Visibility</th><th></th></tr><tr><td id="wTime-${i}" class="no-top-border"></td><td id="wWind-${i}" class="no-top-border"></td><td id="wVisibility-${i}" class="no-top-border"></td><td></td></tr><tr><th class="no-bottom-border">Clouds</th><th class="no-bottom-border">Temp/Dew</th><th class="no-bottom-border">Altimeter</th><th></th></tr><tr><td id="wCeilings-${i}" class="no-top-border"></td><td id="wTempDew-${i}" class="no-top-border"></td><td id="wAltimeter-${i}" class="no-top-border"></td><td></td></tr><tr style="border-top: 2px solid black;"><th>Density Alt.</th><td id="wDensityAlt-${i}"></td><th>Pressure Alt.</th><td id="wPressureAlt-${i}"></td></tr><tr><th>Headwind</th><td id="headWind-${i}"></td><th>Crosswind</th><td id="crossWind-${i}"></td></tr><tr style="border-top: 2px solid black;"><th class="centered" colspan="2">Takeoff (<span id="runwayHdg-${i}"></span>)</th><th colspan="2">Landing</th></tr><tr><th>Ground Roll</th><td id="TODistance-${i}"></td><th>Ground Roll</th><td id="LDGDistance-${i}"></td></tr><tr><th>Over 50'</th><td id="TO50Distance-${i}"></td><th>Over 50'</th><td id="LDG50Distance-${i}"></td></tr><tr><th>Touch and Go Distance</th><td id="tgDistance-${i}"></td><th>Rate of Climb</th><td id="rateClimb-${i}"></td></tr></tbody></table><p class="taf" id="TAF-${i}"></p>`;
+	document.getElementById(i % 2 == 1 ? "weatherCol1" : "weatherCol2").appendChild(div);
 }
 
 function reset() {
@@ -521,3 +502,7 @@ function reset() {
 	localStorage.clear();
 	window.location.href="index.html";
 }
+
+fillData();
+window.print();
+window.onfocus=function(){ window.close();}
