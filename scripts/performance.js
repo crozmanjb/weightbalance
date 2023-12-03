@@ -33,8 +33,19 @@ function getWeather(){
             if(this.responseText){
                 try {
                     var weatherResults = JSON.parse(this.responseText);
-                    if (weatherResults["metar"] !== null){
+					if (!weatherData[stationID])
 						weatherData[stationID] = {};
+					if (weatherResults["taf"] !== null){
+                        var weatherTAF = weatherResults["taf"];
+						weatherData[stationID]["taf"] = weatherTAF;
+						sessionStorage.setItem("weather", JSON.stringify(weatherData));
+						updateDataTimestamp();
+                        setTAF(weatherTAF);
+                    }
+                    else{
+                        document.getElementById("TAF").innerHTML = "No TAF Available";
+                    }
+                    if (weatherResults["metar"] !== null){
                         weatherData[stationID].metar = weatherResults["metar"];
                         var requiredFields = ["temp_c", "altim_in_hg", "wind_dir_degrees", "wind_speed_kt"];
                         for (i = 0; i < requiredFields.length; i++){
@@ -45,6 +56,7 @@ function getWeather(){
                                     "The requested METAR is missing a required field. Please use manual entry."
                             }
                         }
+						if (weatherData[stationID].metar.wind_dir_degrees == "VRB") weatherData[stationID].metar.wind_dir_degrees = "0";
                         sessionStorage.setItem("weather", JSON.stringify(weatherData));
 						updateDataTimestamp();
                         setWeather(weatherData[stationID].metar);
@@ -55,16 +67,6 @@ function getWeather(){
 						document.getElementById("runwayHdg").value = "";
 						runwayChange("", stationID);
                         inputWeather();
-                    }
-                    if (weatherResults["taf"] !== null){
-                        var weatherTAF = weatherResults["taf"];
-						weatherData[stationID]["taf"] = weatherTAF;
-						sessionStorage.setItem("weather", JSON.stringify(weatherData));
-						updateDataTimestamp();
-                        setTAF(weatherTAF);
-                    }
-                    else{
-                        document.getElementById("TAF").innerHTML = "No TAF Available";
                     }
                 } catch(e){
                     /*Most likely due to the PHP server not being setup/running*/
@@ -94,8 +96,8 @@ function inputWeather(weatherData = null){
 	if (weatherData.wind_speed_kt) {
 		document.getElementById("windSpeed").value = weatherData.wind_speed_kt;
 	}
-	if (weatherData.visibility) {
-		document.getElementById("visibility").value = weatherData.visibility;
+	if (weatherData.visibility_statute_mi) {
+		document.getElementById("visibility").value = parseFloat(weatherData.visibility_statute_mi);
 	}
 	if (weatherData.temp_c) {
 		document.getElementById("temperature").value = weatherData.temp_c;
@@ -125,8 +127,10 @@ function weatherInputClick(){
 
     var weatherData = JSON.parse(sessionStorage.getItem("weather"));
 	var station_id = document.getElementById("weatherID").value.toUpperCase();
-	weatherData[station_id] = {};
-	weatherData[station_id]["metar"] = {};
+	if (!weatherData[station_id])
+		weatherData[station_id] = {};
+	if (!weatherData[station_id]["metar"])
+		weatherData[station_id]["metar"] = {};
 	weatherData[station_id]["metar"]["station_id"] = station_id;
     weatherData[station_id]["metar"]["temp_c"] = parseFloat(document.getElementById("temperature").value);
 	weatherData[station_id]["metar"]["dewpoint_c"] = parseFloat(document.getElementById("dewpoint").value);
@@ -143,6 +147,7 @@ function weatherInputClick(){
     var densityAlt = (145442.16*(1-((17.326*stationPressure)/(tempRankine))**0.235));
     document.getElementById("alt-wPressureAlt").innerHTML = pressureAlt.toFixed(0) + " ft";
     document.getElementById("alt-wDensityAlt").innerHTML = densityAlt.toFixed(0) + " ft";
+	getRunways(weatherData[station_id]["metar"]);
     if (document.getElementById("runwayHdg").value === ""){
         document.getElementById("weatherInfo").innerHTML = "Input runway heading next";
     }
@@ -198,11 +203,13 @@ function setWeather(weatherData) {
 	}
 		
     var windDir = "";
-    if ((weatherData.wind_dir_degrees === "0") && (weatherData.wind_speed_kt === "0")){
+	if (!weatherData.wind_dir_degrees || !weatherData.wind_speed_kt) {
+		windDir = "MISSING";
+		document.getElementById("wWind").innerHTML = windDir;
+	} else if ((weatherData.wind_dir_degrees === "0") && (weatherData.wind_speed_kt === "0")){
         windDir = "Calm";
         document.getElementById("wWind").innerHTML = windDir;
-    }
-    else{
+    } else{
         if (weatherData.wind_dir_degrees === "0"){
             windDir = "Variable";
         }
@@ -428,12 +435,14 @@ function getRunways(weatherData) {
 							windData[key] = windComponents(value, weatherData['wind_dir_degrees'], weatherData['wind_speed_kt']);
 						}
 						var best;
-						for (var key in windData) {
-							if (best == null || windData[key]["hWind"] > windData[best]["hWind"]){
-								best = key;
-							}
-							if (windData[key]["hWind"] == windData[best]["hWind"] && parseInt(runways[key]) > parseInt(runways[best])){
-								best = key;
+						if (weatherData.wind_dir_degrees) {
+							for (var key in windData) {
+								if (best == null || windData[key]["hWind"] > windData[best]["hWind"]){
+									best = key;
+								}
+								if (windData[key]["hWind"] == windData[best]["hWind"] && parseInt(runways[key]) > parseInt(runways[best])){
+									best = key;
+								}
 							}
 						}
 						var autoChange = false;
