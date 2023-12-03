@@ -27,32 +27,6 @@ function aircraftSelection(){
         clearResults();
         return;
     }
-		
-	if (tailNumber == "Manual Entry") {
-		document.getElementById("emptyAircraftInfo").innerHTML = "";
-		document.getElementById("manualEmptyWeightDiv").style.display = "flex";
-		document.getElementById("manualCGDiv").style.display = "flex";
-		document.getElementById("manualMaxWeightDiv").style.display = "flex";
-		document.getElementById("manualAircrafTypeDiv").style.display = "flex";
-		document.getElementById("noseStationDiv").style.display = "none";
-		document.getElementById("deIceStationDiv").style.display = "none";
-		document.getElementById("auxFuelStationDiv").style.display = "none";
-		document.getElementById("baggageStation1").max = "100";
-		document.getElementById("baggage1MaxNote").innerHTML = "Max 100 lbs";
-		document.getElementById("baggageStation2Div").style.display = "flex";
-		document.getElementById("baggage2MaxNote").innerHTML = "Max 40 lbs. Max 100 lbs Combined.";
-		document.getElementById("fuelStation").max = "";
-		document.getElementById("fuelMaxNote").innerHTML = "";
-		document.getElementById("fuelBurn").max = "";
-		reCompute();
-		return;
-	}
-	
-	document.getElementById("manualEmptyWeightDiv").style.display = "none";
-	document.getElementById("manualCGDiv").style.display = "none";
-	document.getElementById("manualMaxWeightDiv").style.display = "none";
-	document.getElementById("manualAircrafTypeDiv").style.display = "none";
-	
     var aircraftObj = aircraft.find(x => x.tail === tailNumber)
 
 	if (aircraftObj.autopilot == "none") {
@@ -142,26 +116,7 @@ function reCompute(){
      **/
 
     var tailNumber = document.getElementById('aircraftSelect').value;
-	var aircraftObj;
-	if (tailNumber == "Manual Entry") {
-			aircraftObj = {
-
-			tail: "Manual",
-
-			model: document.getElementById("manualAircraftTypeSelect").value,
-
-			emptyWeight: parseFloat(document.getElementById("manualEmptyWeight").value),
-
-			maxWeight: parseFloat(document.getElementById("manualMaxWeight").value),
-
-			aircraftArm: parseFloat(document.getElementById("manualCG").value),
-
-			autopilot: "none"
-
-		}
-	} else {
-		aircraftObj = aircraft.find(x => x.tail === tailNumber)
-	}
+	var aircraftObj = aircraft.find(x => x.tail === tailNumber)
     var userInput = {obj : aircraftObj}
 	console.info(aircraftObj);
 
@@ -539,14 +494,6 @@ function loadUserData(){
     var aircraftObj = userData.obj;
 	
 	document.getElementById("aircraftSelect").value = aircraftObj.tail;
-
-	if (aircraftObj.tail == "Manual") {
-		document.getElementById("aircraftSelect").value = "Manual Entry";
-		document.getElementById("manualEmptyWeight").value = aircraftObj.emptyWeight;
-		document.getElementById("manualCG").value = aircraftObj.aircraftArm;
-		document.getElementById("manualMaxWeight").value = aircraftObj.maxWeight;
-		document.getElementById("manualAircraftTypeSelect").value = aircraftObj.model;
-	}
     document.getElementById("frontStation").value = userData.frontStationWeight;
     document.getElementById("rearStation").value = userData.rearStationWeight;
     document.getElementById("baggageStation1").value = userData.baggage1Weight;
@@ -674,26 +621,7 @@ function auditMode(computedData, userInput, fwdCG){
 
 	
     var tailNumber = document.getElementById('aircraftSelect').value;
-	var aircraftObj;
-	if (tailNumber == "Manual Entry") {
-			aircraftObj = {
-
-			tail: "Manual",
-
-			model: document.getElementById("manualAircraftTypeSelect").value,
-
-			emptyWeight: parseFloat(document.getElementById("manualEmptyWeight").value),
-
-			maxWeight: parseFloat(document.getElementById("manualMaxWeight").value),
-
-			aircraftArm: parseFloat(document.getElementById("manualCG").value),
-
-			autopilot: "none"
-
-		}
-	} else {
-		aircraftObj = aircraft.find(x => x.tail === tailNumber)
-	}
+	var aircraftObj = aircraft.find(x => x.tail === tailNumber)
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
 
     document.getElementById("auditTitle").innerHTML = tailNumber + " Weight and Balance";
