@@ -505,8 +505,17 @@ function emailResults(){
 				}
 				else{
 					bodyString += `Performance Data (${airport})%0d%0ARunway Heading: ` + performanceData.runwayHdg + "%0d%0A";
-					bodyString += "Head Wind: " + performanceData.headWind.toFixed(0) + "%0d%0A";
-					bodyString += "Cross Wind: " + performanceData.crossWind.toFixed(0) + "%0d%0A";
+					bodyString += "Headwind: " + performanceData.headWind.toFixed(0) + "%0d%0A";
+					bodyString += "Crosswind: "
+					if (performanceData.crossWind < 0){
+						bodyString += -performanceData.crossWind.toFixed(0) + " (Right)%0d%0A";
+					}
+					else if (performanceData.crossWind === 0){
+						bodyString += performanceData.crossWind.toFixed(0) + "%0d%0A";
+					}
+					else{
+						bodyString += performanceData.crossWind.toFixed(0) + " (Left)%0d%0A";
+					}
 					bodyString += "Takeoff: Ground Roll: " + performanceData.takeoffDistance.toFixed(0) + " ft. Over 50': " + performanceData.takeoff50Distance.toFixed(0) + " ft.%0d%0A";
 					bodyString += "Landing: Ground Roll: " + performanceData.landingDistance.toFixed(0) + " ft. Over 50': " + performanceData.landing50Distance.toFixed(0) + " ft.%0d%0A";
 					bodyString += "Rate of Climb: " + performanceData.climbPerf.toFixed(0) + " FPM %0d%0A%0d%0A";
