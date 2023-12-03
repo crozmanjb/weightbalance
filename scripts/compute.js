@@ -614,6 +614,8 @@ function clearResults(){
     document.getElementById("result_zero").innerHTML = "Zero Fuel:";
     document.getElementById("result_takeoff").innerHTML = "Takeoff:";
     document.getElementById("result_landing").innerHTML = "Landing:";
+	localStorage.clear();
+	sessionStorage.clear();
 }
 
 function auditMode(computedData, userInput, fwdCG){

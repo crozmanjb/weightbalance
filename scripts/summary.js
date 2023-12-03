@@ -420,7 +420,7 @@ function emailResults(){
     var resultCG = JSON.parse(localStorage.getItem("CG"));
     var tailNumber = userData.obj.tail;
 	var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
-    //var aircraftObj = aircraft.find(x => x.tail === tailNumber);
+	var riskData = JSON.parse(sessionStorage.getItem("riskData"));
 
     var bodyString = "";
     if (!resultCG.validCG){
@@ -463,6 +463,18 @@ function emailResults(){
 		}
 		bodyString += "V-Speeds: %0d%0A"
 		bodyString += `Vr: ${modelData.vSpeeds.vr} Vx: ${modelData.vSpeeds.vx} Vy: ${modelData.vSpeeds.vy} Vg: ${modelData.vSpeeds.vg} Va: ${Va}%0d%0A %0d%0A`;
+		
+		if(riskData) {
+			bodyString += `Risk Assessment:%0d%0A`
+			bodyString += `Score: ${riskData.riskScore}%0d%0A`;
+			if (riskData.riskCat == 0) {
+				bodyString += "No unusual hazards. Use normal flight planning and established personal minimums and operating procedures %0d%0A %0d%0A";
+			} else if (riskData.riskCat == 1) {
+				bodyString += "Slightly increased risk. Conduct flight planning with extra caution. Review personal minimums and operating procedures %0d%0A %0d%0A";
+			} else if (riskData.riskCat == 2) {
+				bodyString += "Conditions present very high risk. Conduct flight planning with extra care and review all elements that present the most risk. Consult with more experienced pilots or flight instructors for guidance. Consider delaying flight until conditions improve %0d%0A %0d%0A";
+			}
+		}
 		
         if (sessionStorage.getItem("weather") !== null){
 			for (airport in allWeatherData) {

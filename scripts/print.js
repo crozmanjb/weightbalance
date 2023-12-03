@@ -505,4 +505,4 @@ function reset() {
 
 fillData();
 window.print();
-//window.onfocus=function(){ window.close();}
+window.onfocus=function(){ window.close();}
