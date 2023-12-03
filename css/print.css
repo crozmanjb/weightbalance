@@ -8,6 +8,10 @@
 	display: none;
 }
 
+.centered {
+	text-align: center;
+}
+
 td:empty, th:empty {
 	background-color: #d6d8db;
 }

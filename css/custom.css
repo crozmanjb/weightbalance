@@ -4,6 +4,10 @@ body {
 
 }
 
+#buttonRow {
+	padding-left: 20px;
+}
+
 #wWeatherContainer {
 	background-color: mediumblue;
 	color: white;

@@ -110,6 +110,8 @@
 
             <br>
 
+			<button type="button" class="btn btn-secondary m-2" onclick="savePicture()">Save</button>
+			
             <button type="button" class="btn btn-secondary m-2" onclick="emailResults()">Email</button>
 
             <button type="button" class="btn btn-secondary m-2" onclick="printResults()">Print</button>
@@ -390,7 +392,8 @@
 
 </main><!-- /.container -->
 
-
+<div id="previewImg" style="display: none;">
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
@@ -406,7 +409,7 @@
 
 <script src="scripts/summary.js"></script>
 	
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<script src="scripts/html2canvas.js"></script>
 	
 <script src="scripts/data.js"></script>
 

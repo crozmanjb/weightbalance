@@ -44,9 +44,6 @@ function aircraftSelection(){
 		document.getElementById("fuelStation").max = "";
 		document.getElementById("fuelMaxNote").innerHTML = "";
 		document.getElementById("fuelBurn").max = "";
-//		document.getElementById("baggageStation1").value = 0;
-//		document.getElementById("fuelStation").value = 50;
-//		document.getElementById("fuelBurn").value = 50;
 		reCompute();
 		return;
 	}
@@ -78,10 +75,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "40";
             document.getElementById("fuelBurn").max = "40";
             document.getElementById("fuelMaxNote").innerHTML = "Max 40.2 Gallons";
-            //if (document.getElementById("fuelStation").value > 40){
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 40.2;
-            //}
             break;
         case "DA40CS":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -93,10 +86,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "40";
             document.getElementById("fuelBurn").max = "40";
             document.getElementById("fuelMaxNote").innerHTML = "Max 40.2 Gallons";
-            //if (document.getElementById("fuelStation").value > 40){
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 40.2;
-            //}
             break;
         case "DA40XL":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -109,10 +98,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "40.2";
             document.getElementById("fuelMaxNote").innerHTML = "Max 40.2 Gallons";
             document.getElementById("fuelBurn").max = "40.2";
-            //if (document.getElementById("fuelStation").value > 40){
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 40.2;
-            //}
             break;
         case "DA40XLS":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -125,8 +110,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "50";
             document.getElementById("fuelMaxNote").innerHTML = "Max 50 Gallons";
             document.getElementById("fuelBurn").max = "50";
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 50;
             break;
         case "DA42":
             document.getElementById("noseStationDiv").style.display = "flex";
@@ -213,8 +196,10 @@ function reCompute(){
 
     }/*Otherwise just use avgas/100LL density*/
     else{
-        userInput["fuelWeight"] = Math.round(parseFloat(document.getElementById("fuelStation").value) * 60.0) / 10;
-        userInput["fuelBurnWeight"] = Math.round(parseFloat(document.getElementById("fuelBurn").value) * 60.0) / 10;
+		if (document.getElementById("fuelStation").value)
+			userInput["fuelWeight"] = Math.round(parseFloat(document.getElementById("fuelStation").value) * 60.0) / 10;
+		if (document.getElementById("fuelBurn").value)
+			userInput["fuelBurnWeight"] = Math.round(parseFloat(document.getElementById("fuelBurn").value) * 60.0) / 10;
     }
 
     var cgValid = true;

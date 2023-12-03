@@ -1,3 +1,4 @@
+const zeroPad = (num, places) => String(num).padStart(places, '0');
 function fillData(){
     /**Main call to fetch all data from local or session storage and call all the fill functions**/
 
@@ -94,9 +95,8 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
             //document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
         }
 		
-		const zeroPad = (num, places) => String(num).padStart(places, '0');
         var obsTime = new Date(weatherData.observation_time);
-        document.getElementById("wTime-" + suffix).innerHTML = obsTime.getHours() + ":" + zeroPad(obsTime.getMinutes(), 2)
+        document.getElementById("wTime-" + suffix).innerHTML = zeroPad(obsTime.getHours(), 2) + ":" + zeroPad(obsTime.getMinutes(), 2)
             + " (UTC " + -(obsTime.getTimezoneOffset() / 60) + ")";
         var windDir = "";
         if ((weatherData.wind_dir_degrees === "0") && (weatherData.wind_speed_kt === "0")) {
@@ -493,7 +493,7 @@ function emailResults(){
 function addWeatherTable(i) {
 	var div = document.createElement("div");
 	div.classList.add("weatherDiv");
-	div.innerHTML = `<table class="table table-bordered table-sm table-striped"><tbody><tr><th colspan="4" id="wIdent-${i}">Weather</th></tr><tr><th class="no-bottom-border">Time</th><th class="no-bottom-border">Wind Der/Vel</th><th class="no-bottom-border">Visibility</th><th></th></tr><tr><td id="wTime-${i}" class="no-top-border"></td><td id="wWind-${i}" class="no-top-border"></td><td id="wVisibility-${i}" class="no-top-border"></td><td></td></tr><tr><th class="no-bottom-border">Clouds</th><th class="no-bottom-border">Temp/Dew</th><th class="no-bottom-border">Altimeter</th><th></th></tr><tr><td id="wCeilings-${i}" class="no-top-border"></td><td id="wTempDew-${i}" class="no-top-border"></td><td id="wAltimeter-${i}" class="no-top-border"></td><td></td></tr><tr style="border-top: 2px solid black;"><th>Density Alt.</th><td id="wDensityAlt-${i}"></td><th>Pressure Alt.</th><td id="wPressureAlt-${i}"></td></tr><tr><th>Headwind</th><td id="headWind-${i}"></td><th>Crosswind</th><td id="crossWind-${i}"></td></tr><tr style="border-top: 2px solid black;"><th class="centered" colspan="2">Takeoff (<span id="runwayHdg-${i}"></span>)</th><th colspan="2">Landing</th></tr><tr><th>Ground Roll</th><td id="TODistance-${i}"></td><th>Ground Roll</th><td id="LDGDistance-${i}"></td></tr><tr><th>Over 50'</th><td id="TO50Distance-${i}"></td><th>Over 50'</th><td id="LDG50Distance-${i}"></td></tr><tr><th>Touch and Go Distance</th><td id="tgDistance-${i}"></td><th>Rate of Climb</th><td id="rateClimb-${i}"></td></tr></tbody></table><p class="taf" id="TAF-${i}"></p>`;
+	div.innerHTML = `<table class="table table-bordered table-sm table-striped"><tbody><tr><th colspan="4" class="centered" id="wIdent-${i}">Weather</th></tr><tr><th class="no-bottom-border">Time</th><th class="no-bottom-border">Wind Der/Vel</th><th class="no-bottom-border">Visibility</th><th></th></tr><tr><td id="wTime-${i}" class="no-top-border"></td><td id="wWind-${i}" class="no-top-border"></td><td id="wVisibility-${i}" class="no-top-border"></td><td></td></tr><tr><th class="no-bottom-border">Clouds</th><th class="no-bottom-border">Temp/Dew</th><th class="no-bottom-border">Altimeter</th><th></th></tr><tr><td id="wCeilings-${i}" class="no-top-border"></td><td id="wTempDew-${i}" class="no-top-border"></td><td id="wAltimeter-${i}" class="no-top-border"></td><td></td></tr><tr style="border-top: 2px solid black;"><th>Density Alt.</th><td id="wDensityAlt-${i}"></td><th>Pressure Alt.</th><td id="wPressureAlt-${i}"></td></tr><tr><th>Headwind</th><td id="headWind-${i}"></td><th>Crosswind</th><td id="crossWind-${i}"></td></tr><tr style="border-top: 2px solid black;"><th class="centered" colspan="2">Takeoff (<span id="runwayHdg-${i}"></span>)</th><th class="centered" colspan="2">Landing</th></tr><tr><th>Ground Roll</th><td id="TODistance-${i}"></td><th>Ground Roll</th><td id="LDGDistance-${i}"></td></tr><tr><th>Over 50'</th><td id="TO50Distance-${i}"></td><th>Over 50'</th><td id="LDG50Distance-${i}"></td></tr><tr><th>Touch and Go Distance</th><td id="tgDistance-${i}"></td><th>Rate of Climb</th><td id="rateClimb-${i}"></td></tr></tbody></table><p class="taf" id="TAF-${i}"></p>`;
 	document.getElementById(i % 2 == 1 ? "weatherCol1" : "weatherCol2").appendChild(div);
 }
 
@@ -505,4 +505,4 @@ function reset() {
 
 fillData();
 window.print();
-window.onfocus=function(){ window.close();}
+//window.onfocus=function(){ window.close();}

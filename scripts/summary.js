@@ -1,3 +1,5 @@
+const zeroPad = (num, places) => String(num).padStart(places, '0');
+
 function fillData(){
     /**Main call to fetch all data from local or session storage and call all the fill functions**/
 
@@ -102,9 +104,8 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
             document.getElementById("wTemp-" + suffix).innerHTML = temp + " &degC";
             document.getElementById("wDewpoint-" + suffix).innerHTML = dewpoint + " &degC";
         }
-		const zeroPad = (num, places) => String(num).padStart(places, '0');
         var obsTime = new Date(weatherData.observation_time);
-        document.getElementById("wTime-" + suffix).innerHTML = obsTime.getHours() + ":" + zeroPad(obsTime.getMinutes(), 2)
+        document.getElementById("wTime-" + suffix).innerHTML = zeroPad(obsTime.getHours(), 2) + ":" + zeroPad(obsTime.getMinutes(), 2)
             + " (UTC " + -(obsTime.getTimezoneOffset() / 60) + ")";
         var windDir = "";
         if ((weatherData.wind_dir_degrees === "0") && (weatherData.wind_speed_kt === "0")) {
@@ -506,6 +507,23 @@ function emailResults(){
     }
     window.open('mailto:dispatchusu@gmail.com?subject=' + tailNumber + ' Weight and Balance&body=' +
         bodyString);
+}
+
+function savePicture() {
+	let tailNum = JSON.parse(localStorage.getItem("userInput")).obj.tail;
+	let date = new Date();
+	let formatedDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`;
+	document.getElementById("buttonRow").style.display = "none";
+	html2canvas(document.getElementById("main")).then(function (canvas) {
+		var anchorTag = document.createElement("a");
+		document.body.appendChild(anchorTag);
+		document.getElementById("previewImg").appendChild(canvas);
+		anchorTag.download = `${tailNum} ${formatedDate}.png`;
+		anchorTag.href = canvas.toDataURL();
+		anchorTag.target = '_blank';
+		anchorTag.click();
+	});
+	document.getElementById("buttonRow").style.display = "flex";
 }
 
 function addWeatherTable(i) {
