@@ -213,15 +213,15 @@ function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
         document.getElementById("runwayHdg-" + suffix).innerHTML = "Runway " + runway;
     }
 
-    document.getElementById("headWind-" + suffix).innerHTML = performanceData.headWind.toFixed(0);
+    document.getElementById("headWind-" + suffix).innerHTML = performanceData.headWind.toFixed(0) + " kts";
     if (performanceData.crossWind < 0){
-        document.getElementById("xWind-" + suffix).innerHTML = -performanceData.crossWind.toFixed(0) + " (Right)";
+        document.getElementById("xWind-" + suffix).innerHTML = -performanceData.crossWind.toFixed(0) + " kts (Right)";
     }
     else if (performanceData.crossWind === 0){
-        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0);
+        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0) + " kts";
     }
     else{
-        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0) + " (Left)";
+        document.getElementById("xWind-" + suffix).innerHTML = performanceData.crossWind.toFixed(0) + " kts (Left)";
     }
 
     document.getElementById("TODistance-" + suffix).innerHTML = "Ground Roll: "
