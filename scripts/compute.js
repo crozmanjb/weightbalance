@@ -125,9 +125,12 @@ function reCompute(){
 
 
     userInput["baggage1Weight"] = parseFloat(document.getElementById("baggageStation1").value);
+	if (!userInput["baggage1Weight"]) userInput["baggage1Weight"] = 0;
     if ((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS")){
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
+		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
     }
+	console.log(userInput);
     /*If DA42 we have to compute w/ JetA density*/
     if (aircraftObj.model === "DA42"){
         userInput["noseWeight"] = parseFloat(document.getElementById("noseStation").value);
@@ -612,6 +615,7 @@ function clearResults(){
     document.getElementById("result_landing").innerHTML = "Landing:";
 	localStorage.clear();
 	sessionStorage.clear();
+	location.reload();
 }
 
 function auditMode(computedData, userInput, fwdCG){

@@ -2,6 +2,8 @@ function getWeather(){
     /**Called when submit button is clicked
      * tries to retieve AWS METAR for the provided Station ID
      * Uses PHP backend to get the XML weather and return it as JSON format**/
+	document.getElementById("weatherSubmit").disabled = true;
+	document.getElementById("weatherSubmit").innerHTML = "Loading";
 	document.getElementById("runwayHdg").value = "";
 	if (document.getElementById("runwaySelect"))
 		document.getElementById("runwaySelect").style.display = "none";
@@ -10,12 +12,16 @@ function getWeather(){
 	document.getElementById("weatherInput").style.display = "none";
     var stationID = document.getElementById("weatherID").value.toUpperCase();
 	if (!ALLOWED_AIRPORTS.includes(stationID)) {
-		displayError("Unapproved airport");
+		displayError("Unapproved airport", 1);
+		document.getElementById("weatherSubmit").disabled = false;
+		document.getElementById("weatherSubmit").innerHTML = "Submit";
 		return;
 	}
 	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
 	if (!weatherData) weatherData = {};
     if (stationID===""){
+		document.getElementById("weatherSubmit").disabled = false;
+		document.getElementById("weatherSubmit").innerHTML = "Submit";
         return;
     }
     document.getElementById("weatherInput").style.display = "none";
@@ -75,7 +81,10 @@ function getWeather(){
 					document.getElementById("runwayHdg").value = "";
 					runwayChange("", stationID);
                     inputWeather();
-                }
+                } finally {
+					document.getElementById("weatherSubmit").disabled = false;
+					document.getElementById("weatherSubmit").innerHTML = "Submit";
+				}
             }
         }
     }
@@ -119,7 +128,7 @@ function weatherInputClick(){
 	let reqFieldIDs = ["temperature", "fieldAlt", "altimeter", "windHeading", "windSpeed"];
 	for (let ID of reqFieldIDs) {
 		if (!document.getElementById(ID).value) {
-			displayError("Please fill in all weather fields");
+			displayError("Please fill in all weather fields", 2);
 			return;
 		}
 	}
@@ -356,7 +365,7 @@ function runwayChange(str, station_id = null){
         document.getElementById("climbFPM").innerHTML = "";
 		document.getElementById("perfTable").style.display = "none";
         heading = "";
-		displayError("Invalid runway heading");
+		displayError("Invalid runway heading", 2);
         return;
     }
 	if (!station_id) {
@@ -507,15 +516,15 @@ function performanceCompute(station_id, winds, heading){
      * Uses stored data to compute takeoff/landing/climb performance values depending on aircraft model**/
 	var weatherData = JSON.parse(sessionStorage.getItem("weather"));
     if (localStorage.getItem("userInput") == null){
-		displayError("Weight and Balance incomplete");
+		displayError("Weight and Balance incomplete", 2);
         return;
     }
     else if (localStorage.getItem("computedData") == null){
-		displayError("Weight and Balance incomplete");
+		displayError("Weight and Balance incomplete", 2);
         return;
 	}
     else if (!weatherData || !weatherData[station_id] || !weatherData[station_id]["metar"]){
-		displayError("Weather error");
+		displayError("Weather error", 2);
         return;
     }
     var userData = JSON.parse(localStorage.getItem("userInput"));
@@ -904,12 +913,19 @@ function windObstacleChart(lines, previous_result, input_x, reverse= false){
     }
 }
 
-function displayError(message) {
-	document.getElementById("errorDiv").innerHTML = message;
-	if (message) {
-		document.getElementById("errorDiv").classList.remove("hidden");
+function displayError(message, num=0) {
+	if (num == 0) {
+		document.getElementById("errorDiv1").innerHTML = message;
+		document.getElementById("errorDiv2").innerHTML = message;
+		if (!message) {
+			document.getElementById("errorDiv1").classList.add("hidden");
+			document.getElementById("errorDiv2").classList.add("hidden");
+		}
 	} else {
-		document.getElementById("errorDiv").classList.add("hidden");
+		document.getElementById("errorDiv" + num).innerHTML = message;
+		if (message) {
+			document.getElementById("errorDiv" + num).classList.remove("hidden");
+		}
 	}
 }
 
