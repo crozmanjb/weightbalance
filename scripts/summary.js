@@ -527,6 +527,8 @@ function waitForButtonRow() {
 }
 
 function savePicture() {
+	let saveButton = document.getElementById("saveButton");
+	saveButton.disabled = true;
 	let html = document.documentElement.outerHTML;
 	html = html.split(`<div id="previewImg" style="display: none;"></div>`)[0];
 	let iframe = document.createElement("iframe");
@@ -560,6 +562,7 @@ function savePicture() {
 			anchorTag.click();
 			buttonRow.style.display = "flex";
 			document.body.removeChild(iframe);
+			saveButton.disabled = false;
 		});
 	});
 }

@@ -11,7 +11,7 @@ function checkDataValidity() {
 }
 
 function resetAllData() {
-	window.alert("Data expired");
+//	window.alert("Data expired");
 	sessionStorage.clear();
 	localStorage.clear();
 	window.location.href = "index.html";
