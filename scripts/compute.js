@@ -735,6 +735,7 @@ function resultSuccess(){
     }
     document.getElementById("overall_result").innerHTML = "Aircraft within limits.";
 	document.getElementById("next-button").disabled = false;
+	document.getElementById("navbarPerformance").classList.remove("disabled");
 }
 
 function userAgreement(){
@@ -750,6 +751,7 @@ if (localStorage.getItem("userInput") !== null){
     aircraftSelection();
     if (sessionStorage.getItem("performance") !== null){
         document.getElementById("navbarSummary").classList.remove("disabled");
+		document.getElementById("navbarRisk").classList.remove("disabled");
     }
     if (sessionStorage.getItem("userAgree") === null){
         $('#Modal').modal({

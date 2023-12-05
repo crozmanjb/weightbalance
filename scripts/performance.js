@@ -579,6 +579,7 @@ function performanceCompute(station_id, winds, heading){
     sessionStorage.setItem("performance", JSON.stringify(performanceData));
 	updateDataTimestamp();
     document.getElementById("navbarSummary").classList.remove("disabled");
+	document.getElementById("navbarRisk").classList.remove("disabled");
 	document.getElementById("next-button").disabled = false;
 	updateAirports();
 }
@@ -954,14 +955,24 @@ function removeAirport(identifier) {
 }
 
 function removeAirportData(identifier) {
-	let weatherData = JSON.parse(sessionStorage.getItem("weather"));
-	if (weatherData[identifier]) delete weatherData[identifier];
-	sessionStorage.setItem("weather", JSON.stringify(weatherData));
+	if (sessionStorage.getItem("weather")) {
+		let weatherData = JSON.parse(sessionStorage.getItem("weather"));
+		if (weatherData[identifier]) delete weatherData[identifier];
+		if (Object.keys(weatherData).length > 0)
+			sessionStorage.setItem("weather", JSON.stringify(weatherData));
+		else
+			sessionStorage.removeItem("weather");
+	}
 
-	
-	let performanceData = JSON.parse(sessionStorage.getItem("performance"));
-	if (performanceData[identifier]) delete performanceData[identifier];
-	sessionStorage.setItem("performance", JSON.stringify(performanceData));
+	if (sessionStorage.getItem("performance")) {
+		let performanceData = JSON.parse(sessionStorage.getItem("performance"));
+		if (performanceData[identifier]) delete performanceData[identifier];
+		sessionStorage.setItem("performance", JSON.stringify(performanceData));
+		if (Object.keys(performanceData).length > 0)
+			sessionStorage.setItem("performance", JSON.stringify(performanceData));
+		else
+			sessionStorage.removeItem("performance");
+	}
 }
 
 function clearAirportTabs() {
@@ -1002,9 +1013,10 @@ document.getElementById("next-button").addEventListener("click", function(){
 	window.location.href = "risk.html";
 });
 
-if (sessionStorage.getItem("performance") !== null){
+if (sessionStorage.getItem("performance")){
     document.getElementById("navbarSummary").classList.remove("disabled");
 	document.getElementById("next-button").disabled = false;
+	document.getElementById("navbarRisk").classList.remove("disabled");
 	updateAirports();
 }
 
