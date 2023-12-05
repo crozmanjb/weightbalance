@@ -4,6 +4,10 @@
 	font-size: .85rem;
 }
 
+[id^=wIdent] {
+	font-size: 1.2em;
+}
+
 .hidden {
 	display: none;
 }

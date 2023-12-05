@@ -36,8 +36,7 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
 		document.getElementById("wIdent-" + suffix).innerHTML = weatherData.station_id;
         var temp = parseFloat(weatherData.temp_c);
         document.getElementById("wWind-" + suffix).innerHTML = weatherData.wind_dir_degrees + " @ " + weatherData.wind_speed_kt + " kts";
-        document.getElementById("wTemp-" + suffix).innerHTML = temp + " &degC";
-		document.getElementById("wDewpoint-" + suffix).innerHTML = weatherData.dewpoint_c + " &degC";
+		document.getElementById("wTempDew-" + suffix).innerHTML = temp + " &degC/" + ((weatherData.dewpoint_c) ? (weatherData.dewpoint_c + " &degC") : "---");
 		document.getElementById("wVisibility-" + suffix).innerHTML =  ((weatherData.visibility_statute_mi) ? parseFloat(weatherData.visibility_statute_mi) + " sm" : "MISSING");
         document.getElementById("wAltimeter-" + suffix).innerHTML = parseFloat(weatherData.altim_in_hg).toFixed(2) + " inHg";
         var fldAlt = parseFloat(weatherData.elevation_m)*3.281;
@@ -336,113 +335,6 @@ function fillVSpeeds(computedData, modelData) {
 
 }
 
-function printResults(){
-    /**Called when user clicks print button**/
-    window.open("print.html");
-}
-
-function emailResults(){
-    /**Called when user clicks email button (not implemented)
-     * We will open a mailto link with the subject and body filled in with info
-     * Still need to come up with body text to send. Can't send the canvas image or tables, only text**/
-
-    var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
-    var modelData = aircraftModels.find(x => x.model === aircraftObj.model);    
-	var userData = JSON.parse(localStorage.getItem("userInput"));
-    var allWeatherData = JSON.parse(sessionStorage.getItem("weather"));
-    var computedData = JSON.parse(localStorage.getItem("computedData"));
-    var allPerformanceData = JSON.parse(sessionStorage.getItem("performance"));
-    var resultCG = JSON.parse(localStorage.getItem("CG"));
-    var tailNumber = userData.obj.tail;
-	var aircraftObj = JSON.parse(localStorage.getItem("userInput")).obj;
-
-    var bodyString = "";
-    if (!resultCG.validCG){
-        bodyString += "!!!!CG NOT VALID. CHECK VALUES.!!!!"
-    }
-    else {
-        var now = new Date();
-        bodyString += "Prepared on " + now + "%0d%0A %0d%0A";
-        bodyString += "Weight and Balance %0d%0A";
-        bodyString += "Empty: " + aircraftObj.emptyWeight + " lbs | CG: " + aircraftObj.aircraftArm + "%0d%0A";
-        if (aircraftObj.model === "DA42"){
-            bodyString += "Nose Baggage: " + userData.noseWeight + " lbs %0d%0A";
-            if (aircraftObj.deIce){
-                bodyString += "De-icing Fluid: " + userData.deIceWeight + " lbs%0d%0A";
-            }
-        }
-        bodyString += "Front: " + userData.frontStationWeight + " lbs %0d%0ARear: " + userData.rearStationWeight + " lbs %0d%0A";
-        bodyString += "Baggage: " + userData.baggage1Weight + " lbs %0d%0A";
-        if ((aircraftObj.model === "DA40XL") || aircraftObj.model === "DA42"){
-            bodyString += "Baggage 2: " + userData.baggage2Weight + " lbs %0d%0A";
-        }
-        bodyString += "Zero Fuel: " + computedData.zeroFuelWeight + " lbs | CG: " + computedData.zeroFuelCG + " %0d%0A";
-        bodyString += "Fuel: " + userData.fuelWeight + " lbs %0d%0A";
-        if (aircraftObj.auxTanks) {
-            bodyString += "Aux Fuel: " + userData.auxFuelWeight + " lbs %0d%0A";
-        }
-        bodyString += "Takeoff Weight: " + computedData.takeOffWeight + " lbs | Takeoff CG: " + computedData.takeoffCG +  "%0d%0A";
-        bodyString += "Allowed CG Range: " + resultCG.fwdCG + " - " + resultCG.aftCG + "%0d%0A";
-        bodyString += "Fuel Burn: " + userData.fuelBurnWeight + " lbs %0d%0A";
-        bodyString += "Landing Weight: " + computedData.landingWeight + " lbs | Landing CG: " + computedData.landingCG +  "%0d%0A %0d%0A";
-
-		let Va = 0;
-		let vaSpeeds = Object.keys(modelData.vSpeeds.va);
-
-		for (i=0; i < vaSpeeds.length; i++){
-			if (computedData.takeOffWeight <= parseFloat(vaSpeeds[i])){
-				Va = modelData.vSpeeds.va[vaSpeeds[i]];
-				break;
-			}
-		}
-		bodyString += "V-Speeds: %0d%0A"
-		bodyString += `Vr: ${modelData.vSpeeds.vr} Vx: ${modelData.vSpeeds.vx} Vy: ${modelData.vSpeeds.vy} Vg: ${modelData.vSpeeds.vg} Va: ${Va}%0d%0A %0d%0A`;
-		
-        if (sessionStorage.getItem("weather") !== null){
-			for (airport in allWeatherData) {
-				let weatherData = allWeatherData[airport];
-				bodyString += airport + " Weather %0d%0A"
-				if ("raw_text" in weatherData.metar){
-                	bodyString += weatherData.metar.raw_text + "%0d%0A";
-            	} else {
-                	bodyString += "METAR not available (user inputted).%0d%0A";
-            	}
-				if (weatherData.taf){
-                	bodyString += weatherData.taf.raw_text + "%0d%0A %0d%0A";
-            	} else {
-                	bodyString += "TAF not available.%0d%0A %0d%0A";
-            	}
-			}
-            
-        }
-        else{
-            bodyString += "Weather not available%0d%0A %0d%0A";
-        }
-
-        if (sessionStorage.getItem("performance") !== null){
-			for (airport in allPerformanceData) {
-				let performanceData = allPerformanceData[airport];
-				if(userData.obj.tail !== performanceData.tail){
-					bodyString += "Performance data needs to be recomputed. See Weather & Performance Tab."
-				}
-				else{
-					bodyString += `Performance Data (${airport})%0d%0ARunway Heading: ` + performanceData.runwayHdg + "%0d%0A";
-					bodyString += "Head Wind: " + performanceData.headWind.toFixed(0) + "%0d%0A";
-					bodyString += "Cross Wind: " + performanceData.crossWind.toFixed(0) + "%0d%0A";
-					bodyString += "Takeoff: Ground Roll: " + performanceData.takeoffDistance.toFixed(0) + " ft. Over 50': " + performanceData.takeoff50Distance.toFixed(0) + " ft.%0d%0A";
-					bodyString += "Landing: Ground Roll: " + performanceData.landingDistance.toFixed(0) + " ft. Over 50': " + performanceData.landing50Distance.toFixed(0) + " ft.%0d%0A";
-					bodyString += "Rate of Climb: " + performanceData.climbPerf.toFixed(0) + " FPM %0d%0A%0d%0A";
-				}
-			}
-        }
-        else{
-            bodyString += "Performance data not available"
-        }
-    }
-    window.open('mailto:dispatchusu@gmail.com?subject=' + tailNumber + ' Weight and Balance&body=' +
-        bodyString);
-}
-
 function addWeatherTable(i) {
 	var div = document.createElement("div");
 	div.classList.add("weatherDiv");
@@ -450,12 +342,9 @@ function addWeatherTable(i) {
 	document.getElementById(i % 2 == 0 ? "weatherCol1" : "weatherCol2").appendChild(div);
 }
 
-function reset() {
-	sessionStorage.clear();
-	localStorage.clear();
-	window.location.href="index.html";
-}
-
 fillData();
-window.print();
-window.onfocus=function(){ window.close();}
+
+if (window.location.href.split("?").length <= 1 || window.location.href.split("?")[1] != "debug"){
+	window.print();
+	window.onfocus=function(){ window.close();}
+}
