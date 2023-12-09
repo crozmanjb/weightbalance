@@ -575,6 +575,21 @@ function addWeatherTable(i) {
 	document.getElementById("main").appendChild(row);
 }
 
+function beforePrint() {
+	let normalContent = document.getElementById("normal-content");
+	let cgCvs = document.getElementById("cgCanvas");
+	let newHtml = document.getElementById("print-iframe").contentWindow.document.body.innerHTML;
+	document.body.removeChild(normalContent);
+	document.body.innerHTML = newHtml
+	var destCtx = document.getElementById("cgCanvas").getContext('2d');
+	var destCvs = document.getElementById("cgCanvas");
+	destCtx.drawImage(cgCvs, 0, 0, destCvs.width, destCvs.height);
+}
+
+function afterPrint() {
+	location.reload();
+}
+
 function reset() {
 	sessionStorage.clear();
 	localStorage.clear();

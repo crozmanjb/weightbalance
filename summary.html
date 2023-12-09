@@ -15,9 +15,11 @@
     <!-- Bootstrap CSS -->
 
     <link rel="stylesheet" href="css/bootstrap.css">
-
-    <link rel="stylesheet" href="css/custom.css">
 	
+	<link rel="stylesheet" href="css/print.css" media="print">
+
+    <link rel="stylesheet" href="css/custom.css" media="screen">
+		
 	<link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
     <title id="title">Summary</title>
@@ -25,6 +27,8 @@
 </head>
 
 <body>
+	
+	<div id="normal-content">
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 
@@ -114,7 +118,7 @@
 			
             <button type="button" class="btn btn-secondary m-2" onclick="emailResults()">Email</button>
 
-            <button type="button" class="btn btn-secondary m-2" onclick="printResults()">Print</button>
+            <button type="button" class="btn btn-secondary m-2" onclick="print()">Print</button>
 			
 			<button type="button" class="btn btn-secondary m-2" onclick="resetAllData()">Reset</button>
 
@@ -393,6 +397,12 @@
 </main><!-- /.container -->
 
 <div id="previewImg" style="display: none;"></div>
+		
+</div>
+
+<div>
+	<iframe src="print.html" frameborder="0" id="print-iframe" style="width: 0px; height: 0px;"></iframe>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
@@ -415,6 +425,10 @@
 <script>
 
     fillData();
+	
+	window.onbeforeprint = beforePrint;
+	
+	window.onafterprint = afterPrint;
 
 </script>
 

@@ -343,8 +343,3 @@ function addWeatherTable(i) {
 }
 
 fillData();
-
-if (window.location.href.split("?").length <= 1 || window.location.href.split("?")[1] != "debug"){
-	window.print();
-	window.onfocus=function(){ window.close();}
-}
