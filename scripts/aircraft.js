@@ -6,6 +6,150 @@ const aircraft = [
 	
 	{
 
+        tail: "N383PS",
+
+        model: "DA40F",
+
+        emptyWeight: 1700,
+
+        maxWeight: 2535,
+
+        aircraftArm: 96.87,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N416FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1697,
+
+        maxWeight: 2535,
+
+        aircraftArm: 96.87,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N417FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1694,
+
+        maxWeight: 2535,
+
+        aircraftArm: 96.65,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N418FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1697,
+
+        maxWeight: 2535,
+
+        aircraftArm: 96.88,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N420FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1694,
+
+        maxWeight: 2535,
+
+        aircraftArm: 97.81,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N422FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1715,
+
+        maxWeight: 2535,
+
+        aircraftArm: 96.96,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N423FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1686,
+
+        maxWeight: 2535,
+
+        aircraftArm: 97.06,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N424FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1697,
+
+        maxWeight: 2535,
+
+        aircraftArm: 96.89,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
+        tail: "N425FP",
+
+        model: "DA40F",
+
+        emptyWeight: 1697,
+
+        maxWeight: 2535,
+
+        aircraftArm: 97.18,
+        
+        autopilot: "none"
+
+    },
+	
+	{
+
         tail: "N118GM",
 
         model: "DA40CS",
@@ -336,7 +480,79 @@ const aircraft = [
 		aircraftArm: 98.00, 
 		
 		autopilot: "GFC"
-	}
+	}, 
+	
+	{
+
+        tail: "N240TS",
+
+        model: "DA42",
+
+        emptyWeight: 2756.6,
+
+        maxTOWeight: 3935,
+		
+		maxLDGWeight: 3748,
+		
+        aircraftArm: 95.36,
+        
+        autopilot: "GFC"
+
+    },
+	
+	{
+
+        tail: "N350TS",
+
+        model: "DA42",
+
+        emptyWeight: 2833.5,
+
+        maxTOWeight: 3935,
+		
+		maxLDGWeight: 3748,
+
+        aircraftArm: 95.98,
+        
+        autopilot: "GFC"
+
+    },
+	
+	{
+
+        tail: "N132TS",
+
+        model: "DA42",
+
+        emptyWeight: 2943.2,
+
+        maxTOWeight: 3935,
+		
+		maxLDGWeight: 3748,
+
+        aircraftArm: 95.05,
+        
+        autopilot: "GFC"
+
+    },
+	
+	{
+
+        tail: "N459TS",
+
+        model: "DA42",
+
+        emptyWeight: 2877.24,
+
+        maxTOWeight: 3935,
+		
+		maxLDGWeight: 3748,
+
+        aircraftArm: 95.3,
+        
+        autopilot: "GFC"
+
+    },
 
 ];
 
