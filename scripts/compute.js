@@ -134,7 +134,9 @@ function reCompute(){
     /*If DA42 we have to compute w/ JetA density*/
     if (aircraftObj.model === "DA42"){
         userInput["noseWeight"] = parseFloat(document.getElementById("noseStation").value);
+		if (!userInput["noseWeight"]) userInput["noseWeight"] = 0;
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
+		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
         userInput["fuelWeight"] = parseFloat(document.getElementById("fuelStation").value) * 6.75;
 
         userInput["fuelBurnWeight"] = parseFloat(document.getElementById("fuelBurn").value) * 6.75;
@@ -165,7 +167,7 @@ function reCompute(){
     /*check input validation. Checking ranges of input values. */
     var validInputString = checkInputConstraints(modelData, userInput);
     if (!(validInputString === "")){
-        clearResults();
+//        clearResults();
         resultWarning(validInputString);
         return;
     }
