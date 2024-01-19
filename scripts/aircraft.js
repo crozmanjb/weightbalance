@@ -496,7 +496,7 @@ const aircraft = [
 		
         aircraftArm: 95.36,
         
-        autopilot: "GFC", 
+        autopilot: "none", 
 		
 		auxTanks: "true"
 
@@ -516,7 +516,7 @@ const aircraft = [
 
         aircraftArm: 95.98,
         
-        autopilot: "GFC", 
+        autopilot: "none", 
 		
 		auxTanks: "true"
 
@@ -536,7 +536,7 @@ const aircraft = [
 
         aircraftArm: 95.05,
         
-        autopilot: "GFC", 
+        autopilot: "none", 
 		
 		auxTanks: "true", 
 		
@@ -558,7 +558,7 @@ const aircraft = [
 
         aircraftArm: 95.3,
         
-        autopilot: "GFC", 
+        autopilot: "none", 
 		
 		auxTanks: "true", 
 		
