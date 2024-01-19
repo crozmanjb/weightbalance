@@ -554,8 +554,14 @@ function performanceCompute(station_id, winds, heading){
         temp, landingWeight, winds.hWind, aircraftObj.maxWeight)*3.281;
     document.getElementById("LDG50Distance").innerHTML = "Over 50': "
         + (landing50Distance/10).toFixed(0)*10 + " ft";
-    var climbPerf = getPerformanceNumbers(aircraftObj.model, "climb", pressureAlt, temp,
-        takeoffWeight, winds.hWind, aircraftObj.maxWeight);
+	if (aircraftObj.model == "DA42") {
+		var climbPerf = getPerformanceNumbers(aircraftObj.model, "climb", pressureAlt, temp,
+        takeoffWeight, winds.hWind, aircraftObj.maxTOWeight);
+	} else {
+		var climbPerf = getPerformanceNumbers(aircraftObj.model, "climb", pressureAlt, temp,
+			takeoffWeight, winds.hWind, aircraftObj.maxWeight);
+	}
+	console.log(aircraftObj);
     document.getElementById("climbFPM").innerHTML = (climbPerf/10).toFixed(0)*10 + " FPM";
 
     document.getElementById("tgDistance").innerHTML = ((takeoffDistance + landingDistance)/10).toFixed(0)*10 + " ft";
@@ -672,8 +678,9 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
     }
     else if (modelString === "DA42"){
         if (typeString === "climb"){
-            DA_Result = densityAltitudeChart(DA40CS(typeString, "DA"), pressureAlt, temp);
-            last_result = weightChart(DA40CS(typeString, "weight"), DA_Result, weight, maxWeight);
+            DA_Result = densityAltitudeChart(DA42(typeString, "DA"), pressureAlt, temp);
+            last_result = weightChart(DA42(typeString, "weight"), DA_Result, weight, maxWeight);
+			console.log(DA_Result, last_result);
         }
         else{
             if (weight > 3748){
