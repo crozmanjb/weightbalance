@@ -136,6 +136,7 @@ function weatherInputClick(){
 
     var weatherData = JSON.parse(sessionStorage.getItem("weather"));
 	var station_id = document.getElementById("weatherID").value.toUpperCase();
+	if (!weatherData) weatherData = {};
 	if (!weatherData[station_id])
 		weatherData[station_id] = {};
 	if (!weatherData[station_id]["metar"])
