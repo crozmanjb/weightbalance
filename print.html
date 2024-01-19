@@ -198,20 +198,24 @@
 						<canvas id="cgCanvas" width="350" height="252" style="border: 1px solid black"></canvas>
             		</div>
 					<h5 class="centered">V-Speeds</h5>
-					<table class="table table-sm table-bordered">
-						<tbody><tr>
-							<th>Vr</th>
-							<th>Vx</th>
-							<th>Vy</th>
-							<th>Vg</th>
-							<th>Va</th>
+					<table class="table table-sm table-bordered"><tbody>
+						<tr>
+						<th class="col-1">Vr</th>
+						<th class="col-1">Vy</th>
+						<th id="Vg-header" class="col-1">Vg</th>
+						<th class="col-1">Va</th>
+						<th id="Vyse-header" class="hidden col-1">Vyse</th>
+						<th id="Vmc-header" class="hidden col-1">Vmc</th>
+						<th class="col-1">Dmms</th>
 						</tr>
 						<tr>
 							<td id="Vr"></td>
-							<td id="Vx"></td>
 							<td id="Vy"></td>
 							<td id="Vg"></td>
 							<td id="Va"></td>
+							<td id="Vyse" class="hidden"></td>
+							<td id="Vmc" class="hidden"></td>
+							<td id="Dmms"></td>
 						</tr>
 					</tbody></table>
 					<h5 id="riskAssessmentHeader" class="hidden centered">Risk Assessment</h5>

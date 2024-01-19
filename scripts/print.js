@@ -319,20 +319,50 @@ function fillWB(computedData, userInput, fwdCG, validCG, isPrint){
     }
 }
 
-function fillVSpeeds(computedData, modelData) {
-    document.getElementById("Vr").innerHTML = modelData.vSpeeds.vr;
-    document.getElementById("Vx").innerHTML = modelData.vSpeeds.vx;
-    document.getElementById("Vy").innerHTML = modelData.vSpeeds.vy;
-    document.getElementById("Vg").innerHTML = modelData.vSpeeds.vg;
-    vaSpeeds = Object.keys(modelData.vSpeeds.va);
-	
-    for (i=0; i < vaSpeeds.length; i++){
-        if (computedData.takeOffWeight <= parseFloat(vaSpeeds[i])){
-            document.getElementById("Va").innerHTML = modelData.vSpeeds.va[vaSpeeds[i]];
-            return;
-        }
-    }
+function calculateSpeed(weight, speedObj, interpolate=false) {
+	if (typeof speedObj == "number" || typeof speedObj == "string") return speedObj;
+	let weights = Object.keys(speedObj).map(val => {return parseInt(val);});
+	weights.sort(function(a, b){return a-b});
+	let lowerSpeed;
+	let lowerWeight;
+	let higherSpeed;
+	let higherWeight;
+	for (let i in weights) {
+		if (weight <= weights[i]) {
+			lowerSpeed = i > 0 ? speedObj[weights[i - 1]] : null;
+			lowerWeight = i > 0 ? weights[i - 1] : null
+			higherSpeed = speedObj[weights[i]];
+			higherWeight = weights[i];
+			break;
+		}
+	}
+	if (!interpolate) return higherSpeed;
+	let ratio = (weight - lowerWeight) / (higherWeight - lowerWeight);
+	return Math.round(lowerSpeed + (higherSpeed - lowerSpeed) * ratio);
+}
 
+function fillVSpeeds(computedData, modelData) {
+	if (modelData.model == "DA42") {
+		document.getElementById("Vr").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vr, modelData.vSpeeds.interpolate.includes("vr"));
+		document.getElementById("Vy").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vy, modelData.vSpeeds.interpolate.includes("vy"));
+		document.getElementById("Dmms").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"));
+		document.getElementById("Va").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.va, modelData.vSpeeds.interpolate.includes("va"));
+		document.getElementById("Vyse").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vyse, modelData.vSpeeds.interpolate.includes("vyse"));
+		document.getElementById("Vmc").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vmc, modelData.vSpeeds.interpolate.includes("vmc"));
+		
+		document.getElementById("Vyse").classList.remove("hidden");
+		document.getElementById("Vmc").classList.remove("hidden");
+		document.getElementById("Vyse-header").classList.remove("hidden");
+		document.getElementById("Vmc-header").classList.remove("hidden");
+		document.getElementById("Vg").classList.add("hidden");
+		document.getElementById("Vg-header").classList.add("hidden");
+	} else {
+		document.getElementById("Vr").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vr, modelData.vSpeeds.interpolate.includes("vr"));
+		document.getElementById("Vy").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vy, modelData.vSpeeds.interpolate.includes("vy"));
+		document.getElementById("Vg").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vg, modelData.vSpeeds.interpolate.includes("vg"));
+		document.getElementById("Dmms").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"));
+		document.getElementById("Va").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.va, modelData.vSpeeds.interpolate.includes("va"));
+	}
 }
 
 function addWeatherTable(i) {
