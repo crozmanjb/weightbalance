@@ -232,7 +232,7 @@ function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
         + (performanceData.landingDistance/10).toFixed(0)*10 + " ft";
     document.getElementById("LDG50Distance-" + suffix).innerHTML = "Over 50': "
         + (performanceData.landing50Distance/10).toFixed(0)*10 + " ft";
-    document.getElementById("tgDistance-" + suffix).innerHTML = ((performanceData.takeoffDistance + performanceData.landingDistance)/10).toFixed(0)*10 + " ft";
+    document.getElementById("tgDistance-" + suffix).innerHTML = performanceData.tgDistance + " ft";
 	document.getElementById("climbFPM-" + suffix).innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
 	if (performanceData.SEClimbPerf) {
 		document.getElementById("SEClimbFPM-" + suffix).innerHTML = (performanceData.SEClimbPerf/10).toFixed(0)*10 + " FPM";

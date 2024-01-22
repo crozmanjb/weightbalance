@@ -199,7 +199,7 @@ function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
     document.getElementById("LDG50Distance-" + suffix).innerHTML = "Over 50': "
         + (performanceData.landing50Distance/10).toFixed(0)*10 + " ft";
     document.getElementById("rateClimb-" + suffix).innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
-    document.getElementById("tgDistance-" + suffix).innerHTML = ((performanceData.takeoffDistance + performanceData.landingDistance)/10).toFixed(0)*10 + " ft";
+    document.getElementById("tgDistance-" + suffix).innerHTML = performanceData.tgDistance + " ft";
 
 	if (performanceData.SEClimbPerf) {
 		document.getElementById("DA42-performance-" + suffix).classList.remove("hidden");

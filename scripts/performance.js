@@ -575,7 +575,8 @@ function performanceCompute(station_id, winds, heading){
 	console.log(aircraftObj);
     document.getElementById("climbFPM").innerHTML = (climbPerf/10).toFixed(0)*10 + " FPM";
 
-    document.getElementById("tgDistance").innerHTML = ((takeoffDistance + landingDistance)/10).toFixed(0)*10 + " ft";
+	tgDistance = ((takeoff50Distance + landing50Distance)/10).toFixed(0)*10;
+    document.getElementById("tgDistance").innerHTML = tgDistance + " ft";
 	var performanceData = JSON.parse(sessionStorage.getItem("performance"));
 	if (!performanceData) performanceData = {};
     const airportPerformance = {
@@ -584,6 +585,7 @@ function performanceCompute(station_id, winds, heading){
         "takeoff50Distance" : takeoff50Distance,
         "landingDistance" : landingDistance,
         "landing50Distance" : landing50Distance,
+		"tgDistance" : tgDistance,
         "climbPerf" : climbPerf,
 		"SEClimbPerf" : SEClimbPerf,
 		"climbGrad" : climbGrad,
