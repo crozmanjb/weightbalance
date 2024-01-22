@@ -678,20 +678,19 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
         return last_result*(parseFloat(scale.max) - parseFloat(scale.min))/100 + parseFloat(scale.min);
     }
     else if (modelString === "DA42"){
-        if (typeString === "climb"){
+		if (weight > 3748){
+			typeString += "Heavy";
+			maxWeight = 3935;
+		}
+		else{
+			maxWeight = 3748;
+		}
+        if (typeString === "climb" || typeString === "climbHeavy"){
             DA_Result = densityAltitudeChart(DA42(typeString, "DA"), pressureAlt, temp);
             last_result = weightChart(DA42(typeString, "weight"), DA_Result, weight, maxWeight);
-			console.log(DA_Result, last_result);
         }
         else{
-            if (weight > 3748){
-                typeString += "Heavy";
-            }
-            else{
-                maxWeight = 3748;
-            }
-
-            DA_Result = densityAltitudeChart(DA42(typeString, "DA"),pressureAlt, temp);
+            DA_Result = densityAltitudeChart(DA42(typeString, "DA"), pressureAlt, temp);
             weight_Result = weightChart(DA42(typeString, "weight"), DA_Result, weight, maxWeight);
 
             if (hWind > 0){
@@ -704,6 +703,7 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
                 last_result = weight_Result;
             }
         }
+		console.log(typeString, DA_Result, weight_Result, last_result);
         scale = DA42(typeString, "scale");
         return last_result*(parseFloat(scale.max) - parseFloat(scale.min))/100 + parseFloat(scale.min);
     }
@@ -712,55 +712,144 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
 function  densityAltitudeChart(PA_lines, pressureAlt, temp){
     /**Takes pressure Altitude and OAT and outputs first part of landing chart**/
     const PA_Values = Object.keys(PA_lines);
-    for (i = 0; i < PA_Values.length; i++) {
-        bottomPA = parseFloat(PA_Values[i]);
-        var useExp = false;
-        var useExp1= false;
-        if ("e" in PA_lines[bottomPA]){
-            useExp = true;
-        }
-        if (i + 1 >= PA_Values.length) {
-            /*We have reached the end of lines but haven't found our value, so just use top line*/
-            if (useExp){
-                return parseFloat(PA_lines[bottomPA].b) * Math.E ** (parseFloat(PA_lines[bottomPA].e) * temp);
-            }
-            else{
-                return parseFloat(PA_lines[bottomPA].m) * temp + parseFloat(PA_lines[bottomPA].b);
-            }
-        }
-        else {
-            topPA = parseFloat(PA_Values[i + 1]);
-            if ("e" in PA_lines[topPA]){
-                useExp1 = true;
-            }
-            if (pressureAlt < bottomPA) {
-                /*if less than 0 PA just use 0 PA*/
-                if (useExp){
-                    return parseFloat(PA_lines[bottomPA].b) * Math.E ** (parseFloat(PA_lines[bottomPA].e) * temp);
-                }
-                else {
-                    return parseFloat(PA_lines[bottomPA].m) * temp + parseFloat(PA_lines[bottomPA].b);
-                }
+	// Check if PA_lines type contains different equations for different temps
+	if (typeof PA_lines[PA_Values[0]][Object.keys(PA_lines[PA_Values[0]])[0]] == "object") {
+		for (i = 0; i < PA_Values.length; i++) {
+			bottomPA = parseFloat(PA_Values[i]);
+			let PA_temps = Object.keys(PA_lines[PA_Values[i]]);
+			PA_temps = PA_temps.map(e => {
+				return parseFloat(e);
+			}).sort(compareDecimals);
+			let lowerTemp;
+			for (j = 0; j < PA_temps.length; j++) {
+				if (temp >= PA_temps[j]) {
+					if (j + 1 < PA_temps.length) {
+						if (temp < PA_temps[j+1]) {
+							lowerTemp = PA_temps[j];
+							break;
+						}
+					} else {
+						lowerTemp = PA_temps[j];
+						break;
+					} 
+				}
+			}
+			var useExp = false;
+			var useExp1= false;
+			if ("e" in PA_lines[bottomPA][lowerTemp]){
+				useExp = true;
+			}
+			if (i + 1 >= PA_Values.length) {
+				/*We have reached the end of lines but haven't found our value, so just use top line*/
+				if (useExp){
+					return parseFloat(PA_lines[bottomPA][lowerTemp].b) * Math.E ** (parseFloat(PA_lines[bottomPA][lowerTemp].e) * temp);
+				}
+				else{
+					return parseFloat(PA_lines[bottomPA][lowerTemp].m) * temp + parseFloat(PA_lines[bottomPA][lowerTemp].b);
+				}
+			}
+			else {
+				let PA_temps = Object.keys(PA_lines[PA_Values[i + 1]]);
+				PA_temps = PA_temps.map(e => {
+					return parseFloat(e);
+				}).sort(compareDecimals);
+				let upperTemp;
+				for (j = 0; j < PA_temps.length; j++) {
+					if (temp >= PA_temps[j]) {
+						if (j + 1 < PA_temps.length) {
+							if (temp < PA_temps[j+1]) {
+								upperTemp = PA_temps[j];
+								break;
+							}
+						} else {
+							upperTemp = PA_temps[j];
+							break;
+						} 
+					}
+				}
+				topPA = parseFloat(PA_Values[i + 1]);
+				if ("e" in PA_lines[topPA][upperTemp]){
+					useExp1 = true;
+				}
+				if (pressureAlt < bottomPA) {
+					/*if less than 0 PA just use 0 PA*/
+					if (useExp){
+						return parseFloat(PA_lines[bottomPA][lowerTemp].b) * Math.E ** (parseFloat(PA_lines[bottomPA][lowerTemp].e) * temp);
+					}
+					else {
+						return parseFloat(PA_lines[bottomPA][lowerTemp].m) * temp + parseFloat(PA_lines[bottomPA][lowerTemp].b);
+					}
 
-            } else if ((pressureAlt >= bottomPA) && (pressureAlt < topPA)) {
-                /*Between two lines (usually we use this) */
-                skew = (pressureAlt - bottomPA) / (topPA - bottomPA);
-                if (useExp){
-                    bottomValue = parseFloat(PA_lines[bottomPA].b) * Math.E ** (parseFloat(PA_lines[bottomPA].e) * temp);
-                }
-                else{
-                    bottomValue = parseFloat(PA_lines[bottomPA].m) * temp + parseFloat(PA_lines[bottomPA].b);
-                }
-                if (useExp1){
-                    topValue = parseFloat(PA_lines[topPA].b) * Math.E ** (parseFloat(PA_lines[topPA].e) * temp);
-                }
-                else{
-                    topValue = parseFloat(PA_lines[topPA].m) * temp + parseFloat(PA_lines[topPA].b);
-                }
-                return ((topValue - bottomValue) * skew) + bottomValue;
-            }
-        }
-    }
+				} else if ((pressureAlt >= bottomPA) && (pressureAlt < topPA)) {
+					/*Between two lines (usually we use this) */
+					skew = (pressureAlt - bottomPA) / (topPA - bottomPA);
+					if (useExp){
+						bottomValue = parseFloat(PA_lines[bottomPA][lowerTemp].b) * Math.E ** (parseFloat(PA_lines[bottomPA][lowerTemp].e) * temp);
+					}
+					else{
+						bottomValue = parseFloat(PA_lines[bottomPA][lowerTemp].m) * temp + parseFloat(PA_lines[bottomPA][lowerTemp].b);
+					}
+					if (useExp1){
+						topValue = parseFloat(PA_lines[topPA][upperTemp].b) * Math.E ** (parseFloat(PA_lines[topPA][upperTemp].e) * temp);
+					}
+					else{
+						topValue = parseFloat(PA_lines[topPA][upperTemp].m) * temp + parseFloat(PA_lines[topPA][upperTemp].b);
+					}
+					return ((topValue - bottomValue) * skew) + bottomValue;
+				}
+			}
+		}
+	} else {
+		for (i = 0; i < PA_Values.length; i++) {
+			bottomPA = parseFloat(PA_Values[i]);
+			var useExp = false;
+			var useExp1= false;
+			if ("e" in PA_lines[bottomPA]){
+				useExp = true;
+			}
+			if (i + 1 >= PA_Values.length) {
+				/*We have reached the end of lines but haven't found our value, so just use top line*/
+				if (useExp){
+					return parseFloat(PA_lines[bottomPA].b) * Math.E ** (parseFloat(PA_lines[bottomPA].e) * temp);
+				}
+				else{
+					return parseFloat(PA_lines[bottomPA].m) * temp + parseFloat(PA_lines[bottomPA].b);
+				}
+			}
+			else {
+				topPA = parseFloat(PA_Values[i + 1]);
+				if ("e" in PA_lines[topPA]){
+					useExp1 = true;
+				}
+				if (pressureAlt < bottomPA) {
+					/*if less than 0 PA just use 0 PA*/
+					if (useExp){
+						return parseFloat(PA_lines[bottomPA].b) * Math.E ** (parseFloat(PA_lines[bottomPA].e) * temp);
+					}
+					else {
+						return parseFloat(PA_lines[bottomPA].m) * temp + parseFloat(PA_lines[bottomPA].b);
+					}
+
+				} else if ((pressureAlt >= bottomPA) && (pressureAlt < topPA)) {
+					/*Between two lines (usually we use this) */
+					skew = (pressureAlt - bottomPA) / (topPA - bottomPA);
+					if (useExp){
+						bottomValue = parseFloat(PA_lines[bottomPA].b) * Math.E ** (parseFloat(PA_lines[bottomPA].e) * temp);
+					}
+					else{
+						bottomValue = parseFloat(PA_lines[bottomPA].m) * temp + parseFloat(PA_lines[bottomPA].b);
+					}
+					if (useExp1){
+						topValue = parseFloat(PA_lines[topPA].b) * Math.E ** (parseFloat(PA_lines[topPA].e) * temp);
+					}
+					else{
+						topValue = parseFloat(PA_lines[topPA].m) * temp + parseFloat(PA_lines[topPA].b);
+					}
+					return ((topValue - bottomValue) * skew) + bottomValue;
+				}
+			}
+		}
+	}
 }
 
 function weightChart(lines, DA_Result, weight, maxWeight){
@@ -815,12 +904,14 @@ function weightChart(lines, DA_Result, weight, maxWeight){
                     return (parseFloat(lines[i].c) * Math.log(weight) + parseFloat(lines[i].b)) - (bottomIntercept - DA_Result);
                 }
                 else{
+					console.log("bottom", lines[i], bottomIntercept, DA_Result);
                     return parseFloat(lines[i].m) * weight + parseFloat(lines[i].b) - (bottomIntercept - DA_Result);
                 }
             }
             else if ((DA_Result >= bottomIntercept) && (DA_Result < topIntercept)){
                 /*Between two lines (usually we use this) */
                 skew = (DA_Result - bottomIntercept)/(topIntercept-bottomIntercept);
+				//console.log(bottomIntercept, topIntercept, skew, lines[i], lines[i+1]);
                 if (useExp1){
                     topValue = parseFloat(lines[i+1].b) * Math.E ** (parseFloat(lines[i+1].e) * weight);
                 }
@@ -1026,6 +1117,13 @@ if (sessionStorage.getItem("performance")){
 	document.getElementById("next-button").disabled = false;
 	document.getElementById("navbarRisk").classList.remove("disabled");
 	updateAirports();
+}
+
+function compareDecimals(a, b) {
+	if (a === b) 
+         return 0;
+
+    return a < b ? -1 : 1;
 }
 
 function updateDataTimestamp() {
