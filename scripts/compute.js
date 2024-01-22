@@ -1,9 +1,20 @@
 function fillData(){
     /**We run this initially to import the aircraft from aircraft.js and populate the dropdown(select) menu
      **/
-    for (i = 0; i < aircraft.length; i++){
-        document.getElementById("aircraftSelect").innerHTML += "<option>"+aircraft[i].tail+"</option>";
+	let models = [];
+	for (i = 0; i < aircraft.length; i++){
+		if (!models.includes(aircraft[i].model))
+			models.push(aircraft[i].model);
     }
+	
+	for (model of models) {
+		document.getElementById("aircraftSelect").innerHTML += `<optgroup label="${model}">`;
+		for (i = 0; i < aircraft.length; i++){
+			if (aircraft[i].model == model)
+				document.getElementById("aircraftSelect").innerHTML += "<option>"+aircraft[i].tail+"</option>";
+		}
+		document.getElementById("aircraftSelect").innerHTML += "</optgroup>";
+	}
 }
 
 function showAudit(){
