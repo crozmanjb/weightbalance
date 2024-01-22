@@ -558,9 +558,19 @@ function performanceCompute(station_id, winds, heading){
 	if (aircraftObj.model == "DA42") {
 		var climbPerf = getPerformanceNumbers(aircraftObj.model, "climb", pressureAlt, temp,
         takeoffWeight, winds.hWind, aircraftObj.maxTOWeight);
+		var SEClimbPerf = getPerformanceNumbers(aircraftObj.model, "SEClimb", pressureAlt, temp,
+        takeoffWeight, winds.hWind, aircraftObj.maxTOWeight);
+		document.getElementById("SEClimbFPM").innerHTML = (SEClimbPerf/10).toFixed(0)*10 + " FPM";
+		document.getElementById("SEClimbFPM").parentElement.classList.remove("hidden");
+		
+		var climbGrad = Math.round(SEClimbPerf / 85 * 0.95 * 10) / 10
+		document.getElementById("climbGrad").innerHTML = climbGrad;
+		document.getElementById("climbGrad").parentElement.classList.remove("hidden");
 	} else {
 		var climbPerf = getPerformanceNumbers(aircraftObj.model, "climb", pressureAlt, temp,
 			takeoffWeight, winds.hWind, aircraftObj.maxWeight);
+		var SEClimbPerf = "";
+		var climbGrad = "";
 	}
 	console.log(aircraftObj);
     document.getElementById("climbFPM").innerHTML = (climbPerf/10).toFixed(0)*10 + " FPM";
@@ -575,6 +585,8 @@ function performanceCompute(station_id, winds, heading){
         "landingDistance" : landingDistance,
         "landing50Distance" : landing50Distance,
         "climbPerf" : climbPerf,
+		"SEClimbPerf" : SEClimbPerf,
+		"climbGrad" : climbGrad,
         "pressureAlt" : pressureAlt,
         "headWind" : winds.hWind,
         "crossWind" : winds.xWind,
@@ -685,7 +697,7 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
 		else{
 			maxWeight = 3748;
 		}
-        if (typeString === "climb" || typeString === "climbHeavy"){
+        if (typeString === "climb" || typeString === "climbHeavy" || typeString === "SEClimb" || typeString === "SEClimbHeavy"){
             DA_Result = densityAltitudeChart(DA42(typeString, "DA"), pressureAlt, temp);
             last_result = weightChart(DA42(typeString, "weight"), DA_Result, weight, maxWeight);
         }

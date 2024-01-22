@@ -201,6 +201,11 @@ function fillPerformance(performanceData, isPrint, tailNumber, suffix) {
     document.getElementById("rateClimb-" + suffix).innerHTML = (performanceData.climbPerf/10).toFixed(0)*10 + " FPM";
     document.getElementById("tgDistance-" + suffix).innerHTML = ((performanceData.takeoffDistance + performanceData.landingDistance)/10).toFixed(0)*10 + " ft";
 
+	if (performanceData.SEClimbPerf) {
+		document.getElementById("DA42-performance-" + suffix).classList.remove("hidden");
+		document.getElementById("SERateClimb-" + suffix).innerHTML = (performanceData.SEClimbPerf/10).toFixed(0)*10 + " FPM";
+		document.getElementById("climbGrad-" + suffix).innerHTML = performanceData.climbGrad;
+	}
 }
 
 function fillRisk(riskData) {
@@ -368,7 +373,7 @@ function fillVSpeeds(computedData, modelData) {
 function addWeatherTable(i) {
 	var div = document.createElement("div");
 	div.classList.add("weatherDiv");
-	div.innerHTML = `<table class="table table-bordered table-sm table-striped"><tbody><tr><th colspan="4" class="centered" id="wIdent-${i}">Weather</th></tr><tr><th class="no-bottom-border">Time</th><th class="no-bottom-border">Wind Der/Vel</th><th class="no-bottom-border">Visibility</th><th></th></tr><tr><td id="wTime-${i}" class="no-top-border"></td><td id="wWind-${i}" class="no-top-border"></td><td id="wVisibility-${i}" class="no-top-border"></td><td></td></tr><tr><th class="no-bottom-border">Clouds</th><th class="no-bottom-border">Temp/Dew</th><th class="no-bottom-border">Altimeter</th><th></th></tr><tr><td id="wCeilings-${i}" class="no-top-border"></td><td id="wTempDew-${i}" class="no-top-border"></td><td id="wAltimeter-${i}" class="no-top-border"></td><td></td></tr><tr style="border-top: 2px solid black;"><th>Density Alt.</th><td id="wDensityAlt-${i}"></td><th>Pressure Alt.</th><td id="wPressureAlt-${i}"></td></tr><tr><th>Headwind</th><td id="headWind-${i}"></td><th>Crosswind</th><td id="crossWind-${i}"></td></tr><tr style="border-top: 2px solid black;"><th class="centered" colspan="2">Takeoff (<span id="runwayHdg-${i}"></span>)</th><th class="centered" colspan="2">Landing</th></tr><tr><th>Ground Roll</th><td id="TODistance-${i}"></td><th>Ground Roll</th><td id="LDGDistance-${i}"></td></tr><tr><th>Over 50'</th><td id="TO50Distance-${i}"></td><th>Over 50'</th><td id="LDG50Distance-${i}"></td></tr><tr style="border-top: 2px solid black;"><th>Touch and Go Distance</th><td id="tgDistance-${i}"></td><th>Rate of Climb</th><td id="rateClimb-${i}"></td></tr></tbody></table><p class="taf" id="TAF-${i}"></p>`;
+	div.innerHTML = `<table class="table table-bordered table-sm table-striped"><tr><th class=centered colspan=4 id=wIdent-${i}>Weather<tr><th class=no-bottom-border>Time<th class=no-bottom-border>Wind Dir/Vel<th class=no-bottom-border>Visibility<th><tr><td id=wTime-${i} class=no-top-border><td id=wWind-${i} class=no-top-border><td id=wVisibility-${i} class=no-top-border><td><tr><th class=no-bottom-border>Clouds<th class=no-bottom-border>Temp/Dew<th class=no-bottom-border>Altimeter<th><tr><td id=wCeilings-${i} class=no-top-border><td id=wTempDew-${i} class=no-top-border><td id=wAltimeter-${i} class=no-top-border><td><tr style="border-top:2px solid #000"><th>Density Alt.<td id=wDensityAlt-${i}><th>Pressure Alt.<td id=wPressureAlt-${i}><tr><th>Headwind<td id=headWind-${i}><th>Crosswind<td id=crossWind-${i}><tr style="border-top:2px solid #000"><th class=centered colspan=2>Takeoff (<span id=runwayHdg-${i}></span>)<th class=centered colspan=2>Landing<tr><th>Ground Roll<td id=TODistance-${i}><th>Ground Roll<td id=LDGDistance-${i}><tr><th>Over 50'<td id=TO50Distance-${i}><th>Over 50'<td id=LDG50Distance-${i}><tr style="border-top:2px solid #000"><th>Touch and Go Distance<td id=tgDistance-${i}><th>Rate of Climb<td id=rateClimb-${i}><tr class=hidden id=DA42-performance-${i}><th>Climb Gradient<td id=climbGrad-${i}><th>Single-Engine ROC<td id=SERateClimb-${i}></table><p class=taf id=TAF-${i}>`;
 	document.getElementById(i % 2 == 0 ? "weatherCol1" : "weatherCol2").appendChild(div);
 }
 
