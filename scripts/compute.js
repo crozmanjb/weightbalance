@@ -141,23 +141,24 @@ function reCompute(){
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
 		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
     }
-	console.log(userInput);
+	
     /*If DA42 we have to compute w/ JetA density*/
     if (aircraftObj.model === "DA42"){
         userInput["noseWeight"] = parseFloat(document.getElementById("noseStation").value);
 		if (!userInput["noseWeight"]) userInput["noseWeight"] = 0;
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
 		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
+		
         userInput["fuelWeight"] = parseFloat(document.getElementById("fuelStation").value) * 6.75;
-
         userInput["fuelBurnWeight"] = parseFloat(document.getElementById("fuelBurn").value) * 6.75;
-        if (aircraftObj.deIce){
+		
+        if (aircraftObj.deIce && document.getElementById("deIceStation").value){
             userInput["deIceWeight"] = parseFloat(document.getElementById("deIceStation").value) * 9.125;
         }
         else{
             userInput["deIceWeight"] = 0.0;
         }
-        if (aircraftObj.auxTanks){
+        if (aircraftObj.auxTanks && document.getElementById("deIceStation").value){
             userInput["auxFuelWeight"] = parseFloat(document.getElementById("auxFuelStation").value) * 6.75;
         }
         else{
@@ -183,6 +184,12 @@ function reCompute(){
         return;
     }
 
+	
+		
+	if (!localStorage.getItem("userInput") || localStorage.getItem("userInput") != JSON.stringify(userInput)) {
+		clearPerformance();
+	}
+	
     /*Store user input data */
     localStorage.setItem("userInput", JSON.stringify(userInput));
 
@@ -191,6 +198,11 @@ function reCompute(){
     var colors = {takeoff : "green", landing : "green", zero : "grey"};
 	
     /*We now validate the results based on CG limits and output the results*/
+	
+	if (!localStorage.getItem("computedData") || localStorage.getItem("computedData") != JSON.stringify(newData)) {
+		clearPerformance();
+	}
+	
 
     localStorage.setItem("computedData", JSON.stringify(newData));
 	updateDataTimestamp();
@@ -430,7 +442,12 @@ function reCompute(){
         "fwdCG" : toFwdCG,
         "aftCG" : toAftCG
     };
+	
     localStorage.setItem("colors", JSON.stringify(colors));
+	
+	if (!localStorage.getItem("CG") || localStorage.getItem("CG") != JSON.stringify(resultCG)) {
+		clearPerformance();
+	}
     localStorage.setItem("CG", JSON.stringify(resultCG));
 	updateDataTimestamp();
 
@@ -762,7 +779,7 @@ fillData()
 if (localStorage.getItem("userInput") !== null){
     loadUserData();
     aircraftSelection();
-    if (sessionStorage.getItem("performance") !== null){
+    if (sessionStorage.getItem("performance") && sessionStorage.getItem("performance") !== "{}" && sessionStorage.getItem("performance") !== ""){
         document.getElementById("navbarSummary").classList.remove("disabled");
 		document.getElementById("navbarRisk").classList.remove("disabled");
     }
@@ -778,6 +795,14 @@ else {
             backdrop: 'static'
         })
     }
+}
+
+function clearPerformance() {
+	console.log("Input changed; clearing weather and performance");
+	sessionStorage.setItem("weather", "{}");
+	sessionStorage.setItem("performance", "{}");
+	document.getElementById("navbarSummary").classList.add("disabled");
+	document.getElementById("navbarRisk").classList.add("disabled");
 }
 
 function updateDataTimestamp() {

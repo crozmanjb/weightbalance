@@ -1123,8 +1123,8 @@ document.getElementById("next-button").addEventListener("click", function(){
 	window.location.href = "risk.html";
 });
 
-if (sessionStorage.getItem("performance")){
-    document.getElementById("navbarSummary").classList.remove("disabled");
+if (sessionStorage.getItem("performance") && sessionStorage.getItem("performance") !== "{}" && sessionStorage.getItem("performance") !== ""){
+	document.getElementById("navbarSummary").classList.remove("disabled");
 	document.getElementById("next-button").disabled = false;
 	document.getElementById("navbarRisk").classList.remove("disabled");
 	updateAirports();
