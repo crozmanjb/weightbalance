@@ -703,7 +703,6 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
                 last_result = weight_Result;
             }
         }
-		console.log(typeString, DA_Result, weight_Result, last_result);
         scale = DA42(typeString, "scale");
         return last_result*(parseFloat(scale.max) - parseFloat(scale.min))/100 + parseFloat(scale.min);
     }
@@ -904,14 +903,12 @@ function weightChart(lines, DA_Result, weight, maxWeight){
                     return (parseFloat(lines[i].c) * Math.log(weight) + parseFloat(lines[i].b)) - (bottomIntercept - DA_Result);
                 }
                 else{
-					console.log("bottom", lines[i], bottomIntercept, DA_Result);
                     return parseFloat(lines[i].m) * weight + parseFloat(lines[i].b) - (bottomIntercept - DA_Result);
                 }
             }
             else if ((DA_Result >= bottomIntercept) && (DA_Result < topIntercept)){
                 /*Between two lines (usually we use this) */
                 skew = (DA_Result - bottomIntercept)/(topIntercept-bottomIntercept);
-				//console.log(bottomIntercept, topIntercept, skew, lines[i], lines[i+1]);
                 if (useExp1){
                     topValue = parseFloat(lines[i+1].b) * Math.E ** (parseFloat(lines[i+1].e) * weight);
                 }
