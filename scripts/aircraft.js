@@ -500,6 +500,28 @@ const aircraft = [
 	
 	{
 
+        tail: "N132TS",
+
+        model: "DA42",
+
+        emptyWeight: 2943.2,
+
+        maxTOWeight: 3935,
+		
+		maxLDGWeight: 3748,
+
+        aircraftArm: 95.05,
+        
+        autopilot: "none", 
+		
+		auxTanks: "true", 
+		
+		deIce: "true"
+
+    },
+	
+	{
+
         tail: "N240TS",
 
         model: "DA42",
@@ -535,28 +557,6 @@ const aircraft = [
         autopilot: "none", 
 		
 		auxTanks: "true"
-
-    },
-	
-	{
-
-        tail: "N132TS",
-
-        model: "DA42",
-
-        emptyWeight: 2943.2,
-
-        maxTOWeight: 3935,
-		
-		maxLDGWeight: 3748,
-
-        aircraftArm: 95.05,
-        
-        autopilot: "none", 
-		
-		auxTanks: "true", 
-		
-		deIce: "true"
 
     },
 	
