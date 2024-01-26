@@ -187,8 +187,18 @@ function drawCG(newData, userInput, modelData, colors){
 function drawEnvelope(c, ctx, modelData, newData){
 
     if (!(modelData.model === "DA42")) {
+		
+		if (modelData.model == "C172S") {
+			
+			var DA40Borders = {maxx : 50.8, maxy : 2800, minx : 31.5, miny : 1200};
+			
+		} else {
+			
+			var DA40Borders = {maxx : 104, maxy : 2800, minx : 92.5, miny : 1500}
+			
+		}
 
-        var DA40Borders = {maxx : 104, maxy : 2800, minx : 92.5, miny : 1500}
+        
 
         var pnt1 = convertCoordinates(c, modelData.cgRange.minFwd, modelData.cgRange.minWgt, DA40Borders);
 

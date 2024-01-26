@@ -117,6 +117,18 @@ function aircraftSelection(){
             document.getElementById("baggageStation2Div").style.display = "flex";
             document.getElementById("baggage2MaxNote").innerHTML = "Max 40 lbs. Max 100 lbs Combined.";
             break;
+		case "C172S":
+            document.getElementById("noseStationDiv").style.display = "none";
+            document.getElementById("deIceStationDiv").style.display = "none";
+            document.getElementById("auxFuelStationDiv").style.display = "none";
+            document.getElementById("baggageStation1").max = "100";
+            document.getElementById("baggage1MaxNote").innerHTML = "Max 120 lbs";
+            document.getElementById("baggageStation2Div").style.display = "flex";
+            document.getElementById("baggage2MaxNote").innerHTML = "Max 50 lbs. Max 120 lbs Combined.";
+            document.getElementById("fuelStation").max = "56";
+            document.getElementById("fuelMaxNote").innerHTML = "Max 56 Gallons";
+            document.getElementById("fuelBurn").max = "56";
+            break;
     }
     reCompute();
 }
@@ -137,7 +149,7 @@ function reCompute(){
 
     userInput["baggage1Weight"] = parseFloat(document.getElementById("baggageStation1").value);
 	if (!userInput["baggage1Weight"]) userInput["baggage1Weight"] = 0;
-    if ((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS")){
+    if ((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS") || (aircraftObj.model === "C172S")){
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
 		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
     }
@@ -603,7 +615,7 @@ function computeWB(aircraftObj, userInput){
         computedData["takeOffWeight"] = Math.round((computedData.zeroFuelWeight + userInput.fuelWeight + userInput.auxFuelWeight) * 100) / 100;
     }
     /*XL for the second baggage area*/
-    else if((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS")){
+    else if((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS") || (aircraftObj.model === "C172S")){
         computedData["baggage2Moment"] = Math.round((parseFloat(modelData.baggageStation2CG) * userInput.baggage2Weight + Number.EPSILON) * 100) / 100;
         computedData["zeroFuelMoment"] = computedData.emptyMoment + computedData.frontMoment
             + computedData.rearMoment + computedData.baggageMoment + computedData.baggage2Moment;

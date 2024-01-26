@@ -5,6 +5,22 @@
 const aircraft = [
 	
 	{
+		
+		tail: "N972TH", 
+		
+		model: "C172S", 
+		
+		emptyWeight: 1720.9,
+		
+		maxWeight: 2550, 
+		
+		aircraftArm: 41.9, 
+		
+		autopilot: "GFC"
+		
+	},
+	
+	{
 
         tail: "N383PS",
 
@@ -573,6 +589,80 @@ const aircraft = [
 const aircraftModels = [
 
     {
+
+        model: "C172S",
+
+        maxFuel: 56,
+
+        maxBaggage1: 120,
+		
+		maxBaggage2: 60,
+		
+		maxBaggage: 120,
+
+        frontStationCG: 37,
+
+        rearStationCG: 73,
+
+        baggageStationCG: 95,
+		
+		baggageStation2CG: 123,
+
+        fuelStationCG: 48,
+
+        fuelType: "100LL",
+
+        cgRange: {
+
+            minAft: 47.3,
+
+            midAft: 47.3,
+
+            maxAft: 47.3,
+
+            minFwd: 35.0,
+
+            midFwd: 35.0,
+
+            maxFwd: 41.0,
+
+            minWgt: 1500,
+
+            midWgt: 1950,
+
+            maxWgt: 2550
+
+        },
+
+        vSpeeds : {
+			
+			interpolate : ["va"],
+
+            vr : 55,
+			
+			vx : 65,
+
+            vy : 73,
+
+            vg : 68,
+
+            va : {
+
+                1900 : 90,
+
+                2200 : 98, 
+				
+				2550 : 105
+
+            }, 
+			
+			dmms : 56
+
+        }
+
+    },
+	
+	{
 
         model: "DA40F",
 

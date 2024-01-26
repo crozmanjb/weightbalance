@@ -540,19 +540,19 @@ function performanceCompute(station_id, winds, heading){
     var pressureAlt = fldAlt + ((29.92 - parseFloat(weatherData.altim_in_hg))*1000);
 
     var takeoffDistance = getPerformanceNumbers(aircraftObj.model, "takeoff", pressureAlt,
-        temp, takeoffWeight, winds.hWind, aircraftObj.maxWeight)*3.281;
+        temp, takeoffWeight, winds.hWind, aircraftObj.maxWeight)*(aircraftObj.model == "C172S" ? 1 : 3.281);
     document.getElementById("TODistance").innerHTML = "Ground Roll: "
         + (takeoffDistance/10).toFixed(0)*10 + " ft";
     var takeoff50Distance = getPerformanceNumbers(aircraftObj.model, "takeoff50", pressureAlt,
-        temp, takeoffWeight, winds.hWind, aircraftObj.maxWeight)*3.281;
+        temp, takeoffWeight, winds.hWind, aircraftObj.maxWeight)*(aircraftObj.model == "C172S" ? 1 : 3.281);
     document.getElementById("TO50Distance").innerHTML = "Over 50': "
         + (takeoff50Distance/10).toFixed(0)*10 + " ft";
     var landingDistance = getPerformanceNumbers(aircraftObj.model, "landing", pressureAlt,
-        temp, landingWeight, winds.hWind, aircraftObj.maxWeight)*3.281;
+        temp, landingWeight, winds.hWind, aircraftObj.maxWeight)*(aircraftObj.model == "C172S" ? 1 : 3.281);
     document.getElementById("LDGDistance").innerHTML = "Ground Roll: "
         + (landingDistance/10).toFixed(0)*10 + " ft";
     var landing50Distance = getPerformanceNumbers(aircraftObj.model, "landing50", pressureAlt,
-        temp, landingWeight, winds.hWind, aircraftObj.maxWeight)*3.281;
+        temp, landingWeight, winds.hWind, aircraftObj.maxWeight)*(aircraftObj.model == "C172S" ? 1 : 3.281);
     document.getElementById("LDG50Distance").innerHTML = "Over 50': "
         + (landing50Distance/10).toFixed(0)*10 + " ft";
 	if (aircraftObj.model == "DA42") {
@@ -605,6 +605,36 @@ function performanceCompute(station_id, winds, heading){
 	updateAirports();
 }
 
+function interpolate(x1, y1, x2, y2, x) {
+	let skew = (x - x1) / (x2 - x1);
+	return (y2 - y1) * skew + y1;		
+}
+
+function getUpperLower(dict, val) {
+	let keys = Object.keys(dict);
+	keys = keys.map(e => {
+		return parseFloat(e);
+	}).sort(compareDecimals);
+	let lower;
+	let upper;
+	for (i = 0; i < keys.length; i++) {
+		if (val > keys[i]) {
+			lower = keys[i];
+			if (i + 1 < keys.length) {
+				upper = keys[i+1];
+			}
+		}
+	}
+	if (lower == undefined) lower = keys[0];
+	if (upper == undefined) upper = keys[1];
+	return {
+		lowerKey: lower,
+		lowerVal: dict[lower],
+		upperKey: upper,
+		upperVal: dict[upper]
+	};
+}
+
 function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weight, hWind, maxWeight){
     /**
      * Takes data from perfdata.js. The function name is the type of aircraft.
@@ -616,7 +646,102 @@ function getPerformanceNumbers(modelString, typeString, pressureAlt, temp, weigh
      * "hwind"-> the wind portion of the chart
      *
      * **/
-    if (modelString === "DA40F"){
+	if (modelString == "C172S") {
+		if (typeString == "climb" || typeString === "landing" || typeString === "landing50") {
+			let chart = C172S(typeString);
+			let tempBounds = getUpperLower(chart, temp);
+			let lowerTemp = tempBounds.lowerKey;
+			let upperTemp = tempBounds.upperKey;
+			let lowerTempVal = tempBounds.lowerVal;
+			let upperTempVal = tempBounds.upperVal;
+			
+			let altBounds1 = getUpperLower(lowerTempVal, pressureAlt);
+			let lowerAlt = altBounds1.lowerKey;
+			let upperAlt = altBounds1.upperKey;
+			let lowerTempLowerAlt = altBounds1.lowerVal;
+			let lowerTempUpperAlt = altBounds1.upperVal;
+			
+			let altBounds2 = getUpperLower(upperTempVal, pressureAlt);
+			let upperTempLowerAlt = altBounds2.lowerVal;
+			let upperTempUpperAlt = altBounds2.upperVal;
+			
+			let tempResult1 = interpolate(lowerAlt, lowerTempLowerAlt, upperAlt, lowerTempUpperAlt, pressureAlt);
+			let tempResult2 = interpolate(lowerAlt, upperTempLowerAlt, upperAlt, upperTempUpperAlt, pressureAlt);
+			let final = interpolate(lowerTemp, tempResult1, upperTemp, tempResult2, temp);
+			
+			if (typeString != "climb" && hWind != 0) {
+				let windData = C172S("takeoffWind");
+				let windCorrection;
+				if (hWind > 0) {
+					windCorrection = hWind / windData[0][0] * windData[0][1];
+				} else {
+					windCorrection = hWind / windData[1][0] * windData[1][1];
+				}
+				final = final * (1 + windCorrection);
+			}
+			
+			return final;
+			
+		} else if (typeString == "takeoff" || typeString == "takeoff50") { // weight - temp - alt
+			let chart = C172S(typeString);
+			
+			let weightBounds = getUpperLower(chart, weight);
+			let lowerWeight = weightBounds.lowerKey;
+			let upperWeight = weightBounds.upperKey;
+			let lowerWeightVal = weightBounds.lowerVal;
+			let upperWeightVal = weightBounds.upperVal;
+			
+			let tempBounds1 = getUpperLower(lowerWeightVal, temp);
+			let lowerTemp = tempBounds1.lowerKey;
+			let upperTemp = tempBounds1.upperKey;
+			let lowerTemp1Val = tempBounds1.lowerVal;
+			let upperTemp1Val = tempBounds1.upperVal;
+			
+			let tempBounds2 = getUpperLower(upperWeightVal, temp);
+			let lowerTemp2Val = tempBounds2.lowerVal;
+			let upperTemp2Val = tempBounds2.upperVal;
+			
+			let altBounds1 = getUpperLower(lowerTemp1Val, pressureAlt);
+			let lowerAlt = altBounds1.lowerKey;
+			let upperAlt = altBounds1.upperKey;
+			let lowerWeightLowerTempLowerAlt = altBounds1.lowerVal;
+			let lowerWeightLowerTempUpperAlt = altBounds1.upperVal;
+			
+			let altBounds2 = getUpperLower(upperTemp1Val, pressureAlt);
+			let lowerWeightUpperTempLowerAlt = altBounds2.lowerVal;
+			let lowerWeightUpperTempUpperAlt = altBounds2.upperVal;
+			
+			let altBounds3 = getUpperLower(lowerTemp2Val, pressureAlt);
+			let upperWeightLowerTempLowerAlt = altBounds3.lowerVal;
+			let upperWeightLowerTempUpperAlt = altBounds3.upperVal;
+			
+			let altBounds4 = getUpperLower(upperTemp2Val, pressureAlt);
+			let upperWeightUpperTempLowerAlt = altBounds4.lowerVal;
+			let upperWeightUpperTempUpperAlt = altBounds4.upperVal;
+			
+			let altResult1 = interpolate(lowerAlt, lowerWeightLowerTempLowerAlt, upperAlt, lowerWeightLowerTempUpperAlt, pressureAlt);
+			let altResult2 = interpolate(lowerAlt, lowerWeightUpperTempLowerAlt, upperAlt, lowerWeightUpperTempUpperAlt, pressureAlt);
+			let altResult3 = interpolate(lowerAlt, upperWeightLowerTempLowerAlt, upperAlt, upperWeightLowerTempUpperAlt, pressureAlt);
+			let altResult4 = interpolate(lowerAlt, upperWeightUpperTempLowerAlt, upperAlt, upperWeightUpperTempUpperAlt, pressureAlt);
+			let weightResult1 = interpolate(lowerTemp, altResult1, upperTemp, altResult2, temp);
+			let weightResult2 = interpolate(lowerTemp, altResult3, upperTemp, altResult4, temp);
+			let final = interpolate(lowerWeight, weightResult1, upperWeight, weightResult2, weight);
+			
+			if (hWind != 0) {
+				let windData = C172S("takeoffWind");
+				let windCorrection;
+				if (hWind > 0) {
+					windCorrection = hWind / windData[0][0] * windData[0][1];
+				} else {
+					windCorrection = hWind / windData[1][0] * windData[1][1];
+				}
+				final = final * (1 + windCorrection);
+			}
+			
+			return final;
+		}
+		
+	} else if (modelString === "DA40F"){
         var last_result;
         if (typeString === "climb"){
             DA_Result = densityAltitudeChart(DA40FP(typeString, "DA"), pressureAlt, temp);
