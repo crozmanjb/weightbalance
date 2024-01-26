@@ -40,9 +40,28 @@ function updateTotal() {
 		document.getElementById("risk2").classList.remove("hidden");
 	}
 	
-	let riskData = {"riskScore": total, "riskCat": riskCat};
+	let riskData = {"riskScore": total, "riskCat": riskCat, "selectedCells": getSelectedCells()};
+	
 	sessionStorage.setItem("riskData", JSON.stringify(riskData));
 	updateDataTimestamp();
+}
+
+function getSelectedCells() {
+	let selected = document.getElementsByClassName("selected");
+	let selectedCells = [];
+	for (let i = 0; i < selected.length; i++) {
+		let cell = selected.item(i);
+		selectedCells.push([cell.dataset.row, cell.dataset.col]);
+	}
+	return selectedCells;
+}
+
+function populateCells() {
+	cells = JSON.parse(sessionStorage.getItem("riskData")).selectedCells;
+	for (let c of cells) {
+		let cell = document.querySelector(`.selectable-cell[data-row="${c[0]}"][data-col="${c[1]}"]`);
+		handleCellClick(cell);
+	}
 }
 
 function clear() {
@@ -77,3 +96,4 @@ document.getElementById("next-button").addEventListener("click", function(){
 });
 
 document.getElementById("clearButton").addEventListener("click", clear);
+populateCells();
