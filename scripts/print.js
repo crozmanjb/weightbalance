@@ -27,7 +27,8 @@ function fillData(){
 		fillPerformance(performanceData[airports[i]], false, tailNumber, i);
 	}
 	fillVSpeeds(computedData, modelData);
-	document.getElementById("header").innerHTML = tailNumber + " Weight and Balance " + ` (${new Date().toDateString()})`;
+	let timestamp = `${new Date().toLocaleDateString("en-us", {dateStyle: "medium"})} ${new Date().toLocaleTimeString("en-us", {timeStyle: "short"})} (${new Date().toLocaleString("en-us", {timeZone: "UTC", 	timeStyle: "short", dateStyle: "short", hour12: false})} GMT)`;
+	document.getElementById("header").innerHTML = tailNumber + " Weight and Balance " + ` - ${timestamp}`;
 }
 
 function fillWeather(weatherData, weatherTAF, isPrint, suffix){
