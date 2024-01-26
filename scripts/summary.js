@@ -390,7 +390,7 @@ function calculateSpeed(weight, speedObj, interpolate=false) {
 
 function fillVSpeeds(computedData, modelData) {
 	if (modelData.model == "DA42") {
-		document.getElementById("Dmms").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"));
+		document.getElementById("Vmc").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vmc, modelData.vSpeeds.interpolate.includes("vmc"));
 		document.getElementById("Vyse").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vyse, modelData.vSpeeds.interpolate.includes("vyse"));
 		
 		document.getElementById("Vyse").classList.remove("hidden");
@@ -453,7 +453,7 @@ function emailResults(){
         }
         bodyString += "Front: " + userData.frontStationWeight + " lbs %0d%0ARear: " + userData.rearStationWeight + " lbs %0d%0A";
         bodyString += "Baggage: " + userData.baggage1Weight + " lbs %0d%0A";
-        if ((aircraftObj.model === "DA40XL") || aircraftObj.model === "DA42"){
+        if ((aircraftObj.model === "DA40XL") || aircraftObj.model === "DA42" || aircraftObj.model === "C172S"){
             bodyString += "Baggage 2: " + userData.baggage2Weight + " lbs %0d%0A";
         }
         bodyString += "Zero Fuel: " + computedData.zeroFuelWeight + " lbs | CG: " + computedData.zeroFuelCG + " %0d%0A";
@@ -465,18 +465,29 @@ function emailResults(){
         bodyString += "Allowed CG Range: " + resultCG.fwdCG + " - " + resultCG.aftCG + "%0d%0A";
         bodyString += "Fuel Burn: " + userData.fuelBurnWeight + " lbs %0d%0A";
         bodyString += "Landing Weight: " + computedData.landingWeight + " lbs | Landing CG: " + computedData.landingCG +  "%0d%0A %0d%0A";
-
-		let Va = 0;
-		let vaSpeeds = Object.keys(modelData.vSpeeds.va);
-
-		for (i=0; i < vaSpeeds.length; i++){
-			if (computedData.takeOffWeight <= parseFloat(vaSpeeds[i])){
-				Va = modelData.vSpeeds.va[vaSpeeds[i]];
-				break;
-			}
-		}
 		bodyString += "V-Speeds: %0d%0A"
-		bodyString += `Vr: ${modelData.vSpeeds.vr} Vx: ${modelData.vSpeeds.vx} Vy: ${modelData.vSpeeds.vy} Vg: ${modelData.vSpeeds.vg} Va: ${Va}%0d%0A %0d%0A`;
+		if (aircraftObj.model.includes("DA40")) {
+			bodyString += `Vr: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vr, modelData.vSpeeds.interpolate.includes("vr"))} 
+					Vy: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vy, modelData.vSpeeds.interpolate.includes("vy"))} 
+					Vg: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vg, modelData.vSpeeds.interpolate.includes("vg"))} 
+					Va: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.va, modelData.vSpeeds.interpolate.includes("va"))} 
+					Dmms: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"))} %0d%0A %0d%0A`;
+		} else if (aircraftObj.model == ("DA42")) {
+			bodyString += `Vr: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vr, modelData.vSpeeds.interpolate.includes("vr"))} 
+					Vy: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vy, modelData.vSpeeds.interpolate.includes("vy"))} 
+					Va: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.va, modelData.vSpeeds.interpolate.includes("va"))} 
+					Vyse: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vyse, modelData.vSpeeds.interpolate.includes("vyse"))} 
+					Vmc: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vmc, modelData.vSpeeds.interpolate.includes("vmc"))} 
+					Dmms: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"))} %0d%0A %0d%0A`;
+		} else if (aircraftObj.model == "C172S") {
+			bodyString += `Vr: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vr, modelData.vSpeeds.interpolate.includes("vr"))} 
+					Vx: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vx, modelData.vSpeeds.interpolate.includes("vx"))} 
+					Vy: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vy, modelData.vSpeeds.interpolate.includes("vy"))} 
+					Vg: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vg, modelData.vSpeeds.interpolate.includes("vg"))} 
+					Va: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.va, modelData.vSpeeds.interpolate.includes("va"))} 
+					Dmms: ${calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"))} %0d%0A %0d%0A`;
+		}
+		
 		
 		if(riskData) {
 			bodyString += `Risk Assessment:%0d%0A`
@@ -532,7 +543,12 @@ function emailResults(){
 					}
 					bodyString += "Takeoff: Ground Roll: " + performanceData.takeoffDistance.toFixed(0) + " ft. Over 50': " + performanceData.takeoff50Distance.toFixed(0) + " ft.%0d%0A";
 					bodyString += "Landing: Ground Roll: " + performanceData.landingDistance.toFixed(0) + " ft. Over 50': " + performanceData.landing50Distance.toFixed(0) + " ft.%0d%0A";
-					bodyString += "Rate of Climb: " + performanceData.climbPerf.toFixed(0) + " FPM %0d%0A%0d%0A";
+					bodyString += "Rate of Climb: " + performanceData.climbPerf.toFixed(0) + " FPM %0d%0A";
+					if (aircraftObj.model == "DA42") {
+						bodyString += "Single-Engine Rate of Climb: " + (performanceData.SEClimbPerf/10).toFixed(0)*10 + " FPM %0d%0A";
+						bodyString += "Climb Gradient: " + performanceData.climbGrad + " %0d%0A";
+
+					}
 				}
 			}
         }
