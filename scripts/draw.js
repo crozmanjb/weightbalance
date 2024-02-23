@@ -2,7 +2,7 @@ function drawCG(newData, userInput, modelData, colors){
 
     image = new Image();
 
-    image.src = '../resources/grid.png';
+    image.src = 'resources/grid.png';
 
     var c = document.getElementById("cgCanvas");
 
