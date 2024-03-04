@@ -351,6 +351,7 @@ function fillVSpeeds(computedData, modelData) {
 	if (modelData.model == "DA42") {
 		document.getElementById("Dmms").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.dmms, modelData.vSpeeds.interpolate.includes("dmms"));
 		document.getElementById("Vyse").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vyse, modelData.vSpeeds.interpolate.includes("vyse"));
+		document.getElementById("Vmc").innerHTML = calculateSpeed(computedData.takeOffWeight, modelData.vSpeeds.vmc, modelData.vSpeeds.interpolate.includes("vmc"));
 		
 		document.getElementById("Vyse").classList.remove("hidden");
 		document.getElementById("Vmc").classList.remove("hidden");
