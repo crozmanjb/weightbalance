@@ -100,7 +100,7 @@ function fillWeather(weatherData, weatherTAF, isPrint, suffix){
             }
         } else {
             ceilingAttribute = rawCeilings["@attributes"];
-            if (ceilingAttribute["sky_cover"] === "CLR") {
+            if (ceilingAttribute["sky_cover"] === "CLR" || ceilingAttribute["sky_cover"] === "SKC") {
                 ceilingString = "Clear";
             } else {
                 ceilingString += "<p style='margin: 0'>" + ceilingAttribute["sky_cover"] + " @ "

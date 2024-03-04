@@ -257,7 +257,7 @@ function setWeather(weatherData) {
     }
     else{
         ceilingAttribute = rawCeilings["@attributes"];
-        if (ceilingAttribute["sky_cover"] === "CLR"){
+        if (ceilingAttribute["sky_cover"] === "CLR" || ceilingAttribute["sky_cover"] === "SKC"){
             ceilingString = "Clear";
         }
         else{
