@@ -1,6 +1,6 @@
 /*All aircraft listed here*/
 
-
+// Valid models are: C172S, DA40F, DA40CS, DA40XL, DA40XLS, DA42
 
 const aircraft = [
 	

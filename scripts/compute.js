@@ -116,6 +116,7 @@ function aircraftSelection(){
             document.getElementById("baggage1MaxNote").innerHTML = "Max 100 lbs";
             document.getElementById("baggageStation2Div").style.display = "flex";
             document.getElementById("baggage2MaxNote").innerHTML = "Max 40 lbs. Max 100 lbs Combined.";
+			document.getElementById("fuelBurn").max = "76";
             break;
 		case "C172S":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -170,7 +171,7 @@ function reCompute(){
         else{
             userInput["deIceWeight"] = 0.0;
         }
-        if (aircraftObj.auxTanks && document.getElementById("deIceStation").value){
+        if (aircraftObj.auxTanks && document.getElementById("auxFuelStation").value){
             userInput["auxFuelWeight"] = parseFloat(document.getElementById("auxFuelStation").value) * 6.75;
         }
         else{
@@ -192,7 +193,14 @@ function reCompute(){
     var validInputString = checkInputConstraints(modelData, userInput);
     if (!(validInputString === "")){
 //        clearResults();
-        resultWarning(validInputString);
+        resultWarning(validInputString[0], validInputString[1]);
+		document.getElementById("next-button").disabled = true;
+		if (!document.getElementById("navbarPerformance").classList.contains("disabled"))
+			document.getElementById("navbarPerformance").classList.add("disabled");
+		if (!document.getElementById("navbarRisk").classList.contains("disabled"))
+			document.getElementById("navbarRisk").classList.add("disabled");
+		if (!document.getElementById("navbarSummary").classList.contains("disabled"))
+			document.getElementById("navbarSummary").classList.add("disabled");
         return;
     }
 
@@ -475,53 +483,56 @@ function checkInputConstraints(modelData, userInput){
 
     if (modelData.model === "DA40F" || modelData.model === "DA40CS"){
         if (userInput.fuelWeight > modelData.maxFuel*6.0){
-            return "Max fuel exceeded."
+            return ["Max fuel exceeded.", "fuelStationDiv"];
         }
         if (userInput.baggage1Weight > modelData.maxBaggage){
-            return "Max baggage exceeded."
+            return ["Max baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.fuelBurnWeight > userInput.fuelWeight){
-            return "Fuel burn exceeds fuel available."
+            return ["Fuel burn exceeds fuel available.", "fuelBurnDiv"];
         }
     }
     else if ((modelData.model === "DA40XL") || (modelData.model === "DA40XLS")){
         if (userInput.fuelWeight > modelData.maxFuel*6.0){
-            return "Max fuel exceeded."
+            return ["Max fuel exceeded.", "fuelStationDiv"];
         }
         if (userInput.baggage1Weight > modelData.maxBaggage1){
-            return "Max baggage exceeded."
+            return ["Max baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.baggage2Weight > modelData.maxBaggage2){
-            return "Max extension baggage exceeded."
+            return ["Max extension baggage exceeded.", "baggageStation2Div"];
         }
         if ((userInput.baggage1Weight + userInput.baggage2Weight) > modelData.maxBaggage){
-            return "Max combined baggage exceeded."
+            return ["Max combined baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.fuelBurnWeight > userInput.fuelWeight){
-            return "Fuel burn exceeds fuel available."
+            return ["Fuel burn exceeds fuel available.", "fuelBurnDiv"];
         }
     }
     else if (modelData.model === "DA42"){
         if (userInput.fuelWeight > modelData.maxFuel*6.75){
-            return "Max fuel exceeded."
+            return ["Max fuel exceeded.", "fuelStationDiv"];
         }
         if (userInput.auxFuelWeight > modelData.maxAuxFuel*6.75){
-            return "Max aux fuel exceeded."
+            return ["Max aux fuel exceeded.", "auxFuelStationDiv"];
         }
         if (userInput.deIceWeight > modelData.maxDeIce*9.125){
-            return "Max de-ice exceeded."
+            return ["Max de-ice exceeded.", "deIceStationDiv"];
         }
         if (userInput.noseWeight > modelData.maxNoseBaggage){
-            return "Max nose baggage exceeded."
+            return ["Max nose baggage exceeded.", "noseStationDiv"];
+        }
+		if (userInput.baggage1Weight > modelData.maxBaggage1){
+            return ["Max baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.baggage2Weight > modelData.maxBaggage2){
-            return "Max extension baggage exceeded."
+            return ["Max extension baggage exceeded.", "baggageStation2Div"];
         }
         if ((userInput.baggage1Weight + userInput.baggage2Weight) > modelData.maxBaggage){
-            return "Max combined baggage exceeded."
+            return ["Max combined baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.fuelBurnWeight > (userInput.fuelWeight + userInput.auxFuelWeight)){
-            return "Fuel burn exceeds fuel available."
+            return ["Fuel burn exceeds fuel available.", "fuelBurnDiv"];
         }
     }
     return "";
@@ -756,15 +767,19 @@ function auditMode(computedData, userInput, fwdCG){
     }
 }
 
-function resultWarning(warningText){
+function resultWarning(warningText, warningDiv){
     /**Sets top result HTML to red and displays warning text**/
-    if (document.getElementById("overall_result").classList.contains("list-group-item-success")){
+    if (document.getElementById("overall_result").classList.contains("list-group-item-success"))
         document.getElementById("overall_result").classList.remove("list-group-item-success");
-    }
-    if (!document.getElementById("overall_result").classList.contains("list-group-item-danger")){
+	
+    if (!document.getElementById("overall_result").classList.contains("list-group-item-danger"))
         document.getElementById("overall_result").classList.add("list-group-item-danger");
-    }
+	
+	if (warningDiv && !document.getElementById(warningDiv).classList.contains("invalid"))
+		document.getElementById(warningDiv).classList.add("invalid")
+	
     document.getElementById("overall_result").innerHTML = "Not within limits. " + warningText;
+	
 }
 
 function resultSuccess(){
@@ -778,6 +793,11 @@ function resultSuccess(){
     document.getElementById("overall_result").innerHTML = "Aircraft within limits.";
 	document.getElementById("next-button").disabled = false;
 	document.getElementById("navbarPerformance").classList.remove("disabled");
+	let formElements = document.getElementById("form_input").children;
+	for (let i = 0; i < formElements.length; i++) {
+		if (formElements[i].classList.contains("invalid"))
+			formElements[i].classList.remove("invalid");
+	}
 }
 
 function userAgreement(){

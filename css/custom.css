@@ -37,6 +37,11 @@ canvas {
 	left: -1500px;
 }
 
+.invalid > div > input {
+	border: 1px solid red;
+	color: red;
+}
+
 .weather-row::before {
 	width: 100%;
 	content: "";
