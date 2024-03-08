@@ -86,22 +86,6 @@ const aircraft = [
 	
 	{
 
-        tail: "N420FP",
-
-        model: "DA40F",
-
-        emptyWeight: 1694,
-
-        maxWeight: 2535,
-
-        aircraftArm: 97.81,
-        
-        autopilot: "none"
-
-    },
-	
-	{
-
         tail: "N422FP",
 
         model: "DA40F",
@@ -321,6 +305,20 @@ const aircraft = [
         autopilot: "GFC"
 
     },
+	
+	{
+		tail: "N451DS",
+		
+		model: "DA40XLS", 
+		
+		emptyWeight: 1849,
+		
+		maxWeight: 2646,
+		
+		aircraftArm: 98.02, 
+		
+		autopilot: "GFC"
+	},
 
     {
 
@@ -343,7 +341,7 @@ const aircraft = [
 		
 		model: "DA40XLS", 
 		
-		emptyWeight: 1787.00,
+		emptyWeight: 1801,
 		
 		maxWeight: 2646,
 		
