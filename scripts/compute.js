@@ -2,6 +2,10 @@ function fillData(){
     /**We run this initially to import the aircraft from aircraft.js and populate the dropdown(select) menu
      **/
 	let models = [];
+	let sortedAircraft = [...aircraft].sort((a, b) => {
+		if (a.tail < b.tail) return -1;
+		return 1;
+	});
 	for (i = 0; i < aircraft.length; i++){
 		if (!models.includes(aircraft[i].model))
 			models.push(aircraft[i].model);
@@ -9,9 +13,9 @@ function fillData(){
 	
 	for (model of models) {
 		document.getElementById("aircraftSelect").innerHTML += `<optgroup label="${model}">`;
-		for (i = 0; i < aircraft.length; i++){
-			if (aircraft[i].model == model)
-				document.getElementById("aircraftSelect").innerHTML += "<option>"+aircraft[i].tail+"</option>";
+		for (i = 0; i < sortedAircraft.length; i++){
+			if (sortedAircraft[i].model == model)
+				document.getElementById("aircraftSelect").innerHTML += "<option>"+sortedAircraft[i].tail+"</option>";
 		}
 		document.getElementById("aircraftSelect").innerHTML += "</optgroup>";
 	}
