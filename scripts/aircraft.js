@@ -243,6 +243,22 @@ const aircraft = [
         autopilot: "none"
 
     },
+	
+	{
+
+        tail: "N858DT",
+
+        model: "DA40CS",
+
+        emptyWeight: 1820,
+
+        maxWeight: 2535,
+
+        aircraftArm: 98.69,
+        
+        autopilot: "none"
+
+    },
 
     {
 
