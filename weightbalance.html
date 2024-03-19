@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
 
 <head>
@@ -9,7 +8,7 @@
     <meta charset="utf-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+ 
 
 
     <!-- Bootstrap CSS -->
@@ -17,10 +16,12 @@
     <link rel="stylesheet" href="css/bootstrap.css">
 
     <link rel="stylesheet" href="css/custom.css">
+	
+	<link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
 
 
-    <title>Weight & Balance</title>
+    <title>Weight &amp; Balance</title>
 
 </head>
 
@@ -50,13 +51,19 @@
 
             <li class="nav-item active">
 
-                <a class="nav-link" href="weightbalance.html">Weight & Balance <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="weightbalance.html">Weight &amp; Balance <span class="sr-only">(current)</span></a>
 
             </li>
 
             <li class="nav-item ">
 
-                <a class="nav-link" href="performance.html">Weather & Performance <span class="sr-only">(current)</span></a>
+                <a class="nav-link disabled" href="performance.html" id="navbarPerformance">Weather &amp; Performance <span class="sr-only">(current)</span></a>
+
+            </li>
+			
+			<li class="nav-item">
+
+                <a class="nav-link disabled" href="risk.html" id="navbarRisk">Risk Assessment<span class="sr-only">(current)</span></a>
 
             </li>
 
@@ -78,11 +85,13 @@
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                    <a class="dropdown-item" target="_blank" href="https://aste.usu.edu/aviation/current-students/documents_forms">Documents and Forms</a>
+                    <a class="dropdown-item" target="_blank" href="https://caas.usu.edu/avte/documents">Documents and Forms</a>
 
-                    <a class="dropdown-item" target="_blank" href="http://www.talonsystems.com/usu/">ETA Talon</a>
+                    <a class="dropdown-item" target="_blank" href="https://usu.flightlogger.net/">FlightLogger</a>
 
                     <a class="dropdown-item" target="_blank" href="https://usu.co1.qualtrics.com/jfe/form/SV_6JqMu9UuqhUXvZr">Safety Report</a>
+					
+					<a class="dropdown-item" target="_blank" href="https://caas.usu.edu/avte/camera">Live Airport Camera</a>
 
                 </div>
 
@@ -116,17 +125,17 @@
 
                 and must be kept up to date with manufacturers' updates	and to reflect any after-market modifications to the aircraft.
 
-                The App and any information provided by or available through the App is for
+                This tool and any information provided by or available through this tool is for
 
                 additional reference only and you acknowledge and agree that you will
 
-                confirm and verify all results obtained by using the App against the aircraft's POH
+                confirm and verify all results obtained by using this tool against the aircraft's POH
 
                 before operating the aircraft in reliance on or in accordance with any such results.
 
-                The algorithms and parameters in the App are approximations of POH values,
+                The algorithms and parameters in this tool are approximations of POH values,
 
-                and are not warranted to be error free.	Parameters and algorithms in the App were derived from a
+                and are not warranted to be error free.	Parameters and algorithms in this tool were derived from a
 
                 POH that may be different than the POH for the aircraft, and may not reflect the equipment installed on the aircraft.
 
@@ -134,7 +143,7 @@
 
                 and algorithms used are appropriate for the aircraft.
 
-                The App is not a commercial software product, and has not been thoroughly tested.
+                This tool is not a commercial software product, and has not been thoroughly tested.
 
             </div>
 
@@ -174,8 +183,6 @@
 
                                 <option selected>Tail #</option>
 								
-								<option>Manual Entry</option>
-
                             </select>
 
                         </div>
@@ -188,84 +195,6 @@
 
                     </div>
 					
-					<div class="form-group row" id="manualEmptyWeightDiv" style="display: none">
-
-                        <label for="manualEmptyWeight" class="col-sm-4 col-form-label">Empty Weight:</label>
-
-                        <div class="col-sm-3">
-
-                            <input type="number" class="form-control" id="manualEmptyWeight" placeholder="lbs" min="0" form="form_input" onchange="reCompute()" required>
-
-                        </div>
-
-                        <small id="manualEmptyWeightNote" class="col-sm-5">
-
-                            Aircraft Empty Weight
-
-                        </small>
-
-                    </div>
-					
-					<div class="form-group row" id="manualCGDiv" style="display: none">
-
-                        <label for="manualCG" class="col-sm-4 col-form-label">CG:</label>
-
-                        <div class="col-sm-3">
-
-                            <input type="number" class="form-control" id="manualCG" placeholder="CG" min="0" form="form_input" onchange="reCompute()" required>
-
-                        </div>
-
-                        <small id="manualCGNote" class="col-sm-5">
-
-                            Aircraft CG
-
-                        </small>
-
-                    </div>
-					
-					<div class="form-group row" id="manualMaxWeightDiv" style="display: none">
-
-                        <label for="manualMaxWeight" class="col-sm-4 col-form-label">Max Weight:</label>
-
-                        <div class="col-sm-3">
-
-                            <input type="number" class="form-control" id="manualMaxWeight" placeholder="lbs" min="0" form="form_input" onchange="reCompute()" required>
-
-                        </div>
-
-                        <small id="manualMaxWeightNote" class="col-sm-5">
-
-                            Aircraft Max Weight
-
-                        </small>
-
-                    </div>
-					
-					<div class="form-group row" id="manualAircrafTypeDiv" style="display: none">
-						
-						<label for="manualAircraftTypeSelect" class="col-sm-4 col-form-label">Aircraft Type:</label>
-						
-						<div class="col-sm-3">
-
-							<select id="manualAircraftTypeSelect" class="form-control" onChange="reCompute();">
-
-								<option selected>(Select a type)</option>
-
-								<option>DA40F</option>
-
-								<option>DA40CS</option>
-
-								<option>DA40XL</option>
-
-								<option>DA40XLS</option>
-
-							</select>
-							
-						</div>
-
-                    </div>
-					
 					<hr>
 
                     <div class="form-group row" id="noseStationDiv" style="display: none">
@@ -274,7 +203,7 @@
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="noseStation" placeholder="lbs" min="0" max="66" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="noseStation" placeholder="lbs" min="0" max="66" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
@@ -292,7 +221,7 @@
 
                         <div class="col-sm-3">
 
-                            <input type="text" class="form-control" id="deIceStation" placeholder="US Gal" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="deIceStation" placeholder="US Gal" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
@@ -304,37 +233,37 @@
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="frontSeatsDiv">
 
-                        <label for="frontStation" class="col-sm-4 col-form-label">Front Seats:</label>
+                        <label for="frontStation" class="col-sm-4 col-form-label"><strong>Front Seats:</strong></label>
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="frontStation" placeholder="lbs" min="0" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="frontStation" placeholder="lbs" min="0" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="rearSeatsDiv">
 
-                        <label for="rearStation" class="col-sm-4 col-form-label">Rear Seats:</label>
+                        <label for="rearStation" class="col-sm-4 col-form-label"><strong>Rear Seats:</strong></label>
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="rearStation" placeholder="lbs" min="0" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="rearStation" placeholder="lbs" min="0" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="baggageStation1Div">
 
                         <label for="baggageStation1" class="col-sm-4 col-form-label">Baggage:</label>
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="baggageStation1" placeholder="lbs" min="0" max="66" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="baggageStation1" placeholder="lbs" min="0" max="66" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
@@ -352,7 +281,7 @@
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="baggageStation2" value="0" min="0" max="66" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="baggageStation2" placeholder="lbs" min="0" max="66" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
@@ -364,13 +293,13 @@
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="fuelStationDiv">
 
-                        <label for="fuelStation" class="col-sm-4 col-form-label">Fuel:</label>
+                        <label for="fuelStation" class="col-sm-4 col-form-label"><strong>Fuel:</strong></label>
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="fuelStation" placeholder="US Gal" min="0" max="40" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="fuelStation" placeholder="US Gal" min="0" max="40" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
@@ -388,7 +317,7 @@
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="auxFuelStation" placeholder="US Gal" min="0" max="26" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="auxFuelStation" placeholder="US Gal" min="0" max="26" form="form_input" onchange="reCompute()" required>
 
                         </div>
 
@@ -400,13 +329,13 @@
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="fuelBurnDiv">
 
-                        <label for="fuelBurn" class="col-sm-4 col-form-label">Fuel Burn:</label>
+                        <label for="fuelBurn" class="col-sm-4 col-form-label"><strong>Fuel Burn:</strong></label>
 
                         <div class="col-sm-3">
 
-                            <input type="number" class="form-control" id="fuelBurn" placeholder="US Gal" min="0" max="40" form="form_input" onchange="reCompute()" required>
+                            <input type="number" pattern='\d*' class="form-control" id="fuelBurn" placeholder="US Gal" min="0" form="form_input" oninput="reCompute()" required>
 
                         </div>
 
@@ -508,7 +437,7 @@
 
                         <tr>
 
-                            <th scope="row">Pilot & Front PAX</th>
+                            <th scope="row">Pilot &amp; Front PAX</th>
 
                             <td id="front_wt_td"></td>
 
@@ -685,8 +614,15 @@
             </div>
 
         </div>
-
+		
+		<div class="nav-button-row row">
+			<button id="previous-button" class="btn btn-secondary m-1">Previous</button>
+			<button id="next-button" class="btn btn-secondary m-1" disabled>Next</button>
+		</div>
+		
     </div>
+	
+	
 
 
 
@@ -702,11 +638,13 @@
 
 
 
-<script src="aircraft.js"></script>
+<script src="scripts/aircraft.js"></script>
 
-<script src="draw.js"></script>
+<script src="scripts/draw.js"></script>
 
-<script src="compute.js"></script>
+<script src="scripts/compute.js"></script>
+	
+<script src="scripts/data.js"></script>
 
 
 

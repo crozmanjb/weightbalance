@@ -1,9 +1,20 @@
 function fillData(){
     /**We run this initially to import the aircraft from aircraft.js and populate the dropdown(select) menu
      **/
-    for (i = 0; i < aircraft.length; i++){
-        document.getElementById("aircraftSelect").innerHTML += "<option>"+aircraft[i].tail+"</option>";
+	let models = [];
+	for (i = 0; i < aircraft.length; i++){
+		if (!models.includes(aircraft[i].model))
+			models.push(aircraft[i].model);
     }
+	
+	for (model of models) {
+		document.getElementById("aircraftSelect").innerHTML += `<optgroup label="${model}">`;
+		for (i = 0; i < aircraft.length; i++){
+			if (aircraft[i].model == model)
+				document.getElementById("aircraftSelect").innerHTML += "<option>"+aircraft[i].tail+"</option>";
+		}
+		document.getElementById("aircraftSelect").innerHTML += "</optgroup>";
+	}
 }
 
 function showAudit(){
@@ -22,43 +33,11 @@ function aircraftSelection(){
      **/
     var tailNumber = document.getElementById('aircraftSelect').value;
     
-    document.getElementById("auditDiv").style.display = "block";
-    document.getElementById("audit_btn").innerHTML = "Hide Details";
-    
     if (tailNumber === "Tail #"){
         document.getElementById("emptyAircraftInfo").innerHTML = "";
         clearResults();
         return;
     }
-		
-	if (tailNumber == "Manual Entry") {
-		document.getElementById("emptyAircraftInfo").innerHTML = "";
-		document.getElementById("manualEmptyWeightDiv").style.display = "flex";
-		document.getElementById("manualCGDiv").style.display = "flex";
-		document.getElementById("manualMaxWeightDiv").style.display = "flex";
-		document.getElementById("manualAircrafTypeDiv").style.display = "flex";
-		document.getElementById("noseStationDiv").style.display = "none";
-		document.getElementById("deIceStationDiv").style.display = "none";
-		document.getElementById("auxFuelStationDiv").style.display = "none";
-		document.getElementById("baggageStation1").max = "100";
-		document.getElementById("baggage1MaxNote").innerHTML = "Max 100 lbs";
-		document.getElementById("baggageStation2Div").style.display = "flex";
-		document.getElementById("baggage2MaxNote").innerHTML = "Max 40 lbs. Max 100 lbs Combined.";
-		document.getElementById("fuelStation").max = "";
-		document.getElementById("fuelMaxNote").innerHTML = "";
-		document.getElementById("fuelBurn").max = "";
-//		document.getElementById("baggageStation1").value = 0;
-//		document.getElementById("fuelStation").value = 50;
-//		document.getElementById("fuelBurn").value = 50;
-		reCompute();
-		return;
-	}
-	
-	document.getElementById("manualEmptyWeightDiv").style.display = "none";
-	document.getElementById("manualCGDiv").style.display = "none";
-	document.getElementById("manualMaxWeightDiv").style.display = "none";
-	document.getElementById("manualAircrafTypeDiv").style.display = "none";
-	
     var aircraftObj = aircraft.find(x => x.tail === tailNumber)
 
 	if (aircraftObj.autopilot == "none") {
@@ -81,10 +60,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "40";
             document.getElementById("fuelBurn").max = "40";
             document.getElementById("fuelMaxNote").innerHTML = "Max 40.2 Gallons";
-            //if (document.getElementById("fuelStation").value > 40){
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 40.2;
-            //}
             break;
         case "DA40CS":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -96,10 +71,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "40";
             document.getElementById("fuelBurn").max = "40";
             document.getElementById("fuelMaxNote").innerHTML = "Max 40.2 Gallons";
-            //if (document.getElementById("fuelStation").value > 40){
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 40.2;
-            //}
             break;
         case "DA40XL":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -112,10 +83,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "40.2";
             document.getElementById("fuelMaxNote").innerHTML = "Max 40.2 Gallons";
             document.getElementById("fuelBurn").max = "40.2";
-            //if (document.getElementById("fuelStation").value > 40){
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 40.2;
-            //}
             break;
         case "DA40XLS":
             document.getElementById("noseStationDiv").style.display = "none";
@@ -128,8 +95,6 @@ function aircraftSelection(){
             document.getElementById("fuelStation").max = "50";
             document.getElementById("fuelMaxNote").innerHTML = "Max 50 Gallons";
             document.getElementById("fuelBurn").max = "50";
-            document.getElementById("baggageStation1").value = 0;
-            document.getElementById("fuelStation").value = 50;
             break;
         case "DA42":
             document.getElementById("noseStationDiv").style.display = "flex";
@@ -151,6 +116,19 @@ function aircraftSelection(){
             document.getElementById("baggage1MaxNote").innerHTML = "Max 100 lbs";
             document.getElementById("baggageStation2Div").style.display = "flex";
             document.getElementById("baggage2MaxNote").innerHTML = "Max 40 lbs. Max 100 lbs Combined.";
+			document.getElementById("fuelBurn").max = "76";
+            break;
+		case "C172S":
+            document.getElementById("noseStationDiv").style.display = "none";
+            document.getElementById("deIceStationDiv").style.display = "none";
+            document.getElementById("auxFuelStationDiv").style.display = "none";
+            document.getElementById("baggageStation1").max = "100";
+            document.getElementById("baggage1MaxNote").innerHTML = "Max 120 lbs";
+            document.getElementById("baggageStation2Div").style.display = "flex";
+            document.getElementById("baggage2MaxNote").innerHTML = "Max 50 lbs. Max 120 lbs Combined.";
+            document.getElementById("fuelStation").max = "56";
+            document.getElementById("fuelMaxNote").innerHTML = "Max 56 Gallons";
+            document.getElementById("fuelBurn").max = "56";
             break;
     }
     reCompute();
@@ -162,28 +140,8 @@ function reCompute(){
      **/
 
     var tailNumber = document.getElementById('aircraftSelect').value;
-	var aircraftObj;
-	if (tailNumber == "Manual Entry") {
-			aircraftObj = {
-
-			tail: "Manual",
-
-			model: document.getElementById("manualAircraftTypeSelect").value,
-
-			emptyWeight: parseFloat(document.getElementById("manualEmptyWeight").value),
-
-			maxWeight: parseFloat(document.getElementById("manualMaxWeight").value),
-
-			aircraftArm: parseFloat(document.getElementById("manualCG").value),
-
-			autopilot: "none"
-
-		}
-	} else {
-		aircraftObj = aircraft.find(x => x.tail === tailNumber)
-	}
+	var aircraftObj = aircraft.find(x => x.tail === tailNumber)
     var userInput = {obj : aircraftObj}
-	console.info(aircraftObj);
 
     /*Collect all user input and put into dict/object */
     userInput["frontStationWeight"] = parseFloat(document.getElementById("frontStation").value);
@@ -191,23 +149,29 @@ function reCompute(){
 
 
     userInput["baggage1Weight"] = parseFloat(document.getElementById("baggageStation1").value);
-    if ((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS")){
+	if (!userInput["baggage1Weight"]) userInput["baggage1Weight"] = 0;
+    if ((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS") || (aircraftObj.model === "C172S")){
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
+		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
     }
+	
     /*If DA42 we have to compute w/ JetA density*/
     if (aircraftObj.model === "DA42"){
         userInput["noseWeight"] = parseFloat(document.getElementById("noseStation").value);
+		if (!userInput["noseWeight"]) userInput["noseWeight"] = 0;
         userInput["baggage2Weight"] = parseFloat(document.getElementById("baggageStation2").value);
+		if (!userInput["baggage2Weight"]) userInput["baggage2Weight"] = 0;
+		
         userInput["fuelWeight"] = parseFloat(document.getElementById("fuelStation").value) * 6.75;
-
         userInput["fuelBurnWeight"] = parseFloat(document.getElementById("fuelBurn").value) * 6.75;
-        if (aircraftObj.deIce){
+		
+        if (aircraftObj.deIce && document.getElementById("deIceStation").value){
             userInput["deIceWeight"] = parseFloat(document.getElementById("deIceStation").value) * 9.125;
         }
         else{
             userInput["deIceWeight"] = 0.0;
         }
-        if (aircraftObj.auxTanks){
+        if (aircraftObj.auxTanks && document.getElementById("auxFuelStation").value){
             userInput["auxFuelWeight"] = parseFloat(document.getElementById("auxFuelStation").value) * 6.75;
         }
         else{
@@ -216,8 +180,10 @@ function reCompute(){
 
     }/*Otherwise just use avgas/100LL density*/
     else{
-        userInput["fuelWeight"] = Math.round(parseFloat(document.getElementById("fuelStation").value) * 60.0) / 10;
-        userInput["fuelBurnWeight"] = Math.round(parseFloat(document.getElementById("fuelBurn").value) * 60.0) / 10;
+		if (document.getElementById("fuelStation").value)
+			userInput["fuelWeight"] = Math.round(parseFloat(document.getElementById("fuelStation").value) * 60.0) / 10;
+		if (document.getElementById("fuelBurn").value)
+			userInput["fuelBurnWeight"] = Math.round(parseFloat(document.getElementById("fuelBurn").value) * 60.0) / 10;
     }
 
     var cgValid = true;
@@ -226,24 +192,40 @@ function reCompute(){
     /*check input validation. Checking ranges of input values. */
     var validInputString = checkInputConstraints(modelData, userInput);
     if (!(validInputString === "")){
-        clearResults();
-        resultWarning(validInputString);
+//        clearResults();
+        resultWarning(validInputString[0], validInputString[1]);
+		document.getElementById("next-button").disabled = true;
+		if (!document.getElementById("navbarPerformance").classList.contains("disabled"))
+			document.getElementById("navbarPerformance").classList.add("disabled");
+		if (!document.getElementById("navbarRisk").classList.contains("disabled"))
+			document.getElementById("navbarRisk").classList.add("disabled");
+		if (!document.getElementById("navbarSummary").classList.contains("disabled"))
+			document.getElementById("navbarSummary").classList.add("disabled");
         return;
     }
 
+	
+		
+	if (!localStorage.getItem("userInput") || localStorage.getItem("userInput") != JSON.stringify(userInput)) {
+		clearPerformance();
+	}
+	
     /*Store user input data */
     localStorage.setItem("userInput", JSON.stringify(userInput));
-	console.info("userInput", userInput);
 
     /*computes all weights/CGs/Moments and returns dict with values*/
     var newData = computeWB(aircraftObj, userInput);
     var colors = {takeoff : "green", landing : "green", zero : "grey"};
-
-	console.info("newData", newData);
 	
     /*We now validate the results based on CG limits and output the results*/
+	
+	if (!localStorage.getItem("computedData") || localStorage.getItem("computedData") != JSON.stringify(newData)) {
+		clearPerformance();
+	}
+	
 
     localStorage.setItem("computedData", JSON.stringify(newData));
+	updateDataTimestamp();
 
     var zeroFwdCG;
     var toFwdCG;
@@ -480,9 +462,14 @@ function reCompute(){
         "fwdCG" : toFwdCG,
         "aftCG" : toAftCG
     };
+	
     localStorage.setItem("colors", JSON.stringify(colors));
+	
+	if (!localStorage.getItem("CG") || localStorage.getItem("CG") != JSON.stringify(resultCG)) {
+		clearPerformance();
+	}
     localStorage.setItem("CG", JSON.stringify(resultCG));
-
+	updateDataTimestamp();
 
     drawCG(newData, userInput, modelData, colors);
     auditMode(newData, userInput, toFwdCG);
@@ -496,53 +483,56 @@ function checkInputConstraints(modelData, userInput){
 
     if (modelData.model === "DA40F" || modelData.model === "DA40CS"){
         if (userInput.fuelWeight > modelData.maxFuel*6.0){
-            return "Max fuel exceeded."
+            return ["Max fuel exceeded.", "fuelStationDiv"];
         }
         if (userInput.baggage1Weight > modelData.maxBaggage){
-            return "Max baggage exceeded."
+            return ["Max baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.fuelBurnWeight > userInput.fuelWeight){
-            return "Fuel burn exceeds fuel available."
+            return ["Fuel burn exceeds fuel available.", "fuelBurnDiv"];
         }
     }
     else if ((modelData.model === "DA40XL") || (modelData.model === "DA40XLS")){
         if (userInput.fuelWeight > modelData.maxFuel*6.0){
-            return "Max fuel exceeded."
+            return ["Max fuel exceeded.", "fuelStationDiv"];
         }
         if (userInput.baggage1Weight > modelData.maxBaggage1){
-            return "Max baggage exceeded."
+            return ["Max baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.baggage2Weight > modelData.maxBaggage2){
-            return "Max extension baggage exceeded."
+            return ["Max extension baggage exceeded.", "baggageStation2Div"];
         }
         if ((userInput.baggage1Weight + userInput.baggage2Weight) > modelData.maxBaggage){
-            return "Max combined baggage exceeded."
+            return ["Max combined baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.fuelBurnWeight > userInput.fuelWeight){
-            return "Fuel burn exceeds fuel available."
+            return ["Fuel burn exceeds fuel available.", "fuelBurnDiv"];
         }
     }
     else if (modelData.model === "DA42"){
         if (userInput.fuelWeight > modelData.maxFuel*6.75){
-            return "Max fuel exceeded."
+            return ["Max fuel exceeded.", "fuelStationDiv"];
         }
         if (userInput.auxFuelWeight > modelData.maxAuxFuel*6.75){
-            return "Max aux fuel exceeded."
+            return ["Max aux fuel exceeded.", "auxFuelStationDiv"];
         }
         if (userInput.deIceWeight > modelData.maxDeIce*9.125){
-            return "Max de-ice exceeded."
+            return ["Max de-ice exceeded.", "deIceStationDiv"];
         }
         if (userInput.noseWeight > modelData.maxNoseBaggage){
-            return "Max nose baggage exceeded."
+            return ["Max nose baggage exceeded.", "noseStationDiv"];
+        }
+		if (userInput.baggage1Weight > modelData.maxBaggage1){
+            return ["Max baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.baggage2Weight > modelData.maxBaggage2){
-            return "Max extension baggage exceeded."
+            return ["Max extension baggage exceeded.", "baggageStation2Div"];
         }
         if ((userInput.baggage1Weight + userInput.baggage2Weight) > modelData.maxBaggage){
-            return "Max combined baggage exceeded."
+            return ["Max combined baggage exceeded.", "baggageStation1Div"];
         }
         if (userInput.fuelBurnWeight > (userInput.fuelWeight + userInput.auxFuelWeight)){
-            return "Fuel burn exceeds fuel available."
+            return ["Fuel burn exceeds fuel available.", "fuelBurnDiv"];
         }
     }
     return "";
@@ -556,14 +546,6 @@ function loadUserData(){
     var aircraftObj = userData.obj;
 	
 	document.getElementById("aircraftSelect").value = aircraftObj.tail;
-
-	if (aircraftObj.tail == "Manual") {
-		document.getElementById("aircraftSelect").value = "Manual Entry";
-		document.getElementById("manualEmptyWeight").value = aircraftObj.emptyWeight;
-		document.getElementById("manualCG").value = aircraftObj.aircraftArm;
-		document.getElementById("manualMaxWeight").value = aircraftObj.maxWeight;
-		document.getElementById("manualAircraftTypeSelect").value = aircraftObj.model;
-	}
     document.getElementById("frontStation").value = userData.frontStationWeight;
     document.getElementById("rearStation").value = userData.rearStationWeight;
     document.getElementById("baggageStation1").value = userData.baggage1Weight;
@@ -644,7 +626,7 @@ function computeWB(aircraftObj, userInput){
         computedData["takeOffWeight"] = Math.round((computedData.zeroFuelWeight + userInput.fuelWeight + userInput.auxFuelWeight) * 100) / 100;
     }
     /*XL for the second baggage area*/
-    else if((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS")){
+    else if((aircraftObj.model === "DA40XL") || (aircraftObj.model === "DA40XLS") || (aircraftObj.model === "C172S")){
         computedData["baggage2Moment"] = Math.round((parseFloat(modelData.baggageStation2CG) * userInput.baggage2Weight + Number.EPSILON) * 100) / 100;
         computedData["zeroFuelMoment"] = computedData.emptyMoment + computedData.frontMoment
             + computedData.rearMoment + computedData.baggageMoment + computedData.baggage2Moment;
@@ -684,6 +666,9 @@ function clearResults(){
     document.getElementById("result_zero").innerHTML = "Zero Fuel:";
     document.getElementById("result_takeoff").innerHTML = "Takeoff:";
     document.getElementById("result_landing").innerHTML = "Landing:";
+	localStorage.clear();
+	sessionStorage.clear();
+	location.reload();
 }
 
 function auditMode(computedData, userInput, fwdCG){
@@ -691,26 +676,7 @@ function auditMode(computedData, userInput, fwdCG){
 
 	
     var tailNumber = document.getElementById('aircraftSelect').value;
-	var aircraftObj;
-	if (tailNumber == "Manual Entry") {
-			aircraftObj = {
-
-			tail: "Manual",
-
-			model: document.getElementById("manualAircraftTypeSelect").value,
-
-			emptyWeight: parseFloat(document.getElementById("manualEmptyWeight").value),
-
-			maxWeight: parseFloat(document.getElementById("manualMaxWeight").value),
-
-			aircraftArm: parseFloat(document.getElementById("manualCG").value),
-
-			autopilot: "none"
-
-		}
-	} else {
-		aircraftObj = aircraft.find(x => x.tail === tailNumber)
-	}
+	var aircraftObj = aircraft.find(x => x.tail === tailNumber)
     var modelData = aircraftModels.find(x => x.model === aircraftObj.model);
 
     document.getElementById("auditTitle").innerHTML = tailNumber + " Weight and Balance";
@@ -801,15 +767,19 @@ function auditMode(computedData, userInput, fwdCG){
     }
 }
 
-function resultWarning(warningText){
+function resultWarning(warningText, warningDiv){
     /**Sets top result HTML to red and displays warning text**/
-    if (document.getElementById("overall_result").classList.contains("list-group-item-success")){
+    if (document.getElementById("overall_result").classList.contains("list-group-item-success"))
         document.getElementById("overall_result").classList.remove("list-group-item-success");
-    }
-    if (!document.getElementById("overall_result").classList.contains("list-group-item-danger")){
+	
+    if (!document.getElementById("overall_result").classList.contains("list-group-item-danger"))
         document.getElementById("overall_result").classList.add("list-group-item-danger");
-    }
+	
+	if (warningDiv && !document.getElementById(warningDiv).classList.contains("invalid"))
+		document.getElementById(warningDiv).classList.add("invalid")
+	
     document.getElementById("overall_result").innerHTML = "Not within limits. " + warningText;
+	
 }
 
 function resultSuccess(){
@@ -821,10 +791,18 @@ function resultSuccess(){
         document.getElementById("overall_result").classList.add("list-group-item-success");
     }
     document.getElementById("overall_result").innerHTML = "Aircraft within limits.";
+	document.getElementById("next-button").disabled = false;
+	document.getElementById("navbarPerformance").classList.remove("disabled");
+	let formElements = document.getElementById("form_input").children;
+	for (let i = 0; i < formElements.length; i++) {
+		if (formElements[i].classList.contains("invalid"))
+			formElements[i].classList.remove("invalid");
+	}
 }
 
 function userAgreement(){
     sessionStorage.setItem("userAgree", "true");
+	updateDataTimestamp();
 }
 
 /*call to fill in the dropdown selector with tail numbers*/
@@ -833,19 +811,40 @@ fillData()
 if (localStorage.getItem("userInput") !== null){
     loadUserData();
     aircraftSelection();
-    if (sessionStorage.getItem("performanceData") !== null){
+    if (sessionStorage.getItem("performance") && sessionStorage.getItem("performance") !== "{}" && sessionStorage.getItem("performance") !== ""){
         document.getElementById("navbarSummary").classList.remove("disabled");
+		document.getElementById("navbarRisk").classList.remove("disabled");
     }
     if (sessionStorage.getItem("userAgree") === null){
-        //$('#Modal').modal({
-        //    backdrop: 'static'
-        //})
+        $('#Modal').modal({
+            backdrop: 'static'
+        })
     }
 }
 else {
     if (sessionStorage.getItem("userAgree") === null) {
-        //$('#Modal').modal({
-        //    backdrop: 'static'
-        //})
+        $('#Modal').modal({
+            backdrop: 'static'
+        })
     }
 }
+
+function clearPerformance() {
+	console.log("Input changed; clearing weather and performance");
+	sessionStorage.setItem("weather", "{}");
+	sessionStorage.setItem("performance", "{}");
+	document.getElementById("navbarSummary").classList.add("disabled");
+	document.getElementById("navbarRisk").classList.add("disabled");
+}
+
+function updateDataTimestamp() {
+	sessionStorage.setItem("modified", new Date().getTime());
+	localStorage.setItem("modified", new Date().getTime());
+}
+
+document.getElementById("previous-button").addEventListener("click", function(){
+	window.location.href = "index.html";
+});
+document.getElementById("next-button").addEventListener("click", function(){
+	window.location.href = "performance.html";
+});

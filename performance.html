@@ -7,7 +7,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/custom.css">
-    <title>Weather & Performance</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
+	<link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+    <title>Weather &amp; Performance</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -22,10 +24,13 @@
                 <a class="nav-link " href="index.html" id="navbarHelp">Instructions <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link" href="weightbalance.html">Weight & Balance <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="weightbalance.html">Weight &amp; Balance <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="performance.html">Weather & Performance <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="performance.html">Weather &amp; Performance <span class="sr-only">(current)</span></a>
+            </li>
+			<li class="nav-item">
+                <a class="nav-link disabled" href="risk.html" id="navbarRisk">Risk Assessment<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link disabled" href="summary.html" id="navbarSummary">Summary <span class="sr-only">(current)</span></a>
@@ -35,9 +40,10 @@
                     USU Links
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" target="_blank" href="https://aste.usu.edu/aviation/current-students/documents_forms">Documents and Forms</a>
-                    <a class="dropdown-item" target="_blank" href="http://www.talonsystems.com/usu/">ETA Talon</a>
+                    <a class="dropdown-item" target="_blank" href="https://caas.usu.edu/avte/documents">Documents and Forms</a>
+                    <a class="dropdown-item" target="_blank" href="https://usu.flightlogger.net/">FlightLogger</a>
                     <a class="dropdown-item" target="_blank" href="https://usu.co1.qualtrics.com/jfe/form/SV_6JqMu9UuqhUXvZr">Safety Report</a>
+					<a class="dropdown-item" target="_blank" href="https://caas.usu.edu/avte/camera">Live Airport Camera</a>
                 </div>
             </li>
         </ul>
@@ -47,54 +53,67 @@
 <main role="main" class="container">
     <div class="container">
         <div class="row">
+			
+			<div class="col-1 airport-col">
+				Airports (click to remove)
+				<div id="airport-container" class="airport-container"></div>
+			</div>
             <div class="col-lg">
                 <h4>Weather</h4>
                 <div class="input-group mb-3" id = "weatherDiv">
-                    <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" class="form-control " placeholder="Station ID" id="weatherID" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" class="form-control " placeholder="Station ID" id="weatherID">
                     <div class="input-group-append">
                         <button type="button" id="weatherSubmit" class="btn btn-secondary" onclick="getWeather()">Submit</button>
                     </div>
                 </div>
+				<p style="font-style: italic">Weather and performance for all airports will be displayed on the 'Summary' page</p>
                 <div id="weatherInput" style="display: none">
                     <p id="weatherAltTitle"></p>
-                    <form id="altWeatherForm">
-                        <div class="form-group row">
-                            <label for="temperature" class="col-sm-4 col-form-label">Temperature:</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="temperature" form="altWeatherForm" placeholder="&deg C" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="fieldAlt" class="col-sm-4 col-form-label">Field Elevation:</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="fieldAlt" form="altWeatherForm" placeholder="feet" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="altimeter" class="col-sm-4 col-form-label">Altimeter Setting:</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="altimeter" form="altWeatherForm" placeholder="inHg" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="windHeading" class="col-sm-4 col-form-label">Wind Heading:</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="windHeading" form="altWeatherForm" placeholder="&deg" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="windSpeed" class="col-sm-4 col-form-label">Wind Speed:</label>
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" id="windSpeed" form="altWeatherForm" placeholder="kts" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <button type="button" class="btn btn-secondary" onclick="weatherInputClick()">Submit</button>
-                            <small class="col-sm-6 col-form-label text-success" id="weatherInfo">
-                            </small>
-                        </div>
-                    </form>
+					<table class="table table-sm table-striped table-bordered">
+                    	<form id="altWeatherForm">
+							<tbody>
+							<tr>
+								<th scope="col" >Wind Dir and Vel</th>
+								<th id="alt-wWind"><input type="text" class="form-control" id="windHeading" form="altWeatherForm" placeholder="direction" required>&deg; @ <input type="text" class="form-control" id="windSpeed" form="altWeatherForm" placeholder="speed" required>kts</th>
+							</tr>
+							<tr>
+								<th scope="col">Visibility</th>
+								<th id="alt-wVisibility"><input type="text" class="form-control" id="visibility" form="altWeatherForm" placeholder="sm"></th>
+							</tr>
+							<tr>
+								<th scope="col">Temperature</th>
+								<th id="alt-wTemp"><input type="text" class="form-control" id="temperature" form="altWeatherForm" placeholder="&deg C" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Dew Point</th>
+								<th id="alt-wDewpoint"><input type="text" class="form-control" id="dewpoint" form="altWeatherForm" placeholder="&deg C" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Altimeter</th>
+								<th id="alt-wAltimeter"><input type="text" class="form-control" id="altimeter" form="altWeatherForm" placeholder="inHg" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Elevation</th>
+								<th id="alt-wElevation"><input type="text" class="form-control" id="fieldAlt" form="altWeatherForm" placeholder="feet" required></th>
+							</tr>
+							<tr>
+								<th scope="col">Density Alt.</th>
+								<th id="alt-wDensityAlt"></th>
+							</tr>
+							<tr>
+								<th scope="col">Pressure Alt.</th>
+								<th id="alt-wPressureAlt"></th>
+							</tr>
+							</tbody><br>
+						</form>
+                    </table>
+					<div class="form-group row">
+						<button type="button" class="btn btn-secondary" onclick="weatherInputClick()">Submit</button>
+						<small class="col-sm-6 col-form-label text-success" id="weatherInfo">
+						</small>
+					</div>
                 </div>
+				<div class="errorMessage hidden" id="errorDiv1"></div>
                 <div id="weatherData" style="display: none">
                     <p id="wRaw"></p>
                     <table class="table table-sm table-striped table-bordered">
@@ -162,8 +181,9 @@
 					<label for="runwayHdg" class="col-sm-4 col-form-label" style="display: inline-block; max-width: 150px">Runway Heading: </label>
                     <input type="number" class="form-control" id="runwayHdg" min="1" max="360" placeholder="Degrees" onchange="runwayChange(this.value)" style="max-width: 125px; display: inline-block;">
 					</div>
-                    <p id="weatherWarning" style="=display: none"></p>
                 </div>
+				<p id="weatherWarning" style="=display: none"></p>
+				<div class="errorMessage hidden" id="errorDiv2"></div>
                 <div id="perfTable" style="display: none">
                     <table class="table table-sm table-bordered table-striped">
                         <tbody>
@@ -195,23 +215,24 @@
                             <th scope="row" colspan="2">Rate of Climb</th>
                             <td id="climbFPM"></td>
                         </tr>
-						<tr>
-							<th scope="row" colspan="2" id="NOTAMRemind">Check NOTAMS!</th>	
-							<td id="foreflightRedirect">
-							</td>
-						</tr>
-<!--
-						<tr>
-							<td>
-								<button id="foreflightRedirect">Open in Foreflight</button>
-							</td>
-						</tr>
--->
+						<tr class="hidden">
+                            <th scope="row" colspan="2">Single-Engine Rate of Climb</th>
+                            <td id="SEClimbFPM"></td>
+                        </tr>
+						<tr class="hidden">
+                            <th scope="row" colspan="2">Climb Gradient</th>
+                            <td id="climbGrad"></td>
+                        </tr>
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+		<div class="nav-button-row row">
+			<button id="previous-button" class="btn btn-secondary m-1">Previous</button>
+			<button id="next-button" class="btn btn-secondary m-1" disabled>Next</button>
+		</div>
     </div>
 </main>
 
@@ -234,9 +255,11 @@
       }
     });
 </script>
-<script src="aircraft.js"></script>
-<script src="perfdata.js"></script>
-<script src="performance.js"></script>
+<script src="scripts/airports.js"></script>
+<script src="scripts/aircraft.js"></script>
+<script src="scripts/perfdata.js"></script>
+<script src="scripts/performance.js"></script>
+<script src="scripts/data.js"></script>
 <div id="test"></div>
 </body>
 </html>

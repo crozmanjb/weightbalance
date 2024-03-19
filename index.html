@@ -17,10 +17,12 @@
     <link rel="stylesheet" href="css/bootstrap.css">
 
     <link rel="stylesheet" href="css/custom.css">
+	
+	<link rel="icon" type="image/x-icon" href="resources/favicon.ico">
 
 
 
-    <title>Weight & Balance</title>
+    <title>Weight &amp; Balance</title>
 
 </head>
 
@@ -50,13 +52,19 @@
 
             <li class="nav-item ">
 
-                <a class="nav-link" href="weightbalance.html">Weight & Balance <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="weightbalance.html">Weight &amp; Balance <span class="sr-only">(current)</span></a>
 
             </li>
 
             <li class="nav-item ">
 
-                <a class="nav-link" href="performance.html">Weather & Performance <span class="sr-only">(current)</span></a>
+                <a class="nav-link disabled" href="performance.html">Weather &amp; Performance <span class="sr-only">(current)</span></a>
+
+            </li>
+			
+			<li class="nav-item ">
+
+                <a class="nav-link disabled" href="risk.html">Risk Assessment<span class="sr-only">(current)</span></a>
 
             </li>
 
@@ -78,11 +86,13 @@
 
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                    <a class="dropdown-item" target="_blank" href="https://aste.usu.edu/aviation/current-students/documents_forms">Documents and Forms</a>
+                    <a class="dropdown-item" target="_blank" href="https://caas.usu.edu/avte/documents">Documents and Forms</a>
 
-                    <a class="dropdown-item" target="_blank" href="http://www.talonsystems.com/usu/">ETA Talon</a>
+                    <a class="dropdown-item" target="_blank" href="https://usu.flightlogger.net/">FlightLogger</a>
 
                     <a class="dropdown-item" target="_blank" href="https://usu.co1.qualtrics.com/jfe/form/SV_6JqMu9UuqhUXvZr">Safety Report</a>
+					
+					<a class="dropdown-item" target="_blank" href="https://caas.usu.edu/avte/camera">Live Airport Camera</a>
 
                 </div>
 
@@ -108,7 +118,7 @@
 
                 <p>Use the navigation links above to switch between the multiple pages of this website.
 
-                    The 'Weight & Balance' tab is where you should begin by selecting your aircraft tail number
+                    The 'Weight &amp; Balance' tab is where you should begin by selecting your aircraft tail number
 
                     and filling out the required weights. All weights should be filled in,
 
@@ -120,11 +130,9 @@
 
                 </p>
 
-
-
                 <p>
 
-                    After completing the weight and balance portion, you should now select the 'Weather & Performance' tab.
+                    After completing the weight and balance portion, you should now select the 'Weather &amp; Performance' tab.
 
                     This tab will retrieve weather and compute performance.
 
@@ -134,15 +142,20 @@
 
                     Once you have retrieved the weather, input the runway heading you will be departing from (Runway 17 = 170).
 
-                    This now displays the performance numbers.
+                    This now displays the performance numbers. This will add the airport to the sidebar. Click an airport to remove it.
 
                 </p>
 
-
+				<p>
+					The 'Risk Assessment' tab is optional. Click a box in each row to select the corresponding score. 
+					
+					A message regarding estimated risk will display at the bottom. 
+					
+				</p>
 
                 <p>
 
-                    The 'Summary' tab will now be available to click if you have filled out both previous tabs.
+                    The 'Summary' tab will now be available to click if you have filled out the 'Weight &amp; Balance' and 'Weather &amp; performance' tabs.
 
                     The summary page shows all information and allows for an email to be generated or the page to be printed
 
@@ -157,16 +170,14 @@
             </div>
 
         </div>
+		
+		<div class="nav-button-row row next-only">
+			<button id="next-button" class="btn btn-secondary m-1">Next</button>
+		</div>
 
     </div>
 
-
-
-
-
 </main><!-- /.container -->
-
-
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
@@ -174,7 +185,13 @@
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-
+<script src="scripts/data.js"></script>
+	
+<script>
+	document.getElementById("next-button").addEventListener("click", function(){
+		window.location.href = "weightbalance.html";
+	});
+</script>
 
 </body>
 
