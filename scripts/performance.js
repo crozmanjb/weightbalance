@@ -88,7 +88,7 @@ function getWeather(){
             }
         }
     }
-    request.open("GET", "server.php?q="+stationID,true);
+    request.open("GET", "weather.php?q="+stationID,true);
     request.send();
 }
 
@@ -483,7 +483,7 @@ function getRunways(weatherData) {
             }
 		}
     }
-    request.open("GET", "server2.php?q="+weatherData['station_id'],true);
+    request.open("GET", "airports.php?q="+weatherData['station_id'],true);
     request.send();
 }
 
