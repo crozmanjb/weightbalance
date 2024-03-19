@@ -172,7 +172,7 @@ const aircraft = [
 
         emptyWeight: 1727.19,
 
-        maxWeight: 2535,
+        maxWeight: 2646,
 
         aircraftArm: 96.68,
         
@@ -188,7 +188,7 @@ const aircraft = [
 
         emptyWeight: 1761,
 
-        maxWeight: 2646,
+        maxWeight: 2535,
 
         aircraftArm: 97.11,
         
@@ -212,35 +212,21 @@ const aircraft = [
 
     },    
 
-        tail: "N321FS",
+    {
+
+        tail: "N415AM",
 
         model: "DA40CS",
 
-        emptyWeight: 1761,
+        emptyWeight: 1753.6,
 
         maxWeight: 2535,
 
-        aircraftArm: 97.11,
+        aircraftArm: 96.53,
         
         autopilot: "none"
 
     },
-	
-	{
-
-        tail: "N344AF",
-
-        model: "DA40CS",
-
-        emptyWeight: 1800,
-
-        maxWeight: 2646,
-
-        aircraftArm: 97.37,
-        
-        autopilot: "none"
-
-    },    
 
     {
 
@@ -462,7 +448,7 @@ const aircraft = [
 
     },
 
-    { // Need update
+    {
 
         tail: "N79US",
 
