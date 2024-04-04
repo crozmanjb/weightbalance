@@ -563,7 +563,9 @@ function performanceCompute(station_id, winds, heading){
 		document.getElementById("SEClimbFPM").innerHTML = (SEClimbPerf/10).toFixed(0)*10 + " FPM";
 		document.getElementById("SEClimbFPM").parentElement.classList.remove("hidden");
 		
-		var climbGrad = Math.round(SEClimbPerf / 85 * 0.95 * 10) / 10
+		var climbTAS = Math.round(calculateTrueAirspeed(82, weatherData.elevation_m, temp, weatherData.altim_in_hg));
+		console.log("TAS: " + climbTAS + "kts");
+		var climbGrad = Math.round(SEClimbPerf / climbTAS * 0.95 * 10) / 10;
 		document.getElementById("climbGrad").innerHTML = climbGrad;
 		document.getElementById("climbGrad").parentElement.classList.remove("hidden");
 	} else {
@@ -572,7 +574,6 @@ function performanceCompute(station_id, winds, heading){
 		var SEClimbPerf = "";
 		var climbGrad = "";
 	}
-	console.log(aircraftObj);
     document.getElementById("climbFPM").innerHTML = (climbPerf/10).toFixed(0)*10 + " FPM";
 
 	tgDistance = ((takeoff50Distance + landing50Distance)/10).toFixed(0)*10;
@@ -1253,6 +1254,14 @@ if (sessionStorage.getItem("performance") && sessionStorage.getItem("performance
 	document.getElementById("next-button").disabled = false;
 	document.getElementById("navbarRisk").classList.remove("disabled");
 	updateAirports();
+}
+
+function calculateTrueAirspeed(cas, altitude, temp, altimiter) {
+    const R = 287.058
+    const T = temp + 273.15
+    const p = altimiter * 33.8638 * Math.E ** (-(9.81*0.02896968*altitude)/(8.31432*(temp+273.15)))
+    let relativeDensity = p * 100000 / (R*T)
+    return cas / Math.sqrt(relativeDensity/1225)
 }
 
 function compareDecimals(a, b) {
