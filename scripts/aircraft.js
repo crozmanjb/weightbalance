@@ -3,24 +3,24 @@
 // Valid models are: C172S, DA40F, DA40CS, DA40XL, DA40XLS, DA42
 
 const aircraft = [
-	
-	{
-		
-		tail: "N972TH", 
-		
-		model: "C172S", 
-		
-		emptyWeight: 1720.9,
-		
-		maxWeight: 2550, 
-		
-		aircraftArm: 41.9, 
-		
-		autopilot: "GFC"
-		
-	},
-	
-	{
+
+    {
+
+        tail: "N972TH",
+
+        model: "C172S",
+
+        emptyWeight: 1720.9,
+
+        maxWeight: 2550,
+
+        aircraftArm: 41.9,
+
+        autopilot: "GFC"
+
+    },
+
+    {
 
         tail: "N383PS",
 
@@ -31,12 +31,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.87,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N416FP",
 
@@ -47,12 +47,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.87,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N417FP",
 
@@ -63,12 +63,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.65,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N418FP",
 
@@ -79,12 +79,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.88,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N422FP",
 
@@ -95,12 +95,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.96,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N423FP",
 
@@ -111,12 +111,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 97.06,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N424FP",
 
@@ -127,12 +127,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.89,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N425FP",
 
@@ -143,12 +143,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 97.18,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N118GM",
 
@@ -159,13 +159,13 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.94,
-        
+
         autopilot: "KAP"
 
     },
-	
-	{
-		
+
+    {
+
         tail: "N1707S",
 
         model: "DA40CS",
@@ -175,12 +175,12 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 96.68,
-        
+
         autopilot: "KAP"
 
     },
-	
-	{
+
+    {
 
         tail: "N321FS",
 
@@ -191,12 +191,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 97.11,
-        
+
         autopilot: "KAP"
 
     },
-	
-	{
+
+    {
 
         tail: "N344AF",
 
@@ -207,10 +207,10 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.37,
-        
+
         autopilot: "none"
 
-    },    
+    },
 
     {
 
@@ -223,7 +223,7 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.53,
-        
+
         autopilot: "none"
 
     },
@@ -239,12 +239,12 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 96.486,
-        
+
         autopilot: "none"
 
     },
-	
-	{
+
+    {
 
         tail: "N858DT",
 
@@ -255,7 +255,7 @@ const aircraft = [
         maxWeight: 2535,
 
         aircraftArm: 98.69,
-        
+
         autopilot: "none"
 
     },
@@ -271,7 +271,7 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 98.50,
-        
+
         autopilot: "GFC"
 
     },
@@ -287,26 +287,26 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 98.00,
-        
+
         autopilot: "GFC"
 
     },
-	
-	{
-		tail: "N239DC",
-		
-		model: "DA40XLS", 
-		
-		emptyWeight: 1824.22,
-		
-		maxWeight: 2646,
-		
-		aircraftArm: 98.30, 
-		
-		autopilot: "GFC"
-	},
-	
-	{
+
+    {
+        tail: "N239DC",
+
+        model: "DA40XLS",
+
+        emptyWeight: 1824.22,
+
+        maxWeight: 2646,
+
+        aircraftArm: 98.30,
+
+        autopilot: "GFC"
+    },
+
+    {
 
         tail: "N384CA",
 
@@ -317,24 +317,24 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 98.31,
-        
+
         autopilot: "GFC"
 
     },
-	
-	{
-		tail: "N451DS",
-		
-		model: "DA40XLS", 
-		
-		emptyWeight: 1849,
-		
-		maxWeight: 2646,
-		
-		aircraftArm: 98.02, 
-		
-		autopilot: "GFC"
-	},
+
+    {
+        tail: "N451DS",
+
+        model: "DA40XLS",
+
+        emptyWeight: 1849,
+
+        maxWeight: 2646,
+
+        aircraftArm: 98.02,
+
+        autopilot: "GFC"
+    },
 
     {
 
@@ -347,24 +347,24 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 99.04,
-        
+
         autopilot: "GFC"
 
     },
-		
-	{
-		tail: "N616ML",
-		
-		model: "DA40XLS", 
-		
-		emptyWeight: 1801,
-		
-		maxWeight: 2646,
-		
-		aircraftArm: 98.34, 
-		
-		autopilot: "GFC"
-	}, 
+
+    {
+        tail: "N616ML",
+
+        model: "DA40XLS",
+
+        emptyWeight: 1801,
+
+        maxWeight: 2646,
+
+        aircraftArm: 98.34,
+
+        autopilot: "GFC"
+    },
 
     {
 
@@ -377,12 +377,12 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.74,
-        
+
         autopilot: "GFC"
 
     },
-	
-	{
+
+    {
 
         tail: "N734M",
 
@@ -393,12 +393,12 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.99,
-        
+
         autopilot: "GFC"
 
     },
-	
-	{
+
+    {
 
         tail: "N74SW",
 
@@ -409,7 +409,7 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.7,
-        
+
         autopilot: "GFC"
 
     },
@@ -425,7 +425,7 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.11,
-        
+
         autopilot: "GFC"
 
     },
@@ -441,7 +441,7 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.26,
-        
+
         autopilot: "GFC",
 
         standardTank: true
@@ -459,14 +459,14 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.34,
-        
+
         autopilot: "GFC",
 
         standardTank: true
 
     },
 
-    { 
+    {
 
         tail: "N831JL",
 
@@ -477,12 +477,12 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.98,
-        
+
         autopilot: "GFC"
 
     },
-	
-	{
+
+    {
 
         tail: "N866US",
 
@@ -493,26 +493,26 @@ const aircraft = [
         maxWeight: 2646,
 
         aircraftArm: 97.55,
-        
+
         autopilot: "GFC"
 
     },
-	
-	{
-		tail: "N894SA",
-		
-		model: "DA40XLS", 
-		
-		emptyWeight: 1808,
-		
-		maxWeight: 2646,
-		
-		aircraftArm: 98.00, 
-		
-		autopilot: "GFC"
-	}, 
-	
-	{
+
+    {
+        tail: "N894SA",
+
+        model: "DA40XLS",
+
+        emptyWeight: 1808,
+
+        maxWeight: 2646,
+
+        aircraftArm: 98.00,
+
+        autopilot: "GFC"
+    },
+
+    {
 
         tail: "N132TS",
 
@@ -521,20 +521,20 @@ const aircraft = [
         emptyWeight: 2943.2,
 
         maxTOWeight: 3935,
-		
-		maxLDGWeight: 3748,
+
+        maxLDGWeight: 3748,
 
         aircraftArm: 95.05,
-        
-        autopilot: "none", 
-		
-		auxTanks: "true", 
-		
-		deIce: "true"
+
+        autopilot: "none",
+
+        auxTanks: "true",
+
+        deIce: "true"
 
     },
-	
-	{
+
+    {
 
         tail: "N240TS",
 
@@ -543,18 +543,18 @@ const aircraft = [
         emptyWeight: 2756.6,
 
         maxTOWeight: 3935,
-		
-		maxLDGWeight: 3748,
-		
+
+        maxLDGWeight: 3748,
+
         aircraftArm: 95.36,
-        
-        autopilot: "none", 
-		
-		auxTanks: "true"
+
+        autopilot: "none",
+
+        auxTanks: "true"
 
     },
-	
-	{
+
+    {
 
         tail: "N350TS",
 
@@ -563,18 +563,18 @@ const aircraft = [
         emptyWeight: 2833.5,
 
         maxTOWeight: 3935,
-		
-		maxLDGWeight: 3748,
+
+        maxLDGWeight: 3748,
 
         aircraftArm: 95.98,
-        
-        autopilot: "none", 
-		
-		auxTanks: "true"
+
+        autopilot: "none",
+
+        auxTanks: "true"
 
     },
-	
-	{
+
+    {
 
         tail: "N459TS",
 
@@ -583,22 +583,20 @@ const aircraft = [
         emptyWeight: 2877.24,
 
         maxTOWeight: 3935,
-		
-		maxLDGWeight: 3748,
+
+        maxLDGWeight: 3748,
 
         aircraftArm: 95.3,
-        
-        autopilot: "none", 
-		
-		auxTanks: "true", 
-		
-		deIce: "true"
+
+        autopilot: "none",
+
+        auxTanks: "true",
+
+        deIce: "true"
 
     },
 
 ];
-
-
 
 const aircraftModels = [
 
@@ -609,18 +607,18 @@ const aircraftModels = [
         maxFuel: 56,
 
         maxBaggage1: 120,
-		
-		maxBaggage2: 60,
-		
-		maxBaggage: 120,
+
+        maxBaggage2: 60,
+
+        maxBaggage: 120,
 
         frontStationCG: 37,
 
         rearStationCG: 73,
 
         baggageStationCG: 95,
-		
-		baggageStation2CG: 123,
+
+        baggageStation2CG: 123,
 
         fuelStationCG: 48,
 
@@ -648,35 +646,35 @@ const aircraftModels = [
 
         },
 
-        vSpeeds : {
-			
-			interpolate : ["va"],
+        vSpeeds: {
 
-            vr : 55,
-			
-			vx : 65,
+            interpolate: ["va"],
 
-            vy : 73,
+            vr: 55,
 
-            vg : 68,
+            vx: 65,
 
-            va : {
+            vy: 73,
 
-                1900 : 90,
+            vg: 68,
 
-                2200 : 98, 
-				
-				2550 : 105
+            va: {
 
-            }, 
-			
-			dmms : 56
+                1900: 90,
+
+                2200: 98,
+
+                2550: 105
+
+            },
+
+            dmms: 56
 
         }
 
     },
-	
-	{
+
+    {
 
         model: "DA40F",
 
@@ -716,47 +714,47 @@ const aircraftModels = [
 
         },
 
-        vSpeeds : {
-			
-			interpolate : ["vy", "vg", "dmms"],
+        vSpeeds: {
 
-            vr : 59,
+            interpolate: ["vy", "vg", "dmms"],
 
-            vy : {
-				
-				1874 : 54,
-				
-				2205 : 60, 
-				
-				2535 : 66
-				
-			},
+            vr: 59,
 
-            vg : {
-				
-				1874 : 60,
-				
-				2205 : 68, 
-				
-				2535 : 73
-				
-			},
+            vy: {
 
-            va : {
+                1874: 54,
 
-                2161 : 94,
+                2205: 60,
 
-                2535 : 108
+                2535: 66
 
-            }, 
-			
-			dmms : {
-				
-				2161 : 59,
-				
-				2535 : 69
-				
-			}
+            },
+
+            vg: {
+
+                1874: 60,
+
+                2205: 68,
+
+                2535: 73
+
+            },
+
+            va: {
+
+                2161: 94,
+
+                2535: 108
+
+            },
+
+            dmms: {
+
+                2161: 59,
+
+                2535: 69
+
+            }
 
         }
 
@@ -802,47 +800,47 @@ const aircraftModels = [
 
         },
 
-        vSpeeds : {
-			
-			interpolate : ["vy", "vg", "dmms"],
+        vSpeeds: {
 
-            vr : 59,
+            interpolate: ["vy", "vg", "dmms"],
 
-            vy : {
-				
-				1874 : 54,
-				
-				2205 : 60, 
-				
-				2535 : 66
-				
-			},
+            vr: 59,
 
-            vg : {
-				
-				1874 : 60,
-				
-				2205 : 68, 
-				
-				2535 : 73
-				
-			},
+            vy: {
 
-            va : {
+                1874: 54,
 
-                2161 : 94,
+                2205: 60,
 
-                2535 : 108
+                2535: 66
 
-            }, 
-			
-			dmms : {
-				
-				2161 : 59,
-				
-				2535 : 69
-				
-			}
+            },
+
+            vg: {
+
+                1874: 60,
+
+                2205: 68,
+
+                2535: 73
+
+            },
+
+            va: {
+
+                2161: 94,
+
+                2535: 108
+
+            },
+
+            dmms: {
+
+                2161: 59,
+
+                2535: 69
+
+            }
 
         }
 
@@ -854,11 +852,11 @@ const aircraftModels = [
 
         maxFuel: 40.2,
 
-        maxBaggage1 : 100,
+        maxBaggage1: 100,
 
-        maxBaggage2 : 40,
+        maxBaggage2: 40,
 
-        maxBaggage : 100,
+        maxBaggage: 100,
 
         frontStationCG: 90.6,
 
@@ -894,55 +892,55 @@ const aircraftModels = [
 
         },
 
-        vSpeeds : {
-			
-			interpolate : ["vy", "vg", "dmms"],
+        vSpeeds: {
 
-            vr : 59,
+            interpolate: ["vy", "vg", "dmms"],
 
-            vy : {
-				
-				1874 : 54,
-				
-				2205 : 60, 
-				
-				2535 : 66, 
-				
-				2646 : 67
-				
-			},
+            vr: 59,
 
-            vg : {
-				
-				1874 : 60,
-				
-				2205 : 68, 
-				
-				2535 : 73, 
-				
-				2646 : 76
-				
-			},
+            vy: {
 
-            va : {
+                1874: 54,
 
-                2161 : 94,
+                2205: 60,
 
-                2535 : 108,
+                2535: 66,
 
-                2646 : 111
+                2646: 67
 
-            }, 
-			
-			dmms : {
-				
-				2161 : 59,
-				
-				2535 : 69, 
-				
-				2646 : 73
-				
-			}
+            },
+
+            vg: {
+
+                1874: 60,
+
+                2205: 68,
+
+                2535: 73,
+
+                2646: 76
+
+            },
+
+            va: {
+
+                2161: 94,
+
+                2535: 108,
+
+                2646: 111
+
+            },
+
+            dmms: {
+
+                2161: 59,
+
+                2535: 69,
+
+                2646: 73
+
+            }
 
         }
 
@@ -954,11 +952,11 @@ const aircraftModels = [
 
         maxFuel: 50,
 
-        maxBaggage1 : 100,
+        maxBaggage1: 100,
 
-        maxBaggage2 : 40,
+        maxBaggage2: 40,
 
-        maxBaggage : 100,
+        maxBaggage: 100,
 
         frontStationCG: 90.6,
 
@@ -994,55 +992,55 @@ const aircraftModels = [
 
         },
 
-        vSpeeds : {
-			
-			interpolate : ["vy", "vg", "dmms"],
+        vSpeeds: {
 
-            vr : 59,
-			
-			vy : {
-				
-				1874 : 54,
-				
-				2205 : 60, 
-				
-				2535 : 66, 
-				
-				2646 : 67
-				
-			},
+            interpolate: ["vy", "vg", "dmms"],
 
-            vg : {
-				
-				1874 : 60,
-				
-				2205 : 68, 
-				
-				2535 : 73, 
-				
-				2646 : 76
-				
-			},
+            vr: 59,
 
-            va : {
+            vy: {
 
-                2161 : 94,
+                1874: 54,
 
-                2535 : 108,
+                2205: 60,
 
-                2646 : 111
+                2535: 66,
+
+                2646: 67
 
             },
-			
-			dmms : {
-				
-				2161 : 59,
-				
-				2535 : 69, 
-				
-				2646 : 73
-				
-			}
+
+            vg: {
+
+                1874: 60,
+
+                2205: 68,
+
+                2535: 73,
+
+                2646: 76
+
+            },
+
+            va: {
+
+                2161: 94,
+
+                2535: 108,
+
+                2646: 111
+
+            },
+
+            dmms: {
+
+                2161: 59,
+
+                2535: 69,
+
+                2646: 73
+
+            }
 
         }
 
@@ -1054,17 +1052,17 @@ const aircraftModels = [
 
         maxFuel: 50,
 
-        maxAuxFuel : 26,
+        maxAuxFuel: 26,
 
         maxNoseBaggage: 66,
 
-        maxDeIce : 8.3,
+        maxDeIce: 8.3,
 
-        maxBaggage1 : 100,
+        maxBaggage1: 100,
 
-        maxBaggage2 : 40,
+        maxBaggage2: 40,
 
-        maxBaggage : 100,
+        maxBaggage: 100,
 
         frontStationCG: 90.6,
 
@@ -1108,54 +1106,54 @@ const aircraftModels = [
 
         },
 
-        vSpeeds : { 
-			
-			interpolate : ["dmms"],
-			
-            vr : { 
-				
-				3748: 70,
-				
-				3935: 72
-				
-			},
+        vSpeeds: {
 
-            vy : { 
-				
-				3748: 77,
-				
-				3935: 79
-				
-			},
+            interpolate: ["dmms"],
 
-            vg : "-",
+            vr: {
 
-            vyse : 82,
+                3748: 70,
 
-            vmc : 68,
+                3935: 72
 
-            va : {
+            },
 
-                3400 : 120,
+            vy: {
 
-                3935 : 126
+                3748: 77,
 
-            }, 
-			
-			dmms : {
-				
-				3086 : 69,
-				
-				3748 : 77, 
-				
-				3935 : 80
-			}
+                3935: 79
+
+            },
+
+            vg: "-",
+
+            vyse: 82,
+
+            vmc: 68,
+
+            va: {
+
+                3400: 120,
+
+                3935: 126
+
+            },
+
+            dmms: {
+
+                3086: 69,
+
+                3748: 77,
+
+                3935: 80
+            }
 
         }
 
     }
 
-    /* This is where you could add a new aircraft type, but if you have to add more variables then you would need
+    /* This is where you could add a new aircraft type. If you have to add more variables then you need
 
     to edit the javascript code to make use of those variables
 
